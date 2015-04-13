@@ -1,6 +1,6 @@
 package GameServer;
 /**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
- * Project Part: Server
+ * Project Part: Echo Server 
  * Program Title: Tic-tac-toe Game 
  * Course: CSCE 320 - Software Engineering
  * Date: February 23, 2015

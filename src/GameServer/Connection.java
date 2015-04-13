@@ -93,8 +93,9 @@ public class Connection extends Thread {
 					//Sends server message back to register user
 					else if(type.equals("register")){
 						String userName = split[1].toLowerCase();
-						String passWord = split[2] ;
-						String registerStatus = model.registerUser(userName, passWord);
+						String passWord = split[2];
+						String rePassword = split[3];
+						String registerStatus = model.registerUser(userName, passWord, rePassword);
 						System.out.println("register :" +userName + ", " + passWord);
 						sendServerMsg(registerStatus);  
 					}

@@ -1,6 +1,6 @@
 package GameServer;
 /**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
- * Project Part: Admin Model
+ * Project Part: Authentication Model - Server Side
  * Program Title: Tic-tac-toe Game 
  * Course: CSCE 320 - Software Engineering
  * Date: February 23, 2015
@@ -21,10 +21,19 @@ public class Authentication {
 	 * Construction
 	 * Loading the user information from the text file
 	 */
-	public Authentication(){
-		map.put("hello", "123456"); // to check our login method
+	public void loadData(){
+		//Load the user information
 		//DEBUG
-		//readTextFile();
+		System.out.println("loaded user info");
+		readTextFile();
+		//DEBUG
+		Set<String> mySet = map.keySet();
+		Iterator itr = mySet.iterator();
+		while (itr.hasNext()){
+			String key = (String)itr.next();
+			System.out.println(key + "_" + map.get(key));
+		}
+		
 	}
 
 	/**
@@ -36,12 +45,14 @@ public class Authentication {
 	 * 		   returns "spacePassword" if the new user information contains any white spaces. 
 	 * 		   otherwise, returns "success" and put the new user information into file.
 	 */
-	public String registerUser(String userName, String userPass){
+	public String registerUser(String userName, String userPass, String rePass){
 		System.out.println("reg from model of sever: "+userName + ", " + userPass);
 		if (map.containsKey(userName))
 			return "takenUserName";
 		else if (userName.matches("^\\s*$"))
 			return "spacePassword";
+		else if(!userPass.equals(rePass))
+			return "notMatchingPass";
 		else{ 
 			try {
 				writeTextFile(userName, userPass);

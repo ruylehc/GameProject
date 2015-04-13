@@ -1,4 +1,6 @@
 package GUIView;
+import javax.swing.JOptionPane;
+
 import Controller.RegisterCont;
 
 /**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
@@ -138,12 +140,13 @@ public class Register extends javax.swing.JFrame {
         controller.listen("back");
     }                                          
 
-    private void regButtonActionPerformed(java.awt.event.ActionEvent evt) {     
-    	String info = "register_" + userTF.getText() + "_" + passTF.getText();
+    private void regButtonActionPerformed(java.awt.event.ActionEvent evt) { 
+    	String info = "register_" + userTF.getText() + "_" + passTF.getText() + "_" + rePassTF.getText();
         controller.updateUserInfo(info);
         controller.listen("register");
         userTF.setText("");
         passTF.setText("");
+        rePassTF.setText("");
     }                    
 
     /**

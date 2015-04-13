@@ -41,8 +41,8 @@ public class ClientModel {
 	}
 
 	/**
-	 * 
-	 * @param usrInfo
+	 * Write the user information into the I/O stream to the server
+	 * @param usrInfo: user information from the GUI textfield.
 	 */
 	public void authentication(String usrInfo){
 		
@@ -158,5 +158,7 @@ public class ClientModel {
 	public void setSock(SocketClient sock){
 		this.sock = sock;
 	}
+	
+	
 
 }

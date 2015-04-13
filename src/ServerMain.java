@@ -1,5 +1,5 @@
 /**Group Names: Holly Ruyle, Phu Hoang, Michaele House, Tyler Glass        
- * Project Part: The Socket - Ser Main Constructor
+ * Project Part: The Socket - Server Main Constructor
  * Program Title: Client-Server Communications
  * Course: CSCE 320 - Software Engineering
  * Date: March 9, 2015
@@ -22,6 +22,7 @@ public class ServerMain {
 		ServerGUI serView = new ServerGUI();
 		Server ss = new Server(52546);
 		Authentication model = new Authentication();
+		model.loadData();
 		//Connect Echo Sever, Model and the GUI
 		serView.setServer(ss);
 		ss.setView(serView);
