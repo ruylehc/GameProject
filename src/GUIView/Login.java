@@ -114,11 +114,18 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>                                         
 
+    /**
+     * ActionPerformed according to the back button.
+     * @param evt
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
         controller.listen("back");
-    }                                          
-
+    }                             
     
+    /**
+     * ActionPerformed according to the login button.
+     * @param evt
+     */
 	private void logButtonActionPerformed(java.awt.event.ActionEvent evt) {                                          
         String info = "login_" + userTF.getText() + "_" + passTF.getText();
         controller.updateUserInfo(info);
@@ -175,9 +182,9 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton logButton;
-    javax.swing.JPasswordField passTF;
+    private javax.swing.JPasswordField passTF;
     private javax.swing.JLabel userLB;
-    javax.swing.JTextField userTF;
+    private javax.swing.JTextField userTF;
     private LoginCont controller;
     // End of variables declaration//GEN-END:variables
 }

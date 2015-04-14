@@ -12,7 +12,7 @@ import GUIView.Register;
  * Date: Match 16, 2015
  * Language and Compiler: Java written in eclipse and Netbeans
  */
-public class RegisterCont implements Controller{
+public class RegisterCont extends Controller{
 	private ClientModel model;
 	private Register view;	
 	private String usrInfo = "";
@@ -43,11 +43,11 @@ public class RegisterCont implements Controller{
 		if(value.equals("register")){
 			System.out.println("This is info from reg cont: " + usrInfo);
 			model.authentication(usrInfo);
-			if(model.isRegValid()){
-				model.switchController("login");
-				view.setVisible(false);
-			}
-			else
+			//if(model.isRegValid()){
+			//	model.switchController("login");
+			//	view.setVisible(false);
+			//}
+			//else
 				JOptionPane.showMessageDialog(null, "Failed register");
 		}
 	}	

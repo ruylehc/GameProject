@@ -17,22 +17,19 @@ public class SocketClient implements Runnable{
 
 	// Variables declaration
 	//private ClientModel model;
-	Socket s;
+	private Socket s;
 	private Thread worker;
 	private InputStream in;
 	private OutputStream out;
 	private final int SIZE_BYTE = 1024;
 	public byte[] buffer ;	
-	public String updateController = "";
-	boolean active;
-	ClientModel model;
+	private boolean active = true;;
+	private ClientModel model;
 
 	// End of variables declaration
 
 	/**
 	 * Default Constructor
-	 * @param ip - String Host name
-	 * @param num - int Port number
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */	
@@ -50,12 +47,14 @@ public class SocketClient implements Runnable{
 	 */
 	@Override
 	public void run() {		
-		try {
-			authenticateStatus();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		while(active == true)
+			try {
+				authenticateStatus();
+			} catch (IOException e) {
+				//DEBUG
+				System.out.println("Connection lost");
+				e.printStackTrace();
+			}
 	} //end run
 
 	/**
@@ -87,43 +86,47 @@ public class SocketClient implements Runnable{
 		}
 	}// end writeUserMessage
 
+	/**
+	 * Read the server message from I/O stream
+	 * Update the server massage into the ClientModel
+	 * @throws IOException
+	 */
+	public void authenticateStatus() throws IOException{
 
-	public void authenticateStatus() throws IOException{		
-		boolean conn = true;
-
-		while(conn) {
+		try{
 			int len = in.read(buffer) ;
 			if (len > 0) { 
 				String status = new String(buffer, 0, len);
 				model.updateServerMsg(status);	
 			}
 			else {
-				//view.msgTF.append("Lost Server Connection") ;
-				conn = false ;
-				// checking if this is causing delay
+				//DEBUG
+				System.out.println("Lost server connection");
+				active = false;
 			}
-		}		
-		close();
-		//return updateController;
+		}catch (IOException e) {
+			e.printStackTrace();	
+			close();	//close the socket 
+		}
+	}// end authenticateStatus()	
 
-	}	
-
-	public String getStatus(){
-		System.out.println("This is socket client2 " + updateController);
-		return updateController;
-	}
-
+	/**
+	 * Close the I/O Stream and socket
+	 */
 	public void close(){
 		try {			
 			out.close();
 			in.close() ;
 			s.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}	
+	}// end close();
 
+	/**
+	 * Set the Client model into the socket client.
+	 * @param model CLientModel
+	 */
 	public void setModel(ClientModel model){
 		this.model = model;
 	}

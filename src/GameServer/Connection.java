@@ -116,8 +116,7 @@ public class Connection extends Thread {
 	}// End readClientMsg
 
 	public void close(){
-		try{
-			
+		try{			
 			out.close();
 			in.close();
 			sock.close();

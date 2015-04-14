@@ -1,7 +1,8 @@
 package Controller;
 
-public interface Controller {
-	public void listen(String value);
-	public void updateUserInfo(String usrInfo);
-	public void switchView(String value);
+public abstract class Controller {
+	public abstract void listen(String value);
+	public abstract void updateUserInfo(String usrInfo);
+	public abstract void switchView(String value);
+	public String ID = "undef";
 }

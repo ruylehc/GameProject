@@ -21,18 +21,25 @@ public class Authentication {
 	 * Construction
 	 * Loading the user information from the text file
 	 */
+	
+	public Authentication(){
+		map.put("hello", "123456");
+		//readTextFile();
+		
+	}
+	
 	public void loadData(){
 		//Load the user information
 		//DEBUG
 		System.out.println("loaded user info");
-		readTextFile();
+		//
 		//DEBUG
-		Set<String> mySet = map.keySet();
-		Iterator itr = mySet.iterator();
-		while (itr.hasNext()){
-			String key = (String)itr.next();
-			System.out.println(key + "_" + map.get(key));
-		}
+		//Set<String> mySet = map.keySet();
+		//Iterator itr = mySet.iterator();
+		//while (itr.hasNext()){
+		//	String key = (String)itr.next();
+		//	System.out.println(key + "_" + map.get(key));
+		//}
 		
 	}
 

@@ -12,14 +12,17 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import Controller.Controller;
+import Controller.*;
 
 public class ClientModel {
 	private ArrayList<Controller> list = new ArrayList<Controller>();
 	private String signal = "";
 	private String usrInfo = "";
 	private SocketClient sock;
-	String msg = "";
+	private String msg = "";
+
+	boolean isLogValid = false;
+	LoginCont contLog;
 
 	/**
 	 * Add the new controller to the ArrayList
@@ -37,7 +40,11 @@ public class ClientModel {
 		this.signal = signal;
 		System.out.println(this.signal);
 		for(Controller c: list)
-			c.switchView(signal);
+			if(c.ID.equals("LoginCntrl")){
+				//contLog = (LoginCont) c;
+				contLog.setVisible(false);
+			} else
+				c.switchView(signal);
 	}
 
 	/**
@@ -45,7 +52,7 @@ public class ClientModel {
 	 * @param usrInfo: user information from the GUI textfield.
 	 */
 	public void authentication(String usrInfo){
-		
+
 		try {
 			sock.writeUserMessage(usrInfo);
 		} catch (IOException e) {
@@ -53,7 +60,7 @@ public class ClientModel {
 			e.printStackTrace();
 		}
 	}
-		
+
 	/*
 	public void authenticateStatus() throws IOException{
 		String rY = "rY"; //register success
@@ -111,44 +118,18 @@ public class ClientModel {
 
 	 */
 
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isLoginValid() {	
-		System.out.println("This is the server msg: " + msg);	
-		if(msg.equals("success")){
-			System.out.println("This is from the is login valid " + msg);
-			return true;
-		}
-		else {
-			System.out.println("This is from the is login valid " +msg);
-			return false;
-		}
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isRegValid(){
-		if(msg.equals("success")){
-			System.out.println(msg);
-			return true;
-		}
-		else{
-			System.out.println(msg);
-			return false;
-		}
-	}
-
-
+	
 	/**
 	 * 
 	 * @param msg
 	 */
 	public void updateServerMsg(String msg) {
 		this.msg = msg;		
+		if(msg.equals("success"))
+			isLogValid = true;
+		if(isLogValid)
+			this.switchController("lobby");
+
 	}	
 
 	/**
@@ -158,7 +139,7 @@ public class ClientModel {
 	public void setSock(SocketClient sock){
 		this.sock = sock;
 	}
-	
-	
+
+
 
 }

@@ -11,7 +11,7 @@ import GUIView.StartUp;
  * Date: Match 16, 2015
  * Language and Compiler: Java written in eclipse and Netbeans
  */
-public class StartUpCont implements Controller{
+public class StartUpCont extends Controller{
 	private ClientModel model;
 	private StartUp view;
 

@@ -9,7 +9,7 @@ import GUIView.MatchMaking;
  * Date: Match 16, 2015
  * Language and Compiler: Java written in eclipse and Netbeans
 */
-public class MatchCont implements Controller{
+public class MatchCont extends Controller{
 	private ClientModel model;
 	private MatchMaking view;
 	private String usrInfo = "";

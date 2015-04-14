@@ -44,6 +44,7 @@ public class PlayerMain {
 		//Cont
 		StartUpCont contSU = new StartUpCont();
 		LoginCont contLog = new LoginCont();	//constructor for loginCont
+		contLog.setID("LoginCntrl");
 		RegisterCont contReg = new RegisterCont();
 		MatchCont contMatch = new MatchCont();
 		
