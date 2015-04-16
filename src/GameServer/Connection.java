@@ -23,6 +23,8 @@ public class Connection extends Thread {
 	private Server ss;
 	private int port;
 	private boolean terminate = true;
+        private String IP = "";
+        
 	// End of variables declaration
 
 	/**
@@ -59,6 +61,24 @@ public class Connection extends Thread {
 			//ss.remove(this);
 		}
 	}
+        
+        
+        public void sendUserInvite(String playerInvite){
+            String[] split = playerInvite.split("_");	//Delimiter the string 
+            String type = split[0];
+            String SendTo = split[1];
+            String ip = "";
+            
+            
+            
+            if(type.equals("invite"))
+                if(ss.checkOnlineUser(SendTo)) // checks if the player is online
+                    ip = ss.getOnlineUser().get(SendTo);
+                      for(Connection c: ss.list)  // check to ensure it is not giving us a delay (global variable)
+                         if(c.getIP().equals(ip))
+                             sendServerMsg(playerInvite);
+        }
+        
 	/**
 	 * Thread Two: 
 	 * 	+ Reads a message from the Client
@@ -99,6 +119,11 @@ public class Connection extends Thread {
 						System.out.println("register :" +userName + ", " + passWord);
 						sendServerMsg(registerStatus);  
 					}
+                                        else if(type.equals("invite")){
+                                            sendUserInvite(info);
+                                            
+                                            
+                                        }
 
 					//Sends the chat message to all connection
 					else{				
@@ -155,7 +180,28 @@ public class Connection extends Thread {
 	public int getPort() {
 		return port;
 	}	
-
+        
+        public void setPort(){
+            
+        }
+        
+        /**
+         * 
+         * @return the IP address in String format for a specific connection
+         */
+        public String getIP(){
+            return IP;
+        }
+        
+        /**
+         * sets local variable IP to the string passed into the method
+         * @param IP passes a string representation of the IP address of a new connection
+         */
+        public void setIP(String IP){
+            
+            this.IP = IP;
+        }
+        
 	/**
 	 * Return the socket object from the client socket
 	 * @return the port

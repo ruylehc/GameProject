@@ -40,7 +40,16 @@ public class ClientModel {
 		this.signal = signal;
 		System.out.println("This is the signal from the switch view: " +this.signal);
 		for(Controller c: list)
+
                     c.switchView(signal);
+
+                    /*
+			if(c.ID.equals("LoginCntrl")){
+				contLog = (LoginCont) c;
+				contLog.setVisible(false);
+			} else*/
+				//c.switchView(signal);
+
 	}
 
 	/**
@@ -50,7 +59,7 @@ public class ClientModel {
 	public void authentication(String usrInfo){
 
 		try {
-			sock.writeUserMessage(usrInfo);
+			sock.writeUserMessage(usrInfo.append("_" + sock.getInetAddress().toString())); // need to make socket methods to get port and IP
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

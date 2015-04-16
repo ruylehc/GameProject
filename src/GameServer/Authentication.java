@@ -15,7 +15,9 @@ import java.util.logging.Logger;
 
 public class Authentication {
 
-	HashMap <String, String> map = new HashMap<String, String>();
+	HashMap <String, String> map = new HashMap<String, String>(); // key is the username, value is the password (need to implement hashing + salt)
+        HashMap <String,String> onlineUser = new HashMap<String,String>(); // key is theuser name, value is the IP address in string format
+        
 
 	/**
 	 * Construction
@@ -67,7 +69,9 @@ public class Authentication {
 				e.printStackTrace();
 			}
 			map.put(userName, userPass);
-			return "registerSuccess";
+                        String ipaddr = "";
+                        onlineUser.put(userName,"");
+			return "success";
 		}
 	}
 
@@ -88,7 +92,9 @@ public class Authentication {
 			String key = (String)itr.next();
 			if(key.equals(userN) && userP.equals(map.get(key))){
 				System.out.println("log from model of sever: "+ userN + ", " + userP);
-				status = "loginSuccess";
+				status = "success";
+                                String ipaddr = "";
+                                onlineUser.put(userN,ipaddr);
 				break;
 			}
 			else if(key.equals(userN) && !userP.equals(map.get(key))){
@@ -100,6 +106,7 @@ public class Authentication {
 				break;
 			}
 		}
+                
 		return status;
 	}
 	
