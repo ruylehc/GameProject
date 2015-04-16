@@ -69,7 +69,8 @@ public class Authentication {
 				e.printStackTrace();
 			}
 			map.put(userName, userPass);
-                        onlineUser.put(userName,);
+                        String ipaddr = "";
+                        onlineUser.put(userName,"");
 			return "success";
 		}
 	}
@@ -92,7 +93,8 @@ public class Authentication {
 			if(key.equals(userN) && userP.equals(map.get(key))){
 				System.out.println("log from model of sever: "+ userN + ", " + userP);
 				status = "success";
-                                onlineUser.add(userN);
+                                String ipaddr = "";
+                                onlineUser.put(userN,ipaddr);
 				break;
 			}
 			else if(key.equals(userN) && !userP.equals(map.get(key))){

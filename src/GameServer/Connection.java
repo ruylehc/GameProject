@@ -62,6 +62,7 @@ public class Connection extends Thread {
 		}
 	}
         
+        
         public void sendUserInvite(String playerInvite){
             String[] split = playerInvite.split("_");	//Delimiter the string 
             String type = split[0];
@@ -69,11 +70,13 @@ public class Connection extends Thread {
             String ip = "";
             
             
+            
             if(type.equals("invite"))
                 if(ss.checkOnlineUser(SendTo)) // checks if the player is online
                     ip = ss.getOnlineUser().get(SendTo);
-                    ss.sentUserInvite(playerInvite);  // sent the invite to the invited player's connection
-            
+                      for(Connection c: ss.list)  // check to ensure it is not giving us a delay (global variable)
+                         if(c.getIP().equals(ip))
+                             sendServerMsg(playerInvite);
         }
         
 	/**
@@ -116,6 +119,11 @@ public class Connection extends Thread {
 						System.out.println("register :" +userName + ", " + passWord);
 						sendServerMsg(registerStatus);  
 					}
+                                        else if(type.equals("invite")){
+                                            sendUserInvite(info);
+                                            
+                                            
+                                        }
 
 					//Sends the chat message to all connection
 					else{				

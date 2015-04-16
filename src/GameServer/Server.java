@@ -19,7 +19,7 @@ public class Server implements Runnable{
 	private Thread worker;
 	private ServerSocket ss;
 	private ServerGUI view;
-	private ArrayList<Connection> list = new ArrayList<Connection>();
+	ArrayList<Connection> list = new ArrayList<Connection>();
 	private Authentication model;
         int ptpPort;
 	// End of variables declaration
@@ -98,20 +98,23 @@ public class Server implements Runnable{
 		this.model = model;
 	}
         
-        public HashMap<String,String> getOnlineUser(){
+        public HashMap<String,String> getOnlineUser(){ // kevin is worried this might caause a problem
+            // will check when we get methods fully connected
             return model.onlineUser;
         }
 
-    boolean checkOnlineUser(String SendTo) {
-       HashMap<String, String> online = getOnlineUser();
-       return online.containsKey(SendTo);
+        
+        public void setUserIP(){
+            
+            
+        }
+        
+        
+       boolean checkOnlineUser(String SendTo) {
+            HashMap<String, String> online = getOnlineUser();
+            return online.containsKey(SendTo);
        
     }
-
-    void sentUserInvite(String playerInvite) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-        
-        
+       
         
 }//end class Server

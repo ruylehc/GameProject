@@ -55,7 +55,7 @@ public class ClientModel {
 	public void authentication(String usrInfo){
 
 		try {
-			sock.writeUserMessage(usrInfo);
+			sock.writeUserMessage(usrInfo.append("_" + sock.getInetAddress().toString())); // need to make socket methods to get port and IP
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
