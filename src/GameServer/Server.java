@@ -21,6 +21,7 @@ public class Server implements Runnable{
 	private ServerGUI view;
 	private ArrayList<Connection> list = new ArrayList<Connection>();
 	private Authentication model;
+        int ptpPort;
 	// End of variables declaration
 
 	/**
@@ -56,6 +57,8 @@ public class Server implements Runnable{
 				view.connectTF.setText(1+list.size()+"");
 				Connection connect = new Connection(sockClient, this); //Creates a new Thread
 				connect.setModel(model);
+                                connect.setIP(sockClient.getInetAddress().toString());
+                                ptpPort = connect.getPort() + 5; // 5 is to move away from taken port
 				list.add(connect);
 				connect.start();	
 			} catch (IOException e) {
@@ -94,4 +97,21 @@ public class Server implements Runnable{
 	public void setModel(Authentication model){
 		this.model = model;
 	}
+        
+        public HashMap<String,String> getOnlineUser(){
+            return model.onlineUser;
+        }
+
+    boolean checkOnlineUser(String SendTo) {
+       HashMap<String, String> online = getOnlineUser();
+       return online.containsKey(SendTo);
+       
+    }
+
+    void sentUserInvite(String playerInvite) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+        
+        
+        
 }//end class Server

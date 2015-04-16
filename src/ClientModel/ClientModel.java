@@ -40,10 +40,11 @@ public class ClientModel {
 		this.signal = signal;
 		System.out.println(this.signal);
 		for(Controller c: list)
+                    /*
 			if(c.ID.equals("LoginCntrl")){
-				//contLog = (LoginCont) c;
+				contLog = (LoginCont) c;
 				contLog.setVisible(false);
-			} else
+			} else*/
 				c.switchView(signal);
 	}
 
