@@ -35,8 +35,7 @@ public class RegisterCont extends Controller{
 	@Override
 	public void listen(String value) {		
 		if(value.equals("back")){
-			model.switchController("startUp");			
-			//model.closeTCP();
+			model.switchController("startUp");
 			view.setVisible(false);
 		}
 

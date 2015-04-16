@@ -21,7 +21,7 @@ public class ClientModel {
 	private SocketClient sock;
 	private String msg = "";
 
-	boolean isLogValid = false;
+	private boolean isValid = false;
 	LoginCont contLog;
 
 	/**
@@ -38,13 +38,9 @@ public class ClientModel {
 	 */
 	public void switchController(String signal){
 		this.signal = signal;
-		System.out.println(this.signal);
+		System.out.println("This is the signal from the switch view: " +this.signal);
 		for(Controller c: list)
-			if(c.ID.equals("LoginCntrl")){
-				//contLog = (LoginCont) c;
-				contLog.setVisible(false);
-			} else
-				c.switchView(signal);
+                    c.switchView(signal);
 	}
 
 	/**
@@ -125,13 +121,19 @@ public class ClientModel {
 	 */
 	public void updateServerMsg(String msg) {
 		this.msg = msg;		
-		if(msg.equals("success"))
-			isLogValid = true;
-		if(isLogValid)
+		if(msg.equals("loginSuccess") || msg.equals("registerSuccess")){
+			isValid = true;
 			this.switchController("lobby");
-
+                }else 
+                    updateModelMsg(msg);
 	}	
 
+        public String updateModelMsg(String msg){
+            return msg;
+        }
+        public boolean isValid(){
+            return isValid;
+        }
 	/**
 	 * 
 	 * @param sock

@@ -67,7 +67,7 @@ public class Authentication {
 				e.printStackTrace();
 			}
 			map.put(userName, userPass);
-			return "success";
+			return "registerSuccess";
 		}
 	}
 
@@ -88,11 +88,11 @@ public class Authentication {
 			String key = (String)itr.next();
 			if(key.equals(userN) && userP.equals(map.get(key))){
 				System.out.println("log from model of sever: "+ userN + ", " + userP);
-				status = "success";
+				status = "loginSuccess";
 				break;
 			}
 			else if(key.equals(userN) && !userP.equals(map.get(key))){
-				status = "incorectPassword";
+				status = "Incorect Password";
 				break;
 			}
 			else{

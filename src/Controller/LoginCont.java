@@ -37,7 +37,10 @@ public class LoginCont extends Controller{
 		this.model = model;
 	} // end setModel
 
-	
+	/**
+         * Listen to the GUI actionPerformed
+         * @param value 
+         */
 	public void listen(String value) {
 		if(value.equals("back")){
 			model.switchController("startUp");
@@ -47,42 +50,41 @@ public class LoginCont extends Controller{
 
 		else if(value.equals("login")){
 			model.authentication(usrInfo);
-			
-				
-			//if(model.isLoginValid())
-				
-			/*
-			if(model.isLoginValid()){
-				
-				view.setVisible(false);
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "Username does not exist; please re-enter");
-
-				//if(control.matchingPW(user, pass)== false)
-				//	JOptionPane.showMessageDialog(null, "Password does not match; Re-enter \n Remeber: Password is case sensitive");
-				}*/
+                        if(model.isValid() == true)
+                            view.setVisible(false);
+                        else
+                            JOptionPane.showMessageDialog(null, model.updateModelMsg(ID) );
 		}
 
 	}
-
-	
+        
+        /**
+         * Update the user information from the GUI text field
+         * @param usr username and password
+         */
 	public void updateUserInfo(String usr) {
-		this.usrInfo = usr;		
+            this.usrInfo = usr;		
 	}
 
-	
+	/**
+         * Set the view visible
+         * @param value 
+         */
 	public void switchView(String value) {
-		if(value.equals("login")){
-			view.setVisible(true);
+            if(value.equals("login")){
+		view.setVisible(true);
 		}
 	}	
 
 	public void setVisible(boolean value){
-		view.setVisible(value);
+            //DEBUG
+            System.out.println("set view to false is actived");
+            view.setVisible(value);
 	}
 
 	public void setID(String ID){
-		this.ID = ID;
+            this.ID = ID;
+            //DEBUG
+            System.out.println("This is the id of the login controller: " + ID);
 	}
 }
