@@ -11,7 +11,7 @@ package GameServer;
 import java.net.*;
 import java.io.*;
 
-public class Connection extends Thread {
+public class Connection extends Thread{
 
 	// Variables declaration
 	private Authentication model;
@@ -23,8 +23,8 @@ public class Connection extends Thread {
 	private Server ss;
 	private int port;
 	private boolean terminate = true;
-        private String IP = "";
-        
+        private String IP = "undef";        
+        private String userName = "undef";
 	// End of variables declaration
 
 	/**
@@ -38,10 +38,9 @@ public class Connection extends Thread {
 		this.ss = ss;
 		this.sock = s;
 		this.port = s.getPort();
+                this.IP = s.getInetAddress().getHostAddress();
 		in = sock.getInputStream();
 		out = sock.getOutputStream();
-
-
 	} // End Default Connection
 
 	/**
@@ -60,7 +59,7 @@ public class Connection extends Thread {
 			e.printStackTrace();			
 			//ss.remove(this);
 		}
-	}
+	} // end sendServerMsg
         
         
         public void sendUserInvite(String playerInvite){
@@ -103,10 +102,14 @@ public class Connection extends Thread {
 						String userName = split[1].toLowerCase();
 						String passWord = split[2] ;
 						String loginStatus = model.login(userName, passWord);
+                                                if(loginStatus.equals("loginSuccess"))
+                                                    this.userName = userName;
+                                                //DEBUG
 						System.out.println("login "+userName + ", " + passWord);
 						System.out.println("From connection, server side; " + loginStatus);
 						sendServerMsg(loginStatus);
 					}
+                                        //Close the connection.
 					else if(type.equals("close"))
 						close();
 
@@ -116,19 +119,23 @@ public class Connection extends Thread {
 						String passWord = split[2];
 						String rePassword = split[3];
 						String registerStatus = model.registerUser(userName, passWord, rePassword);
+                                                if(registerStatus.equals("registerSuccess"))
+                                                    this.userName = userName;
+                                                //DEBUG
 						System.out.println("register :" +userName + ", " + passWord);
 						sendServerMsg(registerStatus);  
 					}
                                         else if(type.equals("invite")){
-                                            sendUserInvite(info);
-                                            
-                                            
+                                            sendUserInvite(info);  
                                         }
-
+                                        
 					//Sends the chat message to all connection
-					else{				
+                                        else if(type.equals("chat")){				
 						String chatMsg = split[1];
-						ss.broadcast(chatMsg);
+                                                String msg = "chat_" + this.userName+": "+info;
+                                                //DEBUG
+                                                System.out.println(msg);
+						ss.broadcast(msg);
 					}
 				}
 				else if(sock == null) //add on today

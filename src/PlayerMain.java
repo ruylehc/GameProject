@@ -43,10 +43,13 @@ public class PlayerMain {
 		
 		//Cont
 		StartUpCont contSU = new StartUpCont();
+                contSU.setID("StartCtrl");
 		LoginCont contLog = new LoginCont();	//constructor for loginCont
-		contLog.setID("LoginCntrl");
+		contLog.setID("LoginCtrl");
 		RegisterCont contReg = new RegisterCont();
+                contReg.setID("RegCtrl");
 		MatchCont contMatch = new MatchCont();
+                contMatch.setID("MatchCtrl");
 		
 		//Glue code
 		viewSU.setVisible(true);

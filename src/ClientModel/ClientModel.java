@@ -8,22 +8,25 @@ package ClientModel;
  * Sources: CSCE 320 references - Trivial Java Example
  */
 
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import Controller.*;
+import java.io.IOException;
+import java.util.*;
+import javax.swing.JOptionPane;
 
 public class ClientModel {
 	private ArrayList<Controller> list = new ArrayList<Controller>();
 	private String signal = "";
-	private String usrInfo = "";
-	private SocketClient sock;
+	private String usrInfo = "";	
 	private String msg = "";
+        private SocketClient sock;
 
 	private boolean isValid = false;
-	LoginCont contLog;
-
+        private boolean chat = false;
+	private LoginCont contLog;
+        private RegisterCont contReg;
+        private MatchCont contMatch;
+        
 	/**
 	 * Add the new controller to the ArrayList
 	 * @param newController
@@ -38,19 +41,22 @@ public class ClientModel {
 	 */
 	public void switchController(String signal){
 		this.signal = signal;
-		System.out.println("This is the signal from the switch view: " +this.signal);
-		for(Controller c: list)
-
+                //DEBUG
+		System.out.println("This is the signal from the switch view: " + this.signal);
+		for(Controller c: list){
+                    if(c.ID.equals("LoginCtrl") && isValid == true){
+                        contLog = (LoginCont)c;
+                        contLog.setVisible(false);
+                    }else if(c.ID.equals("RegCtrl") && isValid == true){
+                        contReg = (RegisterCont)c;
+                        contReg.setVisible(false);
+                    }else if(c.ID.equals("MatchCtrl") && chat == true){
+                        contMatch = (MatchCont)c;
+                        contMatch.updateModelMsg(msg);
+                    }
                     c.switchView(signal);
-
-                    /*
-			if(c.ID.equals("LoginCntrl")){
-				contLog = (LoginCont) c;
-				contLog.setVisible(false);
-			} else*/
-				//c.switchView(signal);
-
-	}
+                }
+	} // end switchController
 
 	/**
 	 * Write the user information into the I/O stream to the server
@@ -59,12 +65,12 @@ public class ClientModel {
 	public void authentication(String usrInfo){
 
 		try {
-			sock.writeUserMessage(usrInfo.append("_" + sock.getInetAddress().toString())); // need to make socket methods to get port and IP
+			sock.writeUserMessage(usrInfo);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}// end authentication
 
 	/*
 	public void authenticateStatus() throws IOException{
@@ -122,35 +128,36 @@ public class ClientModel {
 	}	
 
 	 */
-
 	
 	/**
-	 * 
-	 * @param msg
+	 * Update the server message
+         * Switch to lobby view if the login and register is successful
+	 * @param msg - Server message from I/O stream
 	 */
 	public void updateServerMsg(String msg) {
-		this.msg = msg;		
-		if(msg.equals("loginSuccess") || msg.equals("registerSuccess")){
-			isValid = true;
-			this.switchController("lobby");
-                }else 
-                    updateModelMsg(msg);
-	}	
-
-        public String updateModelMsg(String msg){
-            return msg;
-        }
-        public boolean isValid(){
-            return isValid;
-        }
+		this.msg = msg;	
+                String[] split = msg.split("_");
+                //DEBUG
+                System.out.println(msg);
+                if(split[0].equals("chat")){
+                    chat = true;
+                    this.msg = split[1];
+                    //this.switchController("lobby"); 
+                    contMatch.updateModelMsg(this.msg);
+                }
+                else if(msg.equals("loginSuccess") || msg.equals("registerSuccess")){
+                    isValid = true;
+                    this.switchController("lobby");                    
+                }else if(isValid == false){                   
+                    JOptionPane.showMessageDialog(null, msg);   //Display server messages if falied login or register
+                }                    
+	} // end updateServerMsg            
+        
 	/**
-	 * 
+	 * Connect the socket client into the model.
 	 * @param sock
 	 */
 	public void setSock(SocketClient sock){
 		this.sock = sock;
-	}
-
-
-
+	} // end setSock
 }

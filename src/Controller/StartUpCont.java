@@ -5,15 +5,19 @@ import ClientModel.ClientModel;
 import GUIView.StartUp;
 
 /**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
- * Project Part: Controller Interface - Start Up Controller
+ * Project Part: Controller inheritance - Start Up Controller
  * Program Title: Tic-tac-toe Game
  * Course: CSCE 320 - Software Engineering
  * Date: Match 16, 2015
  * Language and Compiler: Java written in eclipse and Netbeans
  */
+
 public class StartUpCont extends Controller{
+    
+        //Declare variable
 	private ClientModel model;
 	private StartUp view;
+        //End declare variable
 
 	/**
 	 * This will set the GUI-View into the controller
@@ -31,6 +35,10 @@ public class StartUpCont extends Controller{
 		this.model = model;
 	} // end setModel
 
+        /**
+         * Listen to the GUI actionPerformed
+         * @param value 
+         */
 	@Override 
 	public void listen(String value){
 		if(value.equals("newUsr") || value.equals("existUsr") || value.equals("anonymous")){
@@ -50,20 +58,43 @@ public class StartUpCont extends Controller{
 			model.switchController("game");
 
 		view.setVisible(false);
-	}
+	} // end listen
 
-
-
+        /**
+         * Set the view visible
+         * @param value 
+         */
 	@Override
 	public void switchView(String value) {
-		if(value.equals("startUp"))
-			view.setVisible(true);
-	}
+            if(value.equals("startUp"))
+                view.setVisible(true);
+	} // end switchView
 
+        /**
+         * None use
+         * @param usrInfo 
+         */
 	@Override
 	public void updateUserInfo(String usrInfo) {
-		// TODO Auto-generated method stub		
+            //N/A		
 	}
+        
+        /**
+         * None use
+         * @param value 
+         */
+        //@Override
+        public void setVisible(boolean value) {
+            //N/A
+        }
+
+        /**
+         * Set the controller identity.
+         * @param ID the identity of the controller.
+         */
+        public void setID(String id) {
+            this.ID = id;
+        } // end setID
 
 
 }

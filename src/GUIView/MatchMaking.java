@@ -167,7 +167,6 @@ public class MatchMaking extends javax.swing.JFrame {
     }                                     
 
     private void logOutActionPerformed(java.awt.event.ActionEvent evt) {                                       
-        // TODO add your handling code here:
         controller.listen("logOut");
     }                                            
 
@@ -224,7 +223,7 @@ public class MatchMaking extends javax.swing.JFrame {
 
     // Variables declaration - do not modify          
     private javax.swing.JLabel background;
-    private javax.swing.JTextArea chatBoxTA;
+    public javax.swing.JTextArea chatBoxTA;
     private javax.swing.JLabel image;
     private javax.swing.JButton inviteButton;
     private javax.swing.JMenuBar jMenuBar1;

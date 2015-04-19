@@ -16,33 +16,26 @@ import java.util.logging.Logger;
 public class Authentication {
 
 	HashMap <String, String> map = new HashMap<String, String>(); // key is the username, value is the password (need to implement hashing + salt)
-        HashMap <String,String> onlineUser = new HashMap<String,String>(); // key is theuser name, value is the IP address in string format
+        HashMap <String,String> onlineUser = new HashMap<String,String>(); // key is the user name, value is the IP address in string format
         
 
 	/**
-	 * Construction
-	 * Loading the user information from the text file
+	 * Construction 
 	 */
 	
 	public Authentication(){
-		map.put("hello", "123456");
-		//readTextFile();
-		
+            //DEBUG, default account.
+            map.put("hello", "123456");		
 	}
 	
-	public void loadData(){
-		//Load the user information
-		//DEBUG
-		System.out.println("loaded user info");
-		//
-		//DEBUG
-		//Set<String> mySet = map.keySet();
-		//Iterator itr = mySet.iterator();
-		//while (itr.hasNext()){
-		//	String key = (String)itr.next();
-		//	System.out.println(key + "_" + map.get(key));
-		//}
-		
+        /**
+         * Loading the user information from the text file.
+         */
+	public void loadData(){            
+            //DEBUG
+            System.out.println("loaded user info");
+            //Load the user information
+            readTextFile();		
 	}
 
 	/**
@@ -56,12 +49,14 @@ public class Authentication {
 	 */
 	public String registerUser(String userName, String userPass, String rePass){
 		System.out.println("reg from model of sever: "+userName + ", " + userPass);
-		if (map.containsKey(userName))
-			return "takenUserName";
-		else if (userName.matches("^\\s*$"))
-			return "spacePassword";
+                if(userName.equals("") || userPass.equals("") || rePass.equals(""))
+                    return "Please enter valid user name and password!";
+                else if (map.containsKey(userName))
+			return "User name is taken!\nPlease enter another one";
+		else if (userName.contains(" "))
+			return "User name contains space!\nPlease enter valid user name.";
 		else if(!userPass.equals(rePass))
-			return "notMatchingPass";
+			return "Password is not matched!";
 		else{ 
 			try {
 				writeTextFile(userName, userPass);
@@ -71,7 +66,7 @@ public class Authentication {
 			map.put(userName, userPass);
                         String ipaddr = "";
                         onlineUser.put(userName,"");
-			return "success";
+			return "registerSuccess";
 		}
 	}
 
@@ -85,31 +80,19 @@ public class Authentication {
 	 * 		   otherwise, returns "failed".
 	 */
 	public String login(String userN, String userP){
-		Set<String> mySet = map.keySet();
-		Iterator itr = mySet.iterator();
-		String status = "";
-		while(itr.hasNext()){
-			String key = (String)itr.next();
-			if(key.equals(userN) && userP.equals(map.get(key))){
-				System.out.println("log from model of sever: "+ userN + ", " + userP);
-				status = "success";
-                                String ipaddr = "";
-                                onlineUser.put(userN,ipaddr);
-				break;
-			}
-			else if(key.equals(userN) && !userP.equals(map.get(key))){
-				status = "Incorect Password";
-				break;
-			}
-			else{
-				status = "failed";
-				break;
-			}
-		}
-                
-		return status;
-	}
-	
+            String status = "";
+            if(map.containsKey(userN) && userP.equals(map.get(userN))){
+                System.out.println("log from model of sever: "+ userN + ", " + userP);
+		status = "loginSuccess";
+                String ipaddr = "";
+                onlineUser.put(userN,ipaddr);
+            } else if(map.containsKey(userN) && !userP.equals(map.get(userN)))
+		status = "Incorect UserName or Password!";
+            else
+		status = "Account is not exist!";    
+            
+	return status;
+	}	
 	
 	/**
 	/*This method writes the new user info to a Text file to store the user info
@@ -152,8 +135,7 @@ public class Authentication {
 	 * Reads from a text file that holds the user info when the server is shut down
 	 * It reads the file line by line with each line being a diferent user info
 	 * it then stores it in a hashmap of existing users
-	 */
-	
+	 */	
 	public void readTextFile(){
 		//BufferedReader reader = new BufferedReader("SuperSecretLoginInfo.txt");
 		// Create the scanner (open the file for reading)
