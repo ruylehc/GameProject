@@ -111,8 +111,10 @@ public class Server implements Runnable{
         
         
        boolean checkOnlineUser(String SendTo) {
-            HashMap<String, String> online = getOnlineUser();
-            return online.containsKey(SendTo);
+          //  HashMap<String, String> online = getOnlineUser();
+           for(Connection c: list)
+               if(c.getUserName().equals(SendTo))
+           return online.containsKey(SendTo);
        
     }
        
