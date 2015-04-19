@@ -126,7 +126,15 @@ public class Connection extends Thread{
 						sendServerMsg(registerStatus);  
 					}
                                         else if(type.equals("invite")){
-                                            sendUserInvite(info);  
+                                            //sendUserInvite(info);  
+                                            String userName = split[1];
+                                            String ip = "";
+                                            
+                                            if(ss.checkOnlineUser(userName)) // checks if the player is online
+                                            ip = ss.getOnlineUser().get(userName);
+                                              for(Connection c: ss.list)  // check to ensure it is not giving us a delay (global variable)
+                                                 if(c.getIP().equals(ip))
+                                                     sendServerMsg(userName); 
                                         }
                                         
 					//Sends the chat message to all connection
@@ -199,6 +207,7 @@ public class Connection extends Thread{
         public String getIP(){
             return IP;
         }
+         ///
         
         /**
          * sets local variable IP to the string passed into the method
