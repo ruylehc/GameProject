@@ -91,7 +91,10 @@ public class SocketClient implements Runnable{
             try {
                 buffer = new byte[in.available()];
                 int len = in.read(buffer);
-                //random comment again
+                if (len > 0) {
+                    String invite = new String(buffer, 0, len);
+                    model.readInvite(invite);
+                }
                 
             } catch(IOException e) {
                 e.printStackTrace();

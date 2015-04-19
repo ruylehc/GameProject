@@ -76,6 +76,7 @@ public class Connection extends Thread{
                       for(Connection c: ss.list)  // check to ensure it is not giving us a delay (global variable)
                          if(c.getIP().equals(ip))
                              sendServerMsg(playerInvite);
+                             
         }
         
 	/**
@@ -126,7 +127,15 @@ public class Connection extends Thread{
 						sendServerMsg(registerStatus);  
 					}
                                         else if(type.equals("invite")){
-                                            sendUserInvite(info);  
+                                            String userName = split[1];
+                                            String ip = "";
+                                            if(ss.checkOnlineUser(userName)) // checks if the player is online
+                                                 ip = ss.getOnlineUser().get(userName);
+                                                   for(Connection c: ss.list)  // check to ensure it is not giving us a delay (global variable)
+                                                   if(c.getIP().equals(ip))
+                                                       sendServerMsg(userName);
+
+//sendUserInvite(info);  
                                         }
                                         
 					//Sends the chat message to all connection
