@@ -50,7 +50,7 @@ public class Connection extends Thread{
 	public void sendServerMsg(String msg){	
                 //DEBUG
 		System.out.println("This is the Connection-ServerModel from server: " + msg);
-                System.out.println("Check the user name is valid if success connected: " + userName + " " + IP);
+                System.out.println("Check the user name is valid if success connected: " + getUserName() + " " + IP);
                 
 		byte[] bufferOut = msg.getBytes();
 		//Send the message to the Client
@@ -137,7 +137,7 @@ public class Connection extends Thread{
 					//Sends the chat message to all connection
                                         else if(type.equals("chat")){				
 						String chatMsg = split[1];
-                                                String msg = "chat_" + this.userName + ": " + chatMsg;
+                                                String msg = "chat_" + this.getUserName() + ": " + chatMsg;
                                                 //DEBUG
                                                 System.out.println("This is the chat msg in run - connection: " + msg);
 						ss.broadcast(msg);
@@ -209,7 +209,7 @@ public class Connection extends Thread{
         public void setIP(String IP) {
             this.IP = IP;
         } //end setIP 
-        
+       
 	/**
 	 * Return the socket object from the client socket
 	 * @return the port
@@ -217,6 +217,13 @@ public class Connection extends Thread{
 	public Socket getSocket() {
 		return sock;
 	} //edn getSocket()	
+
+    /**
+     * @return the userName
+     */
+    public String getUserName() {
+        return userName;
+    }
 
     
 }// End Class Connection

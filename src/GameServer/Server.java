@@ -114,7 +114,7 @@ public class Server implements Runnable{
           //  HashMap<String, String> online = getOnlineUser();
            for(Connection c: list)
                if(c.getUserName().equals(SendTo))
-           return online.containsKey(SendTo);
+                return online.containsKey(SendTo);
        
     }
        
