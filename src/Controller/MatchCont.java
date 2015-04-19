@@ -48,6 +48,7 @@ public class MatchCont extends Controller{
 		else if(value.equals("chat")){
 			model.sendUserInfo(usrInfo);
 		}
+                // added by tyler to handle user invites
                 else if(value.equals("SInvite"))
                         model.sendUserInfo(usrInfo);
                 else if(value.equals("MInvite"))
