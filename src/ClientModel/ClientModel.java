@@ -62,7 +62,7 @@ public class ClientModel {
 	 * Write the user information into the I/O stream to the server
 	 * @param usrInfo: user information from the GUI textfield.
 	 */
-	public void authentication(String usrInfo){
+	public void sendUserInfo(String usrInfo){
 
 		try {
 			sock.writeUserMessage(usrInfo);
@@ -70,7 +70,7 @@ public class ClientModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}// end authentication
+	}// end sendUserInfo
 
 	/*
 	public void authenticateStatus() throws IOException{
@@ -80,7 +80,7 @@ public class ClientModel {
 		String LY = "lY"; //lY = login success
 		String LUN = "1UN"; //lUN = login username problem
 		String LUP = "1UP"; //1UP = login password incorrect
-		String status; // authentication status
+		String status; // sendUserInfo status
 		//updateController = null;
 		boolean conn = true;
 		//while(conn) {
@@ -160,4 +160,20 @@ public class ClientModel {
 	public void setSock(SocketClient sock){
 		this.sock = sock;
 	} // end setSock
+        
+        
+        
+        public void sendSingleInvite(String info){
+            
+            try {
+			sock.writeUserMessage(info);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        }
+        
+        public void sendMultpleInvite(String info) {
+            
+        }
 }

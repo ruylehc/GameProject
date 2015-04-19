@@ -33,9 +33,9 @@ public class MatchMaking extends javax.swing.JFrame {
     private void initComponents() {
     	ArrayList<String> list = new ArrayList<String>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        onlineList = new javax.swing.JList(list.toArray());
+        availableList = new javax.swing.JList(list.toArray());
         inviteButton = new javax.swing.JButton();
-        randomButton = new javax.swing.JButton();
+        InviteAllButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         chatBoxTA = new javax.swing.JTextArea();
         msgTF = new javax.swing.JTextField();
@@ -49,11 +49,11 @@ public class MatchMaking extends javax.swing.JFrame {
         setTitle("Lobby");
         setResizable(false);
 
-        onlineList.setBackground(new java.awt.Color(51, 51, 51));
-        onlineList.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Online Users", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), new java.awt.Color(255, 0, 51))); // NOI18N
-        onlineList.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
-        onlineList.setForeground(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setViewportView(onlineList);
+        availableList.setBackground(new java.awt.Color(51, 51, 51));
+        availableList.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Available Users", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), new java.awt.Color(255, 0, 51))); // NOI18N
+        availableList.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        availableList.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setViewportView(availableList);
 
         inviteButton.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         inviteButton.setText("Invite ");
@@ -64,12 +64,12 @@ public class MatchMaking extends javax.swing.JFrame {
             }
         });
 
-        randomButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        randomButton.setText("Match Making");
-        randomButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        randomButton.addActionListener(new java.awt.event.ActionListener() {
+        InviteAllButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        InviteAllButton.setText("Invite All");
+        InviteAllButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        InviteAllButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                randomButtonActionPerformed(evt);
+                InviteAllButtonActionPerformed(evt);
             }
         });
 
@@ -119,7 +119,7 @@ public class MatchMaking extends javax.swing.JFrame {
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(inviteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(randomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(InviteAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
@@ -135,7 +135,7 @@ public class MatchMaking extends javax.swing.JFrame {
                 .addGap(72, 72, 72)
                 .addComponent(inviteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
-                .addComponent(randomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(InviteAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(image))
             .addGroup(layout.createSequentialGroup()
@@ -171,11 +171,19 @@ public class MatchMaking extends javax.swing.JFrame {
     }                                            
 
     private void inviteButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
+        String invite = "";
+       invite = "SInvite_" + availableList.getSelectedValue().toString();
+       controller.updateUserInfo(invite);
+       controller.listen("SInvite");
+       
+       
     }                                            
 
-    private void randomButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
+    private void InviteAllButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
+         String invite = "";
+       invite = "MInvite_" + availableList.getSelectedValue().toString();
+       controller.updateUserInfo(invite);
+       controller.listen("MInvite");
     }                                     
 
     /**
@@ -231,8 +239,8 @@ public class MatchMaking extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JMenu backMenu;
     private javax.swing.JTextField msgTF;
-    private javax.swing.JList onlineList;
-    private javax.swing.JButton randomButton;
+    private javax.swing.JList availableList;
+    private javax.swing.JButton InviteAllButton;
     private javax.swing.JMenuItem logOut;
     private MatchCont controller;
     // End of variables declaration//GEN-END:variables

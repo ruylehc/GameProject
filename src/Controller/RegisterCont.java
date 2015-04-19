@@ -46,7 +46,7 @@ public class RegisterCont extends Controller{
 		}
                 
 		if(value.equals("register"))
-			model.authentication(usrInfo);		
+			model.sendUserInfo(usrInfo);		
 	} // end listen	
 
         /**
