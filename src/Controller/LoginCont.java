@@ -48,7 +48,7 @@ public class LoginCont extends Controller{
 		}
 
 		else if(value.equals("login"))
-			model.authentication(usrInfo);                          
+			model.sendUserInfo(usrInfo);                          
 	} // end listen
         
         /**
