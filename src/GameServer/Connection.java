@@ -38,7 +38,7 @@ public class Connection extends Thread{
 		this.ss = ss;
 		this.sock = s;
 		this.port = s.getPort();
-                this.IP = s.getInetAddress().getHostAddress();
+                this.IP = s.getInetAddress().toString();
 		in = sock.getInputStream();
 		out = sock.getOutputStream();
 	} // End Default Connection
