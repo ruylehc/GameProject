@@ -38,7 +38,6 @@ public class Connection extends Thread{
 		this.ss = ss;
 		this.sock = s;
 		this.port = s.getPort();
-                this.IP = s.getInetAddress().toString();
 		in = sock.getInputStream();
 		out = sock.getOutputStream();
 	} // End Default Connection
@@ -49,7 +48,10 @@ public class Connection extends Thread{
 	 * @throws IOException
 	 */
 	public void sendServerMsg(String msg){	
+                //DEBUG
 		System.out.println("This is the Connection-ServerModel from server: " + msg);
+                System.out.println("Check the user name is valid if success connected: " + getUserName() + " " + IP);
+                
 		byte[] bufferOut = msg.getBytes();
 		//Send the message to the Client
 		try {					
@@ -61,7 +63,10 @@ public class Connection extends Thread{
 		}
 	} // end sendServerMsg
         
-        
+        /**
+         * 
+         * @param playerInvite 
+         */
         public void sendUserInvite(String playerInvite){
             String[] split = playerInvite.split("_");	//Delimiter the string 
             String type = split[0];
@@ -106,7 +111,7 @@ public class Connection extends Thread{
                                                     this.userName = userName;
                                                 //DEBUG
 						System.out.println("login "+userName + ", " + passWord);
-						System.out.println("From connection, server side; " + loginStatus);
+						System.out.println("From connection, server side: " + loginStatus);
 						sendServerMsg(loginStatus);
 					}
                                         //Close the connection.
@@ -140,9 +145,9 @@ public class Connection extends Thread{
 					//Sends the chat message to all connection
                                         else if(type.equals("chat")){				
 						String chatMsg = split[1];
-                                                String msg = "chat_" + this.userName+": "+info;
+                                                String msg = "chat_" + this.getUserName() + ": " + chatMsg;
                                                 //DEBUG
-                                                System.out.println(msg);
+                                                System.out.println("This is the chat msg in run - connection: " + msg);
 						ss.broadcast(msg);
 					}
 				}
@@ -155,6 +160,9 @@ public class Connection extends Thread{
 		}		
 	}// End readClientMsg
 
+        /**
+         * Close the I/O stream
+         */
 	public void close(){
 		try{			
 			out.close();
@@ -163,10 +171,9 @@ public class Connection extends Thread{
 			terminate = false;
 		}catch(IOException e){
 			e.printStackTrace();
-		}
-		
-			
-	}
+		}			
+	}// end close()
+        
 	/**
 	 * Run the Thread Two
 	 */
@@ -178,7 +185,7 @@ public class Connection extends Thread{
 		}
 		ss.remove(this);
 		//ss.remove(this);
-	}// End run	
+	}// End run()	
 
 	/**
 	 * Set the model into the Connection
@@ -186,7 +193,7 @@ public class Connection extends Thread{
 	 */
 	public void setModel(Authentication model){
 		this.model = model;
-	}
+	} //end setModel()
 
 	/**
 	 * Return the port from the client socket
@@ -194,36 +201,38 @@ public class Connection extends Thread{
 	 */
 	public int getPort() {
 		return port;
-	}	
-        
-        public void setPort(){
-            
-        }
+	} //end getPort()	
         
         /**
-         * 
+         * Return local variable IP to the string passed into the method
          * @return the IP address in String format for a specific connection
          */
         public String getIP(){
             return IP;
-        }
-         ///
-        
+        } //end getIP()
+
         /**
-         * sets local variable IP to the string passed into the method
-         * @param IP passes a string representation of the IP address of a new connection
+         * @param IP the IP to set
          */
-        public void setIP(String IP){
-            
+        public void setIP(String IP) {
             this.IP = IP;
-        }
-        
+        } //end setIP 
+       
 	/**
 	 * Return the socket object from the client socket
 	 * @return the port
 	 */
 	public Socket getSocket() {
 		return sock;
-	}	
+	} //edn getSocket()	
+
+        /**
+         * @return the userName
+         */
+        public String getUserName() {
+             return userName;
+        }
+
+    
 }// End Class Connection
 
