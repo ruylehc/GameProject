@@ -6,7 +6,7 @@ package GameServer;
  * Date: February 23, 2015
  * Language and Compiler: Java written in eclipse and Netbeans
  * Sources: CSCE 320 references - Trivial Java Example
- */
+ *////
 
 import java.net.*;
 import java.io.*;
