@@ -86,6 +86,17 @@ public class SocketClient implements Runnable{
 		}
 	}// end writeUserMessage
 
+        
+        public void passInvite(String invite) {
+            try {
+                buffer = new byte[in.available()];
+                int len = in.read(buffer);
+                
+            } catch(IOException e) {
+                e.printStackTrace();
+                close();
+            }
+        }
 	/**
 	 * Read the server message from I/O stream
 	 * Update the server massage into the ClientModel
