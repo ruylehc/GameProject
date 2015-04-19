@@ -218,12 +218,12 @@ public class Connection extends Thread{
 		return sock;
 	} //edn getSocket()	
 
-    /**
-     * @return the userName
-     */
-    public String getUserName() {
-        return userName;
-    }
+        /**
+         * @return the userName
+         */
+        public String getUserName() {
+             return userName;
+        }
 
     
 }// End Class Connection
