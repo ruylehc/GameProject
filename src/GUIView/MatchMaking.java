@@ -1,9 +1,10 @@
 package GUIView;
+import Controller.MatchCont;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 
-import Controller.MatchCont;
+import javax.swing.JList;
 
 /**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
  * Project Part: GUI Display - Matchmaking View
@@ -184,7 +185,22 @@ public class MatchMaking extends javax.swing.JFrame {
        invite = "MInvite_" + availableList.getSelectedValue().toString();
        controller.updateUserInfo(invite);
        controller.listen("MInvite");
-    }                                     
+    }     
+    
+    
+    /**
+     * method take a list of just the users and fills the available users list
+     * with the user names; it creates one every time because it is simple to 
+     * implement and the list will need to be re-populated every time a user plays a game or logs out
+     * @param users list of just the users in format "User1_user2_..."
+     */
+    public void setList(String users){
+            
+            String[] split = users.split("_");
+            availableList = new JList(split);
+            
+            
+        }
 
     /**
      * Set the controller to the matchmaking view
@@ -239,7 +255,7 @@ public class MatchMaking extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JMenu backMenu;
     private javax.swing.JTextField msgTF;
-    private javax.swing.JList availableList;
+    private javax.swing.JList availableList;  
     private javax.swing.JButton InviteAllButton;
     private javax.swing.JMenuItem logOut;
     private MatchCont controller;

@@ -76,6 +76,18 @@ public class MatchCont extends Controller{
 	public void updateUserInfo(String usrInfo) {
 		this.usrInfo = usrInfo;
 	} // end updateUserInfo
+        
+        /**
+         * this method takes the status string of the available players and deletes the identifier
+         * then passes it to matchmaking view to enter the user names on the list
+         * @param users the status string of format "List_user1_user2"
+         */
+        public void setAvailableList(String users){
+            String justUsers = users.substring(5); // this is to eliminate "List_"
+           view.setList(justUsers); // passes it to view since its fields are private
+            
+            
+        }
 
         /**
          * Set the view visible
