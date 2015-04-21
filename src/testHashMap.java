@@ -25,10 +25,6 @@ public class testHashMap {
 			String key = (String)itr.next();
 			System.out.println(key + "_" + map.get(key));
 		}
-                
-                String s = "ha ha";
-                if(s.contains(" "))
-                System.out.println("There is space");
 		
 		
 	}

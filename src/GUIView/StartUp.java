@@ -41,6 +41,11 @@ public class StartUp extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         setTitle("StartUp");
         setResizable(false);
 
@@ -173,26 +178,54 @@ public class StartUp extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>                                    
 
+    /**
+     * ActionPerformed according to the newUserButton.
+     * @param evt
+     */
     private void newUserButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
         controller.listen("newUsr");
     }                                             
 
+    /**
+     * ActionPerformed according to the anoButton.
+     * @param evt
+     */
     private void anoButtonActionPerformed(java.awt.event.ActionEvent evt) {                                          
     	controller.listen("anonymous");
     }                                         
 
+    /**
+     * ActionPerformed according to the playButton.
+     * @param evt
+     */
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
     	controller.listen("play");
     }                                          
 
+    /**
+     * ActionPerformed according to the oldUserButton.
+     * @param evt
+     */
     private void oldUserButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
     	controller.listen("existUsr");
     }                                             
 
+    /**
+     * ActionPerformed according to the AIChoices.
+     * @param evt
+     */
     private void AIChoicesActionPerformed(java.awt.event.ActionEvent evt) {                                          
     	
     }                                         
 
+    /**
+	 * ActionPerformed according to the Window Closing.
+	 * @param evt
+	 */
+	private void formWindowClosing(java.awt.event.WindowEvent evt) {                                   
+        controller.listen("close");
+    } 
+	
     /**
      * Set the controller to the login view
      * @param controller

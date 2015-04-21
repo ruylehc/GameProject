@@ -15,89 +15,110 @@ import java.util.logging.Logger;
 
 public class Authentication {
 
-	HashMap <String, String> map = new HashMap<String, String>(); // key is the username, value is the password (need to implement hashing + salt)
-        HashMap <String,String> onlineUser = new HashMap<String,String>(); // key is the user name, value is the IP address in string format
-        
+	//Key is the username, value is the password (need to implement hashing + salt)
+	HashMap <String, String> map = new HashMap<String, String>(); 
 
-	/**
-	 * Construction 
+	//Key is the user name, value is the IP address in string format
+	/*
+	 * Comment: This one is might be not use able because of connection could 
+	 * provide ip, username 
 	 */
-	
-	public Authentication(){
-            //DEBUG, default account.
-            map.put("hello", "123456");		
-	}
-	
-        /**
-         * Loading the user information from the text file.
-         */
-	public void loadData(){            
-            //DEBUG
-            System.out.println("loaded user info");
-            //Load the user information
-            readTextFile();		
-	}
+	HashMap <String,String> onlineUser = new HashMap<String,String>(); 
 
 	/**
-	 * Verify the new user name and password
+	 * Loading the user information from the text file when server started.
+	 */
+	public void loadData(){            
+		//DEBUG
+		System.out.println("loaded user info");
+		//Load the user information
+		readTextFile();		
+	}// end loadData.
+
+	/**
+	 * Verify the new user name and password.
 	 * Returns the String massage if the user information is correct or any error.
-	 * @param userName
-	 * @param userPass
-	 * @return returns "takenUserName" if the new user information is already in the file
+	 * @param userName.
+	 * @param userPass.
+	 * @return returns "takenUserName" if the new user information is already in the file.
 	 * 		   returns "spacePassword" if the new user information contains any white spaces. 
 	 * 		   otherwise, returns "success" and put the new user information into file.
 	 */
 	public String registerUser(String userName, String userPass, String rePass){
+
+		//DEBUG
 		System.out.println("reg from model of sever: "+userName + ", " + userPass);
-                if(userName.equals("") || userPass.equals("") || rePass.equals(""))
-                    return "Please enter valid user name and password!";
-                else if (map.containsKey(userName))
+
+		//Valid the user name and return the error messages.
+		if(userName.equals("") || userPass.equals("") || rePass.equals(""))
+			return "Please enter valid user name and password!";
+
+		else if (map.containsKey(userName))
 			return "User name is taken!\nPlease enter another one";
+
 		else if (userName.contains(" "))
 			return "User name contains space!\nPlease enter valid user name.";
+
 		else if(!userPass.equals(rePass))
 			return "Password is not matched!";
+
+		//Record the valid username and password
 		else{ 
 			try {
 				writeTextFile(userName, userPass);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-			map.put(userName, userPass);
-                        String ipaddr = "";
-                        onlineUser.put(userName,"");
+			map.put(userName, userPass);	//Put new valid user into map.
+			
+			/*
+			 * Comment: this is might not user anymore while connection class do the thing.
+			String ipaddr = "";
+			onlineUser.put(userName,"");
+			*/
 			return "registerSuccess";
 		}
-	}
+	}// end registerUser.
 
 	/**
-	 * Verify the login user information
+	 * Verify the login user information.
 	 * Returns the String massage if the user information is correct or any error.
-	 * @param userN - user name
-	 * @param userP - user password
-	 * @return returns "incorectPassword" if the new user information is not match in the file
+	 * @param userN - user name.
+	 * @param userP - user password.
+	 * @return returns "incorectPassword" if the new user information is not match in the file.
 	 * 		   returns "success" if the new user information valid. 
 	 * 		   otherwise, returns "failed".
 	 */
 	public String login(String userN, String userP){
-            String status = "";
-            if(map.containsKey(userN) && userP.equals(map.get(userN))){
-                System.out.println("log from model of sever: "+ userN + ", " + userP);
-		status = "loginSuccess";
-                String ipaddr = "";
-                onlineUser.put(userN,ipaddr);
-            } else if(map.containsKey(userN) && !userP.equals(map.get(userN)))
-		status = "Incorect UserName or Password!";
-            else
-		status = "Account is not exist!";    
-            
-	return status;
-	}	
-	
+		String status = "";
+
+		//Valid the user name and return the error messages.
+		if(userN.equals("") || userP.equals(""))
+			return "Please enter valid user name and password!";
+		
+		if(map.containsKey(userN) && userP.equals(map.get(userN))){
+			System.out.println("log from model of sever: "+ userN + ", " + userP);
+			status = "loginSuccess";
+			
+			/*
+			 * Comment: this is might not user anymore while connection class do the thing.
+			String ipaddr = "";
+			onlineUser.put(userN,ipaddr);
+			*/
+			
+		} else if(map.containsKey(userN) && !userP.equals(map.get(userN)))
+			status = "Incorect UserName or Password!";
+		
+		else
+			status = "Account does not exist!";    
+
+		return status;
+	}// end login	
+
 	/**
-	/*This method writes the new user info to a Text file to store the user info
+	 * This method writes the new user info to a Text file to store the user info.
 	 * Uses bufferWriter and file writer to accomplish this.
-	 * This method is called after the register user info has been validated and writes 
+	 * This method is called after the register user info has been validated and writes
 	 * before storing it in the hashmap
 	 */
 	public void writeTextFile (String userTextfile, String passwordTextfile) throws FileNotFoundException{
@@ -114,13 +135,13 @@ public class Authentication {
     this code will be implemented when we convert our hashmap to a hashmap<String, Arraylist <String> >
 		 */
 		try {
-			
-		 writer = new PrintWriter( new BufferedWriter(new FileWriter("SuperSecretLoginInfo.txt", true)));
-		System.out.println("From write file: " + userpass);
+
+			writer = new PrintWriter( new BufferedWriter(new FileWriter("SuperSecretLoginInfo.txt", true)));
+			System.out.println("From write file: " + userpass);
 			writer.println(userpass);
 			writer.flush();
-			
-			
+
+
 		} catch (IOException ex) {
 			//Logger.getLogger(TextFileWriter.class.getName()).log(Level.SEVERE, null, ex);
 			ex.printStackTrace();
@@ -129,12 +150,12 @@ public class Authentication {
 			if(writer != null)
 				writer.close();
 		}
-	}
-	
+	}// end writeTextFile.
+
 	/**
-	 * Reads from a text file that holds the user info when the server is shut down
-	 * It reads the file line by line with each line being a diferent user info
-	 * it then stores it in a hashmap of existing users
+	 * Reads from a text file that holds the user info when the server is shut down.
+	 * It reads the file line by line with each line being a diferent user info.
+	 * it then stores it in a hashmap of existing users.
 	 */	
 	public void readTextFile(){
 		//BufferedReader reader = new BufferedReader("SuperSecretLoginInfo.txt");
@@ -172,5 +193,6 @@ public class Authentication {
 			 */
 			map.put(user, pass);
 		}
-	}
-}
+	}//end readTextFile.
+	
+}// end Authentication.

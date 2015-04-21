@@ -38,7 +38,13 @@ public class Login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         setTitle("Login");
+        setResizable(false);
 
         userLB.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         userLB.setText("Username");
@@ -132,7 +138,15 @@ public class Login extends javax.swing.JFrame {
         controller.listen("login");
         passTF.setText("");
 		userTF.setText("");
-    }                                         
+    }
+	
+	/**
+	 * ActionPerformed according to the Window Closing.
+	 * @param evt
+	 */
+	private void formWindowClosing(java.awt.event.WindowEvent evt) {                                   
+        controller.listen("close");
+    } 
 
     /**
      * Set the controller to the login view

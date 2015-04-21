@@ -1,4 +1,5 @@
 package ClientModel;
+
 /**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
  * Project Part: Admin Model
  * Program Title: Tic-tac-toe Game 
@@ -8,172 +9,200 @@ package ClientModel;
  * Sources: CSCE 320 references - Trivial Java Example
  */
 
-
 import Controller.*;
 import java.io.IOException;
 import java.util.*;
 import javax.swing.JOptionPane;
 
 public class ClientModel {
+
+	//Declare variable 
 	private ArrayList<Controller> list = new ArrayList<Controller>();
 	private String signal = "";
-	private String usrInfo = "";	
+	private String usrInfo = "";
 	private String msg = "";
-        private SocketClient sock;
+	private SocketClient sock;
 
 	private boolean isValid = false;
-        private boolean chat = false;
+	private boolean chat = false;
 	private LoginCont contLog;
-        private RegisterCont contReg;
-        private MatchCont contMatch;
-        
+	private RegisterCont contReg;
+	private MatchCont contMatch;
+	//End declare variable
+
 	/**
 	 * Add the new controller to the ArrayList
 	 * @param newController
 	 */
-	public void addController(Controller newController){
+	public void addController(Controller newController) {
 		list.add(newController);
 	}
 
 	/**
 	 * Read the controller signal to switch to another controller and view
-	 * @param signal
+	 * @param signal - String signal 
 	 */
-	public void switchController(String signal){
+	public void switchController(String signal) {
 		this.signal = signal;
-                //DEBUG
+		//DEBUG
 		System.out.println("This is the signal from the switch view: " + this.signal);
-		for(Controller c: list){
-                    if(c.ID.equals("LoginCtrl") && isValid == true){
-                        contLog = (LoginCont)c;
-                        contLog.setVisible(false);
-                    }else if(c.ID.equals("RegCtrl") && isValid == true){
-                        contReg = (RegisterCont)c;
-                        contReg.setVisible(false);
-                    }else if(c.ID.equals("MatchCtrl") && chat == true){
-                        contMatch = (MatchCont)c;
-                        contMatch.updateModelMsg(msg);
-                    }
-                    c.switchView(signal);
-                }
+
+		for (Controller c : list) {
+			if (c.ID.equals("LoginCtrl") && isValid == true) {
+				contLog = (LoginCont) c;
+				contLog.setVisible(false);
+			} else if (c.ID.equals("RegCtrl") && isValid == true) {
+				contReg = (RegisterCont) c;
+				contReg.setVisible(false);
+			}
+			c.switchView(signal);
+		}
 	} // end switchController
+
+	/**
+	 * Update the chat server message into the MatchMaking controller.
+	 * @param update - chat message from the server.
+	 */
+	public void update(String update) {
+		//DEBUG
+		System.out.println("update is active");
+
+		for (Controller c : list) {
+			if (c.ID.equals("MatchCtrl") && chat == true) {
+				contMatch = (MatchCont) c;
+				contMatch.updateModelMsg(update);
+			}
+		}
+	} //end update
 
 	/**
 	 * Write the user information into the I/O stream to the server
 	 * @param usrInfo: user information from the GUI textfield.
 	 */
-	public void sendUserInfo(String usrInfo){
+	public void sendUserInfo(String usrInfo) {
 
-		try {
+		try {			
 			sock.writeUserMessage(usrInfo);
+			if(usrInfo.equals("close")){	//Close the socket if user logout or disconnected 
+				sock.close();
+				System.exit(0);
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}// end sendUserInfo
 
 	/*
-	public void authenticateStatus() throws IOException{
-		String rY = "rY"; //register success
-		String rUN = "rUN"; //register username problem
+     public void authenticateStatus() throws IOException{
+     String rY = "rY"; //register success
+     String rUN = "rUN"; //register username problem
 
-		String LY = "lY"; //lY = login success
-		String LUN = "1UN"; //lUN = login username problem
-		String LUP = "1UP"; //1UP = login password incorrect
-		String status; // sendUserInfo status
-		//updateController = null;
-		boolean conn = true;
-		//while(conn) {
-			//int len = in.read(buffer) ;
-			//if (len >0) { //Display the server message if the user actually typing.
-				//status = new String(buffer, 0, len) ;
-				//updateController = status;
+     String LY = "lY"; //lY = login success
+     String LUN = "1UN"; //lUN = login username problem
+     String LUP = "1UP"; //1UP = login password incorrect
+     String status; // sendUserInfo status
+     //updateController = null;
+     boolean conn = true;
+     //while(conn) {
+     //int len = in.read(buffer) ;
+     //if (len >0) { //Display the server message if the user actually typing.
+     //status = new String(buffer, 0, len) ;
+     //updateController = status;
 
-				if (status.equals("success")){
-					//display register success
-		//			updateController = "loginSuccess";
-					//remove login view bring in lobby view
-				}
-				else if()
-			//		updateController = "loginFalse";
+     if (status.equals("success")){
+     //display register success
+     //			updateController = "loginSuccess";
+     //remove login view bring in lobby view
+     }
+     else if()
+     //		updateController = "loginFalse";
 
-				else if (status.equals(rUN)){
-					//display register username fail
-					//clear username field
-				}
-				else if (status.equals(LY)){
-					//StartUpCont.listen(updateController);
-					//remove login view bring in lobby view
-				}
-				else if (status.equals(LUN)){
-					//display login username fail
-					//clear username
-				}
-				else if (status.equals(LUP)){
-					//display login password problem
-					//clear password field
-				}
+     else if (status.equals(rUN)){
+     //display register username fail
+     //clear username field
+     }
+     else if (status.equals(LY)){
+     //StartUpCont.listen(updateController);
+     //remove login view bring in lobby view
+     }
+     else if (status.equals(LUN)){
+     //display login username fail
+     //clear username
+     }
+     else if (status.equals(LUP)){
+     //display login password problem
+     //clear password field
+     }
 
-			//}
-		//	else {
-				//view.msgTF.append("Lost Server Connection") ;
-			//	conn = false ;
-			//}
-		//} 
-		//return updateController;
-		//close the I/O Stream and the socket.
-		//out.close();
-		//in.close() ;
-		//s.close();
-	}	
+     //}
+     //	else {
+     //view.msgTF.append("Lost Server Connection") ;
+     //	conn = false ;
+     //}
+     //} 
+     //return updateController;
+     //close the I/O Stream and the socket.
+     //out.close();
+     //in.close() ;
+     //s.close();
+     }	
 
 	 */
-	
 	/**
 	 * Update the server message
-         * Switch to lobby view if the login and register is successful
 	 * @param msg - Server message from I/O stream
 	 */
 	public void updateServerMsg(String msg) {
-		this.msg = msg;	
-                String[] split = msg.split("_");
-                //DEBUG
-                System.out.println(msg);
-                if(split[0].equals("chat")){
-                    chat = true;
-                    this.msg = split[1];
-                    //this.switchController("lobby"); 
-                    contMatch.updateModelMsg(this.msg);
-                }
-                else if(msg.equals("loginSuccess") || msg.equals("registerSuccess")){
-                    isValid = true;
-                    this.switchController("lobby");                    
-                }else if(isValid == false){                   
-                    JOptionPane.showMessageDialog(null, msg);   //Display server messages if falied login or register
-                }                    
+
+		String[] split = msg.split("_");
+		//DEBUG
+		System.out.println(msg);
+
+		boolean temp = false;
+
+		//Display the chat message from multiple online user into the chat Text Area. 
+		if (split[0].equals("chat")) {
+			chat = true;
+			String chatMsg = split[1];
+			this.update(chatMsg + "\n");
+		} 
+		//Switch to the lobby if login or register successful.
+		else if (msg.equals("loginSuccess") || msg.equals("registerSuccess")) {
+			temp = true;
+			isValid = temp;
+			this.switchController("lobby");
+
+		} 
+		//Display the server error message.
+		else if (temp == false)
+			JOptionPane.showMessageDialog(null, msg);   //Display server messages if failed login or register
+
 	} // end updateServerMsg            
-        
+
 	/**
 	 * Connect the socket client into the model.
-	 * @param sock
+	 * @param sock Socket
 	 */
-	public void setSock(SocketClient sock){
+	public void setSock(SocketClient sock) {
 		this.sock = sock;
 	} // end setSock
-        
-        
-        
-        public void sendSingleInvite(String info){
-            
-            try {
-			sock.writeUserMessage(info);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        }
-        
-        public void sendMultpleInvite(String info) {
-            
-        }
+
+	//Comment:
+	// I dont think that this one is working for now because we already sent the information 
+	// from the client through the sendUserMsg() , which means there is no need for this method
+	/*
+     public void sendSingleInvite(String info) {
+
+     try {
+     sock.writeUserMessage(info);
+     } catch (IOException e) {
+     // TODO Auto-generated catch block
+     e.printStackTrace();
+     }
+     }
+
+     public void sendMultpleInvite(String info) {
+
+     }
+	 */
 }

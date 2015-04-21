@@ -1,10 +1,10 @@
 package GUIView;
-import Controller.MatchCont;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
-
 import javax.swing.JList;
+
+import Controller.MatchCont;
 
 /**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
  * Project Part: GUI Display - Matchmaking View
@@ -47,11 +47,16 @@ public class MatchMaking extends javax.swing.JFrame {
         logOut = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         setTitle("Lobby");
         setResizable(false);
 
         availableList.setBackground(new java.awt.Color(51, 51, 51));
-        availableList.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Available Users", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), new java.awt.Color(255, 0, 51))); // NOI18N
+        availableList.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Avialble Users", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), new java.awt.Color(255, 0, 51))); // NOI18N
         availableList.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         availableList.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(availableList);
@@ -154,9 +159,12 @@ public class MatchMaking extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>                        
-   //DefaultListModel list = new DefaultListModel();
-    private void msgTFActionPerformed(java.awt.event.ActionEvent evt) {                                      
-        // TODO add your handling code here:
+    //DefaultListModel list = new DefaultListModel();
+    /**
+     * ActionPerformed according to the msgTF.
+     * @param evt
+     */
+    private void msgTFActionPerformed(java.awt.event.ActionEvent evt) {
     	
     	//list.addElement(msgTF.getText()+"\n");
     	//msgTF.setText("");
@@ -167,26 +175,43 @@ public class MatchMaking extends javax.swing.JFrame {
     	msgTF.setText("");
     }                                     
 
+    /**
+     * ActionPerformed according to the logOutButton.
+     * @param evt
+     */
     private void logOutActionPerformed(java.awt.event.ActionEvent evt) {                                       
         controller.listen("logOut");
     }                                            
 
+    /**
+     * ActionPerformed according to the inviteButton.
+     * @param evt
+     */
     private void inviteButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
         String invite = "";
-       invite = "SInvite_" + availableList.getSelectedValue().toString();
+       invite = "sInvite_" + availableList.getSelectedValue().toString();
        controller.updateUserInfo(invite);
-       controller.listen("SInvite");
-       
-       
+       controller.listen("sInvite");       
     }                                            
 
+    /**
+     * ActionPerformed according to the InviteAllButton.
+     * @param evt
+     */
     private void InviteAllButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
          String invite = "";
-       invite = "MInvite_" + availableList.getSelectedValue().toString();
+       invite = "mInvite_" + availableList.getSelectedValue().toString();
        controller.updateUserInfo(invite);
-       controller.listen("MInvite");
+       controller.listen("mInvite");
     }     
     
+    /**
+     * ActionPerformed according to the login button.
+     * @param evt
+     */
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {                                   
+        controller.listen("close");
+    }
     
     /**
      * method take a list of just the users and fills the available users list
@@ -194,13 +219,10 @@ public class MatchMaking extends javax.swing.JFrame {
      * implement and the list will need to be re-populated every time a user plays a game or logs out
      * @param users list of just the users in format "User1_user2_..."
      */
-    public void setList(String users){
-            
+    public void setList(String users){            
             String[] split = users.split("_");
-            availableList = new JList(split);
-            
-            
-        }
+            availableList = new JList(split);            
+    }                              
 
     /**
      * Set the controller to the matchmaking view
@@ -255,7 +277,7 @@ public class MatchMaking extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JMenu backMenu;
     private javax.swing.JTextField msgTF;
-    private javax.swing.JList availableList;  
+    private javax.swing.JList availableList;
     private javax.swing.JButton InviteAllButton;
     private javax.swing.JMenuItem logOut;
     private MatchCont controller;

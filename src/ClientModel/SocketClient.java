@@ -16,7 +16,6 @@ import java.io.*;
 public class SocketClient implements Runnable{
 
 	// Variables declaration
-	//private ClientModel model;
 	private Socket s;
 	private Thread worker;
 	private InputStream in;
@@ -25,7 +24,6 @@ public class SocketClient implements Runnable{
 	public byte[] buffer ;	
 	private boolean active = true;;
 	private ClientModel model;
-
 	// End of variables declaration
 
 	/**
@@ -48,13 +46,7 @@ public class SocketClient implements Runnable{
 	@Override
 	public void run() {		
 		while(active == true)
-			try {
-				authenticateStatus();
-			} catch (IOException e) {
-				//DEBUG
-				System.out.println("Connection lost");
-				e.printStackTrace();
-			}
+			readServerMsg();
 	} //end run
 
 	/**
@@ -78,32 +70,39 @@ public class SocketClient implements Runnable{
 		byte[] bufferin = input.getBytes();
 		//Send the message to the Server
 		try {
+			//DEBUG
 			System.out.println("This is from socketClient-Write: "+ input);
+
 			out.write(bufferin);	
 		} catch (IOException e) {
 			e.printStackTrace();
-			close();
 		}
 	}// end writeUserMessage
 
-        
-        public void passInvite(String invite) {
-            try {
-                buffer = new byte[in.available()];
-                int len = in.read(buffer);
-                //random comment again
-                
-            } catch(IOException e) {
-                e.printStackTrace();
-                close();
-            }
-        }
+
+	/*
+	 * Comment: This duplicates the function of readServerMsg()
+	 * 
+	public void passInvite(String invite) {
+		try {
+			buffer = new byte[in.available()];
+			int len = in.read(buffer);
+			//random comment again
+
+		} catch(IOException e) {
+			e.printStackTrace();
+			close();
+		}
+	}
+	 */
+
+
 	/**
 	 * Read the server message from I/O stream
 	 * Update the server massage into the ClientModel
 	 * @throws IOException
 	 */
-	public void authenticateStatus() throws IOException{
+	public void readServerMsg(){
 
 		try{
 			int len = in.read(buffer) ;
@@ -120,7 +119,7 @@ public class SocketClient implements Runnable{
 			e.printStackTrace();	
 			close();	//close the socket 
 		}
-	}// end authenticateStatus()	
+	}// end readServerMsg.	
 
 	/**
 	 * Close the I/O Stream and socket
@@ -133,15 +132,15 @@ public class SocketClient implements Runnable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}// end close();
+	}// end close.
 
 	/**
 	 * Set the Client model into the socket client.
-	 * @param model CLientModel
+	 * @param model CLientModel.
 	 */
 	public void setModel(ClientModel model){
 		this.model = model;
-	}
+	} //end setModel.
 }
 
 //end SocketClient

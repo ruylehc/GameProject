@@ -42,6 +42,11 @@ public class Register extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         setTitle("Register");
         setResizable(false);
 
@@ -136,10 +141,18 @@ public class Register extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>                                       
 
+    /**
+     * ActionPerformed according to the backButton.
+     * @param evt
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
         controller.listen("back");
     }                                          
 
+    /**
+     * ActionPerformed according to the regButton.
+     * @param evt
+     */
     private void regButtonActionPerformed(java.awt.event.ActionEvent evt) { 
     	String info = "register_" + userTF.getText() + "_" + passTF.getText() + "_" + rePassTF.getText();
         controller.updateUserInfo(info);
@@ -147,7 +160,15 @@ public class Register extends javax.swing.JFrame {
         userTF.setText("");
         passTF.setText("");
         rePassTF.setText("");
-    }                    
+    }    
+    
+    /**
+     * ActionPerformed according to the WindowClosing.
+     * @param evt
+     */
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {                                   
+        controller.listen("close");
+    }
 
     /**
      * Set the controller to the register view
