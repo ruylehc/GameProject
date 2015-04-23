@@ -32,7 +32,7 @@ public class SocketClient implements Runnable{
 	 * @throws UnknownHostException 
 	 */	
 	public SocketClient() throws IOException{
-		s = new Socket(Inet4Address.getLocalHost(), 52546);
+		s = new Socket(Inet4Address.getLocalHost().toString(), 52546);
 		out = s.getOutputStream();
 		in = s.getInputStream();
 		buffer = new byte[SIZE_BYTE];
