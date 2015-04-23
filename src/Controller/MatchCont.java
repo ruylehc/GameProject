@@ -123,7 +123,15 @@ public class MatchCont extends Controller {
     public void setVisible(boolean value) {
         view.setVisible(value);
     } // end setVisible.
-
+    
+    public void acceptUserInvite(String inviteMsg){ // hitting accept sending accept status up to server
+        model.weAccept(inviteMsg);
+        
+    }
+    
+    public void handleInviteView(String inviteMsg){
+        //implement joption pane for inviteMsg received from server
+    }
     /**
      * Set the controller identity.
      * @param ID the identity of the controller.
@@ -131,4 +139,6 @@ public class MatchCont extends Controller {
     public void setID(String id) {
         this.ID = id;
     } //end setID.
+
+
 }

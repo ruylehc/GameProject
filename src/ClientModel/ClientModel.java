@@ -28,6 +28,7 @@ public class ClientModel {
 	private LoginCont contLog;
 	private RegisterCont contReg;
 	private MatchCont contMatch;
+        private String userName = "";
 	//End declare variable
 
 	/**
@@ -159,9 +160,44 @@ public class ClientModel {
 		System.out.println(msg);
 
 		boolean temp = false;
+               
+                
 
 		//Display the chat message from multiple online user into the chat Text Area. 
-		if (split[0].equals("chat")) {
+		switch(split[0]){
+                    case "chat":
+                        chat = true;
+			String chatMsg = split[1];
+			this.update(chatMsg + "\n");
+                        break;
+                    case "loginSuccess":
+                        temp = true;
+			isValid = temp;
+			this.switchController("lobby");
+                        userName = split[1];
+                        break;
+                    case "registerSuccess":
+                        temp = true;
+			isValid = temp;
+			this.switchController("lobby");
+                        break;
+                    case "invite":
+                        handleInvite(msg);
+                        break;
+                    case "accept":
+                        handleAccept(msg);
+                        break;
+                    case "list":
+                        contMatch.setAvailableList(msg);
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(null, msg);   //Display server messages if failed login or register
+                        break;
+                        
+                }
+                
+                /*
+                if (split[0].equals("chat")) {
 			chat = true;
 			String chatMsg = split[1];
 			this.update(chatMsg + "\n");
@@ -176,17 +212,33 @@ public class ClientModel {
 		//Display the server error message.
 		else if (temp == false)
 			JOptionPane.showMessageDialog(null, msg);   //Display server messages if failed login or register
-
+                */
 	} // end updateServerMsg            
-
+        public void handleInvite(String inviteMsg){ // handle received invite from server
+	 contMatch.handleInviteView(inviteMsg);	 //pass to controller to handle view
+        }
 	/**
 	 * Connect the socket client into the model.
 	 * @param sock Socket
 	 */
+        public void handleAccept(String acceptMsg){ // handles an accept msg from the server (after we've sent an invite)
+            String[] split = acceptMsg.split("_");
+            startGame(split[3], split[4]);
+           
+        }
+        
+        public void weAccept(String acceptedStatus){ //sending up an accept msg from our view to the server
+            String[] split = msg.split("_");
+            String aggregate = new String(split[0] + "_" + userName + "_" + split[1]);
+            sendUserInfo(aggregate);
+        }
 	public void setSock(SocketClient sock) {
 		this.sock = sock;
 	} // end setSock
-
+        
+        public void startGame(String internetAddress, String portNumber){ // startGame after we handleAccept above
+            // write startGame method with invitee's network information
+        }
 	//Comment:
 	// I dont think that this one is working for now because we already sent the information 
 	// from the client through the sendUserMsg() , which means there is no need for this method

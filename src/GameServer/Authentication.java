@@ -76,7 +76,7 @@ public class Authentication {
 			String ipaddr = "";
 			onlineUser.put(userName,"");
 			*/
-			return "registerSuccess";
+			return "registerSuccess" + "_" + userName;
 		}
 	}// end registerUser.
 
@@ -98,7 +98,8 @@ public class Authentication {
 		
 		if(map.containsKey(userN) && userP.equals(map.get(userN))){
 			System.out.println("log from model of sever: "+ userN + ", " + userP);
-			status = "loginSuccess";
+			status = "loginSuccess" + "_" + userN;
+                       
 			
 			/*
 			 * Comment: this is might not user anymore while connection class do the thing.
