@@ -31,8 +31,8 @@ public class SocketClient implements Runnable{
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */	
-	public SocketClient() throws IOException{
-		s = new Socket(Inet4Address.getLocalHost().toString(), 52546);
+	public SocketClient(String host) throws IOException{
+		s = new Socket(host, 52546);
 		out = s.getOutputStream();
 		in = s.getInputStream();
 		buffer = new byte[SIZE_BYTE];
@@ -129,6 +129,7 @@ public class SocketClient implements Runnable{
 			out.close();
 			in.close() ;
 			s.close();
+                        active = false;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -32,9 +32,9 @@ public class MatchMaking extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
-    	ArrayList<String> list = new ArrayList<String>();
+    	
         jScrollPane1 = new javax.swing.JScrollPane();
-        availableList = new javax.swing.JList(list.toArray());
+        availableList = new javax.swing.JList();
         inviteButton = new javax.swing.JButton();
         InviteAllButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -187,22 +187,22 @@ public class MatchMaking extends javax.swing.JFrame {
      * ActionPerformed according to the inviteButton.
      * @param evt
      */
-    private void inviteButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
+    private void inviteButtonActionPerformed(java.awt.event.ActionEvent evt) {
         String invite = "";
-       invite = "sInvite_" + availableList.getSelectedValue().toString();
-       controller.updateUserInfo(invite);
-       controller.listen("sInvite");       
-    }                                            
+        invite = "sInvite_" + availableList.getSelectedValue().toString();
+        controller.updateUserInfo(invite);
+        controller.listen("sInvite");
+    }                             
 
     /**
      * ActionPerformed according to the InviteAllButton.
      * @param evt
      */
     private void InviteAllButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-         String invite = "";
-       invite = "mInvite_" + availableList.getSelectedValue().toString();
-       controller.updateUserInfo(invite);
-       controller.listen("mInvite");
+        String invite = "";
+        invite = "mInvite_" + availableList.getSelectedValue().toString();
+        controller.updateUserInfo(invite);
+        controller.listen("mInvite");
     }     
     
     /**
@@ -219,10 +219,13 @@ public class MatchMaking extends javax.swing.JFrame {
      * implement and the list will need to be re-populated every time a user plays a game or logs out
      * @param users list of just the users in format "User1_user2_..."
      */
-    public void setList(String users){            
-            String[] split = users.split("_");
-            availableList = new JList(split);            
-    }                              
+    public void setList(String users) {
+        //DEBUG
+        System.out.println("This is the Match view: " + users);
+        String[] split = users.split("_");
+        list = split;
+        availableList =  new javax.swing.JList(split);
+    }                       
 
     /**
      * Set the controller to the matchmaking view
@@ -281,5 +284,6 @@ public class MatchMaking extends javax.swing.JFrame {
     private javax.swing.JButton InviteAllButton;
     private javax.swing.JMenuItem logOut;
     private MatchCont controller;
+    String[] list;
     // End of variables declaration//GEN-END:variables
 }

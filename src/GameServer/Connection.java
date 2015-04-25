@@ -25,6 +25,7 @@ public class Connection extends Thread {
     private Server ss;
     private int port;
     private boolean terminate = true;
+    private boolean active = false;
     private String IP = "undef";
     private String userName = "undef";
     private boolean inGame = false;
@@ -62,6 +63,7 @@ public class Connection extends Thread {
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
+            close();
         }
     } // end sendServerMsg.
 
@@ -93,6 +95,7 @@ public class Connection extends Thread {
 
             bufferIn = new byte[in.available()];
             int len = in.read(bufferIn);
+            
 
             if (len > 0) {
                 info = new String(bufferIn, 0, len);	//Reading user info to string.
@@ -113,8 +116,11 @@ public class Connection extends Thread {
 
                     //String Validation of the user name and password.
                     String loginStatus = model.login(userName, passWord);
-                    if (loginStatus.equals("loginSuccess")) {	//Set the user name into connection.
+                    //DEBUG
+                    System.out.println("This is the connection status from login: " + loginStatus);
+                    if (loginStatus.equals("loginSuccess_"+userName)) {	//Set the user name into connection.
                         this.userName = userName;
+                        active = true;
                     }
                     //DEBUG
                     System.out.println("login " + userName + ", " + passWord);
@@ -133,8 +139,9 @@ public class Connection extends Thread {
 
                     //String Validation of the user name and password.
                     String registerStatus = model.registerUser(userName, passWord, rePassword);
-                    if (registerStatus.equals("registerSuccess")) {	//Set the user name into connection.
+                    if (registerStatus.equals("registerSuccess_"+userName)) {	//Set the user name into connection.
                         this.userName = userName;
+                        active = true;
                     }
                     //DEBUG
                     System.out.println("register :" + userName + ", " + passWord);
@@ -154,14 +161,14 @@ public class Connection extends Thread {
                     
                 } //Send the chat message to all current connected user. 
                 else if (type.equals("chat")) {
-                    if (split.length == 2) {
-                        chatMsg = split[2];
-                    }
+                    if (split.length == 2) ;
+                        chatMsg = split[1];                  
                     String msg = "chat_" + this.getUserName() + ": " + chatMsg;
                     //DEBUG
                     System.out.println("This is the chat msg in run - connection: " + msg);
                     ss.broadcast(msg);
-                } else if (type.equals("st")) //DEBUG later
+                } 
+                if (active = true) //DEBUG later
                 //Display the user online list everytime                
                 {
                     ss.broadcast(ss.getOnlineUserList());
@@ -191,6 +198,7 @@ public class Connection extends Thread {
             in.close();
             sock.close();
             terminate = false;
+            active = false;
         } catch (IOException e) {
             e.printStackTrace();
         }
