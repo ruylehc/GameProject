@@ -28,6 +28,8 @@ public class ClientModel {
     private boolean isValid = false;
     private boolean chat = false;
     private boolean userList = false;
+    private boolean invited = false;
+    
     private LoginCont contLog;
     private RegisterCont contReg;
     private MatchCont contMatch;
@@ -217,7 +219,9 @@ public class ClientModel {
                 this.switchController("lobby");
                 break;
             case "invite":
-                handleInvite(msg);
+                invited = true;
+                String host = split[1];
+                this.handleInvite(host);
                 break;
             case "accept":
                 handleAccept(msg);
@@ -255,7 +259,13 @@ public class ClientModel {
     } // end updateServerMsg            
 
     public void handleInvite(String inviteMsg) { // handle received invite from server
-        contMatch.handleInviteView(inviteMsg);	 //pass to controller to handle view
+        //contMatch.handleInviteView(inviteMsg);	 //pass to controller to handle view
+        for (Controller c : list) {
+            if (c.ID.equals("MatchCtrl") && invited == true) {
+                contMatch = (MatchCont) c;
+                contMatch.handleInviteView(inviteMsg);
+            }
+        }
     }
 
     /**

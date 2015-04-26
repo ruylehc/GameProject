@@ -138,7 +138,9 @@ public class MatchCont extends Controller {
     }
     
     public void handleInviteView(String inviteMsg){
-        //implement joption pane for inviteMsg received from server
+        //implement joption pane for inviteMsg received from server =>>>> display on the invites Jlist
+        view.setInviterList(inviteMsg);
+        
     }
     /**
      * Set the controller identity.

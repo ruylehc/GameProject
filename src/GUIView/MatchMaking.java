@@ -208,11 +208,7 @@ public class MatchMaking extends javax.swing.JFrame {
      * @param evt
      */
     private void msgTFActionPerformed(java.awt.event.ActionEvent evt) {
-    	
-    	//list.addElement(msgTF.getText()+"\n");
-    	//msgTF.setText("");
-    	//onlineList.setModel(list);
-    	
+        
     	controller.updateUserInfo("chat_" + msgTF.getText());
     	controller.listen("chat");
     	msgTF.setText("");
@@ -243,7 +239,7 @@ public class MatchMaking extends javax.swing.JFrame {
      */
     private void InviteAllButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
         String invite = "";
-        invite = "mInvite_" + availableList.getSelectedValue().toString();
+        invite = "mInvite_" ;
         controller.updateUserInfo(invite);
         controller.listen("mInvite");
     }     
@@ -280,7 +276,24 @@ public class MatchMaking extends javax.swing.JFrame {
         for(String element: split)
             list.addElement(element);        
         availableList.setModel(list);
-    }                       
+    }        
+    
+    /**
+     * method take a list of just the users and fills the available users list
+     * with the user names; it creates one every time because it is simple to 
+     * implement and the list will need to be re-populated every time a user plays a game or logs out
+     * @param users list of just the users in format "User1_user2_..."
+     */
+    public void setInviterList(String users) {
+        //DEBUG
+        System.out.println("This is the Match view: " + users);
+        String[] split = users.split("_");        
+        inviter = new DefaultListModel();
+        
+        for(String element: split)
+            inviter.addElement(element);        
+        inviteList.setModel(inviter);
+    }               
 
     /**
      * Set the controller to the matchmaking view
@@ -343,5 +356,6 @@ public class MatchMaking extends javax.swing.JFrame {
     private javax.swing.JTextField msgTF;
     private MatchCont controller;
     private DefaultListModel list;
+    private DefaultListModel inviter;
     // End of variables declaration//GEN-END:variables
 }
