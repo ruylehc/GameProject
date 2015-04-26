@@ -29,7 +29,7 @@ public class PlayerMain {
                 //DEBUG TEST
 		/*SocketClient sock = null;
 		try {
-			sock = new SocketClient();
+			sock = new SocketClient(args[0]);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
