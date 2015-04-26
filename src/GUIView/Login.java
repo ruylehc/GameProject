@@ -132,21 +132,21 @@ public class Login extends javax.swing.JFrame {
      * ActionPerformed according to the login button.
      * @param evt
      */
-	private void logButtonActionPerformed(java.awt.event.ActionEvent evt) {                                          
+    private void logButtonActionPerformed(java.awt.event.ActionEvent evt) {
         String info = "login_" + userTF.getText() + "_" + passTF.getText();
         controller.updateUserInfo(info);
         controller.listen("login");
         passTF.setText("");
-		userTF.setText("");
+        userTF.setText("");
     }
-	
-	/**
-	 * ActionPerformed according to the Window Closing.
-	 * @param evt
-	 */
-	private void formWindowClosing(java.awt.event.WindowEvent evt) {                                   
+
+    /**
+     * ActionPerformed according to the Window Closing.
+     * @param evt
+     */
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {
         controller.listen("close");
-    } 
+    }
 
     /**
      * Set the controller to the login view

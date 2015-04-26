@@ -44,7 +44,7 @@ public class StartUpCont extends Controller {
     @Override
     public void listen(String value) {
         if (value.equals("newUsr") || value.equals("existUsr") || value.equals("anonymous")) {
-			//model.runTCP();
+            model.runTCP();
 
             if (value.equals("newUsr")) {
                 model.switchController("register");

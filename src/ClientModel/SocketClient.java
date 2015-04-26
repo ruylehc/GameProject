@@ -27,12 +27,25 @@ public class SocketClient implements Runnable{
 	// End of variables declaration
 
 	/**
-	 * Default Constructor
+	 * Default Constructor 1
+	 * @throws IOException 
+	 * @throws UnknownHostException 
+	 */	
+	public SocketClient(String host, int port) throws IOException{
+		s = new Socket(host, port);
+		out = s.getOutputStream();
+		in = s.getInputStream();
+		buffer = new byte[SIZE_BYTE];
+	}//end Construct.
+        
+        
+        /**
+	 * Default Constructor 2
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */	
 	public SocketClient() throws IOException{
-		s = new Socket(Inet4Address.getLocalHost().toString(), 52546);
+		s = new Socket(Inet4Address.getLocalHost(), 52546);
 		out = s.getOutputStream();
 		in = s.getInputStream();
 		buffer = new byte[SIZE_BYTE];
@@ -129,6 +142,7 @@ public class SocketClient implements Runnable{
 			out.close();
 			in.close() ;
 			s.close();
+                        active = false;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

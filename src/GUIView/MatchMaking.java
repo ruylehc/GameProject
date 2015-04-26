@@ -32,33 +32,37 @@ public class MatchMaking extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
-    	ArrayList<String> list = new ArrayList<String>();
+
         jScrollPane1 = new javax.swing.JScrollPane();
-        availableList = new javax.swing.JList(list.toArray());
+        availableList = new javax.swing.JList();
         inviteButton = new javax.swing.JButton();
         InviteAllButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         chatBoxTA = new javax.swing.JTextArea();
         msgTF = new javax.swing.JTextField();
-        image = new javax.swing.JLabel();
+        acceptInvite = new javax.swing.JButton();
+        declineInvite = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        inviteList = new javax.swing.JList();
         background = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         backMenu = new javax.swing.JMenu();
         logOut = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Lobby");
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
-        setTitle("Lobby");
-        setResizable(false);
 
         availableList.setBackground(new java.awt.Color(51, 51, 51));
-        availableList.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Avialble Users", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), new java.awt.Color(255, 0, 51))); // NOI18N
+        availableList.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Available Users", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), new java.awt.Color(255, 0, 51))); // NOI18N
         availableList.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         availableList.setForeground(new java.awt.Color(255, 255, 255));
+        availableList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jScrollPane1.setViewportView(availableList);
 
         inviteButton.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -71,7 +75,7 @@ public class MatchMaking extends javax.swing.JFrame {
         });
 
         InviteAllButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        InviteAllButton.setText("Invite All");
+        InviteAllButton.setText("Match Making");
         InviteAllButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         InviteAllButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -95,7 +99,30 @@ public class MatchMaking extends javax.swing.JFrame {
             }
         });
 
-        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tic-tac-toe-free1.jpg"))); // NOI18N
+        acceptInvite.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        acceptInvite.setText("Accept");
+        acceptInvite.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        acceptInvite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acceptInviteActionPerformed(evt);
+            }
+        });
+
+        declineInvite.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        declineInvite.setText("Decline");
+        declineInvite.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        declineInvite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                declineInviteActionPerformed(evt);
+            }
+        });
+
+        inviteList.setBackground(new java.awt.Color(51, 51, 51));
+        inviteList.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Game Invites", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), new java.awt.Color(255, 0, 51))); // NOI18N
+        inviteList.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        inviteList.setForeground(new java.awt.Color(255, 255, 255));
+        inviteList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        jScrollPane4.setViewportView(inviteList);
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Abstract-Green-Background-Wallpaper-Vector-Graphic2.jpg"))); // NOI18N
 
@@ -118,47 +145,63 @@ public class MatchMaking extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inviteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(InviteAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(10, 10, 10)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(560, 560, 560)
+                .addComponent(InviteAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(149, 149, 149)
-                .addComponent(msgTF, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(background)
+                .addGap(20, 20, 20)
+                .addComponent(msgTF, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(550, 550, 550)
+                .addComponent(acceptInvite, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(340, 340, 340)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(650, 650, 650)
+                .addComponent(declineInvite, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(550, 550, 550)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(560, 560, 560)
+                .addComponent(inviteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(inviteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(InviteAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(image))
+                .addGap(90, 90, 90)
+                .addComponent(InviteAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(352, 352, 352)
+                .addComponent(msgTF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(320, 320, 320)
+                .addComponent(acceptInvite, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(365, 365, 365)
-                .addComponent(msgTF, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(320, 320, 320)
+                .addComponent(declineInvite, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(160, 160, 160)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(inviteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
         setLocationRelativeTo(null);
-    }// </editor-fold>                        
+    }// </editor-fold>                       
     //DefaultListModel list = new DefaultListModel();
     /**
      * ActionPerformed according to the msgTF.
@@ -187,24 +230,33 @@ public class MatchMaking extends javax.swing.JFrame {
      * ActionPerformed according to the inviteButton.
      * @param evt
      */
-    private void inviteButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
+    private void inviteButtonActionPerformed(java.awt.event.ActionEvent evt) {
         String invite = "";
-       invite = "sInvite_" + availableList.getSelectedValue().toString();
-       controller.updateUserInfo(invite);
-       controller.listen("sInvite");       
-    }                                            
+        invite = "sInvite_" + availableList.getSelectedValue().toString();
+        controller.updateUserInfo(invite);
+        controller.listen("sInvite");
+    }                             
 
     /**
      * ActionPerformed according to the InviteAllButton.
      * @param evt
      */
     private void InviteAllButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-         String invite = "";
-       invite = "mInvite_" + availableList.getSelectedValue().toString();
-       controller.updateUserInfo(invite);
-       controller.listen("mInvite");
+        String invite = "";
+        invite = "mInvite_" + availableList.getSelectedValue().toString();
+        controller.updateUserInfo(invite);
+        controller.listen("mInvite");
     }     
     
+    
+    private void acceptInviteActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        // TODO add your handling code here:
+    }                                            
+
+    private void declineInviteActionPerformed(java.awt.event.ActionEvent evt) {                                              
+        // TODO add your handling code here:
+    }                                             
+
     /**
      * ActionPerformed according to the login button.
      * @param evt
@@ -219,10 +271,16 @@ public class MatchMaking extends javax.swing.JFrame {
      * implement and the list will need to be re-populated every time a user plays a game or logs out
      * @param users list of just the users in format "User1_user2_..."
      */
-    public void setList(String users){            
-            String[] split = users.split("_");
-            availableList = new JList(split);            
-    }                              
+    public void setList(String users) {
+        //DEBUG
+        System.out.println("This is the Match view: " + users);
+        String[] split = users.split("_");        
+        list = new DefaultListModel();
+        
+        for(String element: split)
+            list.addElement(element);        
+        availableList.setModel(list);
+    }                       
 
     /**
      * Set the controller to the matchmaking view
@@ -267,19 +325,23 @@ public class MatchMaking extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify          
+    // Variables declaration - do not modify                     
+    private javax.swing.JButton InviteAllButton;
+    private javax.swing.JButton acceptInvite;
+    private javax.swing.JList availableList;
+    private javax.swing.JMenu backMenu;
     private javax.swing.JLabel background;
-    public javax.swing.JTextArea chatBoxTA;
-    private javax.swing.JLabel image;
+    public  javax.swing.JTextArea chatBoxTA;
+    private javax.swing.JButton declineInvite;
     private javax.swing.JButton inviteButton;
+    private javax.swing.JList inviteList;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JMenu backMenu;
-    private javax.swing.JTextField msgTF;
-    private javax.swing.JList availableList;
-    private javax.swing.JButton InviteAllButton;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JMenuItem logOut;
+    private javax.swing.JTextField msgTF;
     private MatchCont controller;
+    private DefaultListModel list;
     // End of variables declaration//GEN-END:variables
 }

@@ -110,8 +110,15 @@ public class MatchCont extends Controller {
      * @param users the status string of format "List_user1_user2".
      */
     public void setAvailableList(String users) {
+        
+        
         String justUsers = users.substring(5); // this is to eliminate "List_"
+        //DEBUG
+        System.out.println("This is from the mat controller: "+justUsers);
+        
         view.setList(justUsers); // passes it to view since its fields are private
+        
+        
 
     } //end setAvailableList.
 

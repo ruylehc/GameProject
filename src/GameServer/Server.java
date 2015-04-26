@@ -154,7 +154,7 @@ public class Server implements Runnable {
      * @return returns String - list of online user.
      */
     public String getOnlineUserList() {
-        String userList = "List_";
+        String userList = "list_";
         for (Connection c : list) {
             if (c.isInGame() == false) {
                 userList += c.getUserName() + "_";

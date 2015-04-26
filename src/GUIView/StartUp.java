@@ -219,12 +219,12 @@ public class StartUp extends javax.swing.JFrame {
     }                                         
 
     /**
-	 * ActionPerformed according to the Window Closing.
-	 * @param evt
-	 */
-	private void formWindowClosing(java.awt.event.WindowEvent evt) {                                   
+     * ActionPerformed according to the Window Closing.
+     * @param evt
+     */
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {
         controller.listen("close");
-    } 
+    }
 	
     /**
      * Set the controller to the login view
