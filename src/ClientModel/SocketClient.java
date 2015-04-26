@@ -16,7 +16,7 @@ import java.io.*;
 public class SocketClient implements Runnable{
 
 	// Variables declaration
-	private Socket s;
+	Socket s;
 	private Thread worker;
 	private InputStream in;
 	private OutputStream out;
@@ -24,6 +24,7 @@ public class SocketClient implements Runnable{
 	public byte[] buffer ;	
 	private boolean active = true;;
 	private ClientModel model;
+        private GameModel gmodel;
 	// End of variables declaration
 
 	/**
@@ -37,7 +38,8 @@ public class SocketClient implements Runnable{
 		in = s.getInputStream();
 		buffer = new byte[SIZE_BYTE];
 	}//end Construct.
-
+        
+        
 	/**
 	 * Implement the runnable from the thread
 	 * Read and receive the server message. 
