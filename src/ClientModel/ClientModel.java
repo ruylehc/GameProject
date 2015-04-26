@@ -265,10 +265,12 @@ public class ClientModel {
      */
     public void handleAccept(String acceptMsg) { // handles an accept msg from the server (after we've sent an invite)
         String[] split = acceptMsg.split("_");
+       // String invitedUser = split[0] ;
+       // if(invitedUser)
         startGame(split[3], split[4]);
 
     }
-
+   
     public void weAccept(String acceptedStatus) { //sending up an accept msg from our view to the server
         String[] split = msg.split("_");
         String aggregate = new String(split[0] + "_" + userName + "_" + split[1]);
