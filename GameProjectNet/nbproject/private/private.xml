@@ -3,13 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/X:/Game/MatchGame/src/GameServer/Connection.java</file>
-            <file>file:/X:/Game/MatchGame/src/GUIView/MatchMaking.java</file>
-            <file>file:/X:/Game/MatchGame/src/Controller/MatchCont.java</file>
-            <file>file:/X:/Game/MatchGame/src/ClientModel/ClientModel.java</file>
-            <file>file:/X:/Game/MatchGame/src/GameServer/Authentication.java</file>
-            <file>file:/X:/Game/MatchGame/src/GameServer/Server.java</file>
-            <file>file:/X:/Game/MatchGame/src/ClientModel/SocketClient.java</file>
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/Controller/MatchCont.java</file>
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/ClientModel/ClientModel.java</file>
         </group>
     </open-files>
 </project-private>
