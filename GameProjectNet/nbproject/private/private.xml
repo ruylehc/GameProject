@@ -4,7 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/Controller/MatchCont.java</file>
-            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/ClientModel/ClientModel.java</file>
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/GameServer/Connection.java</file>
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/ServerMain.java</file>
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/GUIView/StartUp.java</file>
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/PlayerMain.java</file>
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/GUIView/MatchMaking.java</file>
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/ClientModel/SocketClient.java</file>
         </group>
     </open-files>
 </project-private>

@@ -44,7 +44,7 @@ public class StartUpCont extends Controller {
     @Override
     public void listen(String value) {
         if (value.equals("newUsr") || value.equals("existUsr") || value.equals("anonymous")) {
-			//model.runTCP();
+            model.runTCP();
 
             if (value.equals("newUsr")) {
                 model.switchController("register");
@@ -62,11 +62,12 @@ public class StartUpCont extends Controller {
         if (value.equals("play")) {
             model.switchController("game");
         }
-
+        
+        /* Comment: This is none use method will be delete after we have review it
         if (value.equals("close")) {
-            model.sendUserInfo("close");
+            //model.sendUserInfo("close");
         }
-
+        */
         view.setVisible(false);
     } // end listen.
 

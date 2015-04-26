@@ -41,7 +41,7 @@ public class Server implements Runnable {
      * @param msg - Message from the user.
      * @throws IOException.
      */
-    public void broadcast(String msg) throws IOException {
+    public void broadcast(String msg){
         for (Connection c : list) {
             c.sendServerMsg(msg);
         }
@@ -154,7 +154,7 @@ public class Server implements Runnable {
      * @return returns String - list of online user.
      */
     public String getOnlineUserList() {
-        String userList = "List_";
+        String userList = "list_";
         for (Connection c : list) {
             if (c.isInGame() == false) {
                 userList += c.getUserName() + "_";

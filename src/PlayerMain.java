@@ -25,9 +25,11 @@ public class PlayerMain {
 
 	public static void main(String[] args) throws UnknownHostException{
 		ClientModel model = new ClientModel();	//constructor for adminModel
-		SocketClient sock = null;
+                
+                //DEBUG TEST
+		/*SocketClient sock = null;
 		try {
-			sock = new SocketClient();
+			sock = new SocketClient(args[0]);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -35,6 +37,7 @@ public class PlayerMain {
 		}
 		sock.setModel(model);
 		sock.createListener();	
+                */
 		//GUI
 		StartUp viewSU = new StartUp();
 		Login viewLog = new Login();
@@ -73,7 +76,7 @@ public class PlayerMain {
 		model.addController(contLog);
 		model.addController(contReg);
 		model.addController(contMatch);
-		model.setSock(sock);
+		//model.setSock(sock);
 
 	}
 }

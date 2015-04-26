@@ -16,7 +16,7 @@ import java.io.*;
 public class SocketClient implements Runnable{
 
 	// Variables declaration
-	private Socket s;
+	Socket s;
 	private Thread worker;
 	private InputStream in;
 	private OutputStream out;
@@ -24,20 +24,34 @@ public class SocketClient implements Runnable{
 	public byte[] buffer ;	
 	private boolean active = true;;
 	private ClientModel model;
+        private GameModel gmodel;
 	// End of variables declaration
 
 	/**
-	 * Default Constructor
+	 * Default Constructor 1
 	 * @throws IOException 
 	 * @throws UnknownHostException 
 	 */	
-	public SocketClient() throws IOException{
-		s = new Socket(Inet4Address.getLocalHost().toString(), 52546);
+	public SocketClient(String host, int port) throws IOException{
+		s = new Socket(host, port);
 		out = s.getOutputStream();
 		in = s.getInputStream();
 		buffer = new byte[SIZE_BYTE];
 	}//end Construct.
-
+        
+        
+        /**
+	 * Default Constructor 2
+	 * @throws IOException 
+	 * @throws UnknownHostException 
+	 */	
+	public SocketClient() throws IOException{
+		s = new Socket(Inet4Address.getLocalHost(), 52546);
+		out = s.getOutputStream();
+		in = s.getInputStream();
+		buffer = new byte[SIZE_BYTE];
+	}//end Construct.
+        
 	/**
 	 * Implement the runnable from the thread
 	 * Read and receive the server message. 
@@ -47,6 +61,7 @@ public class SocketClient implements Runnable{
 	public void run() {		
 		while(active == true)
 			readServerMsg();
+                close();
 	} //end run
 
 	/**
@@ -79,47 +94,31 @@ public class SocketClient implements Runnable{
 		}
 	}// end writeUserMessage
 
+    /**
+     * Read the server message from I/O stream Update the server massage into
+     * the ClientModel
+     *
+     * @throws IOException
+     */
+    public void readServerMsg() {
 
-	/*
-	 * Comment: This duplicates the function of readServerMsg()
-	 * 
-	public void passInvite(String invite) {
-		try {
-			buffer = new byte[in.available()];
-			int len = in.read(buffer);
-			//random comment again
-
-		} catch(IOException e) {
-			e.printStackTrace();
-			close();
-		}
-	}
-	 */
-
-
-	/**
-	 * Read the server message from I/O stream
-	 * Update the server massage into the ClientModel
-	 * @throws IOException
-	 */
-	public void readServerMsg(){
-
-		try{
-			int len = in.read(buffer) ;
-			if (len > 0) { 
-				String status = new String(buffer, 0, len);
-				model.updateServerMsg(status);	
-			}
-			else {
-				//DEBUG
-				System.out.println("Lost server connection");
-				active = false;
-			}
-		}catch (IOException e) {
-			e.printStackTrace();	
-			close();	//close the socket 
-		}
-	}// end readServerMsg.	
+        try {
+            int len = in.read(buffer);
+            if (len > 0) {
+                String status = new String(buffer, 0, len);
+                model.updateServerMsg(status);
+            } else {
+                //DEBUG
+                System.out.println("Lost server connection");
+                active = false;
+            }
+        } catch (IOException e) {
+            //Throw IOException 
+            System.out.println("Connection closed prematurely");
+            //e.printStackTrace();
+            close();	//close the socket 
+        }
+    }// end readServerMsg.	
 
 	/**
 	 * Close the I/O Stream and socket
@@ -129,6 +128,7 @@ public class SocketClient implements Runnable{
 			out.close();
 			in.close() ;
 			s.close();
+                        active = false;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
