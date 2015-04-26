@@ -67,6 +67,7 @@ public class GameModel implements Runnable{
 		
 	} // end fill board method
 	
+        //
 	public void markBoard(int playerNum, int row, int col){
 		if(playerNum == 1)
 			board[row][col] = X;
