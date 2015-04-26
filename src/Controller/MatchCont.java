@@ -2,6 +2,7 @@ package Controller;
 
 import ClientModel.ClientModel;
 import GUIView.MatchMaking;
+import javax.swing.JOptionPane;
 
 /**
  * Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang. 
@@ -102,7 +103,11 @@ public class MatchCont extends Controller {
     public void updateUserInfo(String usrInfo) {
         this.usrInfo = usrInfo;
     } // end updateUserInfo.
-
+    
+    public void lateAcceptDisplay(){
+        JOptionPane.showMessageDialog(null, "Invited user is no longer available for a game.");
+    }
+    
     /**
      * This method takes the status string of the available players and deletes
      * the identifier then passes it to matchmaking view to enter the user names

@@ -169,6 +169,16 @@ public class Connection extends Thread {
                     System.out.println("This is the chat msg in run - connection: " + msg);
                     ss.broadcast(msg);
                 } 
+                else if (type.equals("accept")){
+                    userName = split[2];
+                    if (ss.checkOnlineUser(userName) == false){
+                        sendServerMsg("lateAccept" + "_" + userName);
+                    }
+                    else{
+                        ss.sendInvitation(userName, info); //we can use sendInvitation for generic messages to specific users
+                        sendServerMsg("acceptsuccessful"); //send a successful accept condition to user to start board
+                    }   
+                }
                 if (active = true) //DEBUG later
                 //Display the user online list everytime                
                 {

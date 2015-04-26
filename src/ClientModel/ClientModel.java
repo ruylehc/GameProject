@@ -231,8 +231,13 @@ public class ClientModel {
                 System.out.println("From the list of server: " + msg);
                 userList = true;
                 this.updateOnlineList(msg);
-
                 break;
+            case "lateAccept":
+                lateAccept();
+                // close socket here
+                break;
+            case "acceptsuccessful":
+                
             default:
                 JOptionPane.showMessageDialog(null, msg);   //Display server messages if failed login or register
                 break;
@@ -257,7 +262,12 @@ public class ClientModel {
          JOptionPane.showMessageDialog(null, msg);   //Display server messages if failed login or register
          */
     } // end updateServerMsg            
-
+    
+    
+    public void lateAccept(){
+        contMatch.lateAcceptDisplay();
+    }
+    
     public void handleInvite(String inviteMsg) { // handle received invite from server
         //contMatch.handleInviteView(inviteMsg);	 //pass to controller to handle view
         for (Controller c : list) {
