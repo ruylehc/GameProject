@@ -48,6 +48,7 @@ public class RegisterCont extends Controller {
     public void listen(String value) {
         //Listen and switch back to the start up menu.
         if (value.equals("back")) {
+            model.sendUserInfo("close");
             model.switchController("startUp");
             view.setVisible(false);
         }

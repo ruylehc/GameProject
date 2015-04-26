@@ -117,6 +117,7 @@ public class ClientModel {
     public void sendUserInfo(String usrInfo) {
 
         try {
+            
             sock.writeUserMessage(usrInfo);
             if (usrInfo.equals("close") || usrInfo.equals("back")) {	//Close the socket if user logout or disconnected 
                 sock.close();

@@ -41,7 +41,7 @@ public class Server implements Runnable {
      * @param msg - Message from the user.
      * @throws IOException.
      */
-    public void broadcast(String msg) throws IOException {
+    public void broadcast(String msg){
         for (Connection c : list) {
             c.sendServerMsg(msg);
         }

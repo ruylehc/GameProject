@@ -62,7 +62,8 @@ public class Connection extends Thread {
             out.write(bufferOut);
             out.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Connection is closed!");
+            //e.printStackTrace();
             close();
         }
     } // end sendServerMsg.
@@ -184,6 +185,7 @@ public class Connection extends Thread {
              */
         } // Catch the error excepion then close the connection
         catch (IOException e) {
+            System.out.println("Connection is closed!");
             e.printStackTrace();
             close();
         }

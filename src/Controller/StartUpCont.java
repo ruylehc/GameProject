@@ -62,11 +62,12 @@ public class StartUpCont extends Controller {
         if (value.equals("play")) {
             model.switchController("game");
         }
-
+        
+        /* Comment: This is none use method will be delete after we have review it
         if (value.equals("close")) {
-            model.sendUserInfo("close");
+            //model.sendUserInfo("close");
         }
-
+        */
         view.setVisible(false);
     } // end listen.
 

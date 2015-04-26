@@ -61,6 +61,7 @@ public class SocketClient implements Runnable{
 	public void run() {		
 		while(active == true)
 			readServerMsg();
+                close();
 	} //end run
 
 	/**
@@ -93,47 +94,31 @@ public class SocketClient implements Runnable{
 		}
 	}// end writeUserMessage
 
+    /**
+     * Read the server message from I/O stream Update the server massage into
+     * the ClientModel
+     *
+     * @throws IOException
+     */
+    public void readServerMsg() {
 
-	/*
-	 * Comment: This duplicates the function of readServerMsg()
-	 * 
-	public void passInvite(String invite) {
-		try {
-			buffer = new byte[in.available()];
-			int len = in.read(buffer);
-			//random comment again
-
-		} catch(IOException e) {
-			e.printStackTrace();
-			close();
-		}
-	}
-	 */
-
-
-	/**
-	 * Read the server message from I/O stream
-	 * Update the server massage into the ClientModel
-	 * @throws IOException
-	 */
-	public void readServerMsg(){
-
-		try{
-			int len = in.read(buffer) ;
-			if (len > 0) { 
-				String status = new String(buffer, 0, len);
-				model.updateServerMsg(status);	
-			}
-			else {
-				//DEBUG
-				System.out.println("Lost server connection");
-				active = false;
-			}
-		}catch (IOException e) {
-			e.printStackTrace();	
-			close();	//close the socket 
-		}
-	}// end readServerMsg.	
+        try {
+            int len = in.read(buffer);
+            if (len > 0) {
+                String status = new String(buffer, 0, len);
+                model.updateServerMsg(status);
+            } else {
+                //DEBUG
+                System.out.println("Lost server connection");
+                active = false;
+            }
+        } catch (IOException e) {
+            //Throw IOException 
+            System.out.println("Connection closed prematurely");
+            //e.printStackTrace();
+            close();	//close the socket 
+        }
+    }// end readServerMsg.	
 
 	/**
 	 * Close the I/O Stream and socket

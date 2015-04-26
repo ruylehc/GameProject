@@ -48,8 +48,8 @@ public class LoginCont extends Controller {
     public void listen(String value) {
         //Listen and switch back to the start up menu. 
         if (value.equals("back")) {
-            model.switchController("startUp");
-            //model.sendUserInfo("close");
+            model.sendUserInfo("close");
+            model.switchController("startUp");            
             view.setVisible(false);
         }
         //Listen to login signal then update the user information to model.

@@ -46,8 +46,9 @@ public class MatchCont extends Controller {
     public void listen(String value) {
     	//Listen and switch back to the start up menu.
         if (value.equals("logOut")) {
-            model.switchController("startUp");
             model.sendUserInfo("close");
+            model.switchController("startUp"); 
+            view.chatBoxTA.setText("");
             view.setVisible(false);
         }
 
@@ -69,7 +70,7 @@ public class MatchCont extends Controller {
         
       //Listen to close signal then update the user information to model.
         if (value.equals("close")) {
-            model.sendUserInfo("close");
+            model.sendUserInfo("close");            
         }
     } //end listen.
 
