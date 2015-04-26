@@ -18,7 +18,7 @@ public class MatchCont extends Controller {
     private ClientModel model;
     private MatchMaking view;
     private String usrInfo = "";
-	//End declare variable
+    //End declare variable
 
     /**
      * This will set the GUI-View into the controller.
