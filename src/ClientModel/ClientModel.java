@@ -76,7 +76,15 @@ public class ClientModel {
             c.switchView(signal);
         }
     } // end switchController
-
+    
+    public void setTitle(String usr){
+        for (Controller c : list) {
+            if (c.ID.equals("MatchCtrl") && isValid == true) {
+                contMatch = (MatchCont) c;
+                contMatch.setTitle(usr);
+            }
+        }
+    }
     /**
      * Update the chat server message into the MatchMaking controller.
      *
@@ -212,6 +220,7 @@ public class ClientModel {
                 isValid = temp;
                 this.switchController("lobby");
                 userName = split[1];
+                this.setTitle(userName);
                 break;
             case "registerSuccess":
                 temp = true;
