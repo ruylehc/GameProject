@@ -140,8 +140,9 @@ public class Server implements Runnable {
             if (c.getUserName().equals(userName)) {
                 c.sendServerMsg(invitation);
             }
-            if (userName.equals("all")) {
-                if (c.isInGame() == false) {
+            String[] split = userName.split("_");
+            if (split[0].equals("all")) {
+                if (!c.getUserName().equals(split[1]) && c.isInGame() == false) {
                     c.sendServerMsg(invitation);
                 }
             }

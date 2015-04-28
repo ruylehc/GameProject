@@ -217,6 +217,7 @@ public class ClientModel {
                 temp = true;
                 isValid = temp;
                 this.switchController("lobby");
+                userName = split[1];
                 break;
             case "invite":
                 invited = true;
