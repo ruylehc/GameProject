@@ -75,7 +75,7 @@ public class MatchMaking extends javax.swing.JFrame {
         });
 
         InviteAllButton.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        InviteAllButton.setText("Match Making");
+        InviteAllButton.setText("Invite All");
         InviteAllButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         InviteAllButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,17 +284,25 @@ public class MatchMaking extends javax.swing.JFrame {
      * implement and the list will need to be re-populated every time a user plays a game or logs out
      * @param users list of just the users in format "User1_user2_..."
      */
+    ArrayList<String> temp = new ArrayList<String>();
     public void setInviterList(String users) {
         //DEBUG
         System.out.println("This is the Match view: " + users);
-        String[] split = users.split("_");        
+        String[] split = users.split("_");  
+        
+        if (!temp.contains(split[0]))
+            temp.add(split[0]);
+        
         inviter = new DefaultListModel();
         
-        for(String element: split)
+        for(String element: temp)
             inviter.addElement(element);        
         inviteList.setModel(inviter);
     }               
 
+    public void setTitle(String title){
+        this.title = title;
+    }
     /**
      * Set the controller to the matchmaking view
      * @param controller
@@ -357,5 +365,6 @@ public class MatchMaking extends javax.swing.JFrame {
     private MatchCont controller;
     private DefaultListModel list;
     private DefaultListModel inviter;
+    String title = "Lobby";
     // End of variables declaration//GEN-END:variables
 }

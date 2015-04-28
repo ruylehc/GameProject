@@ -150,7 +150,7 @@ public class Connection extends Thread {
 
                 } //Send server invitation message to one player.
                 else if (type.equals("sInvite")) {
-                    String userToBeInvited = split[2];
+                    String userToBeInvited = split[1];
                     String msg = "invite_" + this.userName; //This String contains identity of "invite", and the inviter user name. 
                     if (ss.checkOnlineUser(userToBeInvited) == true)   //Checks if the player is online.
                         ss.sendInvitation(userToBeInvited, msg);
@@ -158,7 +158,7 @@ public class Connection extends Thread {
                 } //Send server invitation messge to all players.               
                 else if(type.equals("mInvite")){
                     String msg = "invite_" + this.userName; //This String contains identity of "invite", and the inviter user name. 
-                    ss.sendInvitation("all", msg);
+                    ss.sendInvitation("all_"+this.userName, msg);
                     
                 } //Send the chat message to all current connected user. 
                 else if (type.equals("chat")) {
