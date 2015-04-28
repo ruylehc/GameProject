@@ -143,7 +143,7 @@ public class MatchCont extends Controller {
     }
     
     public void setTitle(String user){
-        view.setTitle(user);
+        view.setViewTitle(user);
     }
     public void handleInviteView(String inviteMsg){
         //implement joption pane for inviteMsg received from server =>>>> display on the invites Jlist

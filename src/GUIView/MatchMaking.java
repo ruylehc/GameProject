@@ -50,7 +50,7 @@ public class MatchMaking extends javax.swing.JFrame {
         logOut = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Lobby");
+        //setTitle("Lobby");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -300,8 +300,9 @@ public class MatchMaking extends javax.swing.JFrame {
         inviteList.setModel(inviter);
     }               
 
-    public void setTitle(String title){
-        this.title = title;
+    public void setViewTitle(String title){
+        //this.title = title;
+        setTitle("Lobby of: "+ title);
     }
     /**
      * Set the controller to the matchmaking view
@@ -365,6 +366,5 @@ public class MatchMaking extends javax.swing.JFrame {
     private MatchCont controller;
     private DefaultListModel list;
     private DefaultListModel inviter;
-    String title = "Lobby";
     // End of variables declaration//GEN-END:variables
 }

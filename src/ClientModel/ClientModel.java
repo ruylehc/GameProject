@@ -78,7 +78,7 @@ public class ClientModel {
         System.out.println("This is the signal from the switch view: " + this.signal);
 
         for (Controller c : list) {
-            if (c.ID.equals("LoginCtrl") && isValid == true) {
+            if (c.ID.equals("LoginCtrl" ) && isValid == true) {
                 contLog = (LoginCont) c;
                 contLog.setVisible(false);
             } else if (c.ID.equals("RegCtrl") && isValid == true) {
