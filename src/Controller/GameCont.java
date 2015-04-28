@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @author PLUCSCE
  */
 public class GameCont extends Controller {
-    
+    //
     // decalre variables
     private ClientModel cmodel;
     private GameModel gmodel;
