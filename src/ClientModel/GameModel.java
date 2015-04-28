@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 
 public class GameModel implements Runnable{
-
+        //
 	public int board[][];
 	public int SIZE = 40;
 	boolean p1Win = false;
