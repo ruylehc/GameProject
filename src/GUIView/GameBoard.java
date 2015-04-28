@@ -1,4 +1,8 @@
 package GUIView;
+
+import Controller.GameCont;
+import Controller.LoginCont;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -170,5 +174,14 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private GameCont controller;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Set the controller to the login view
+     * @param controller
+     */
+    public void setController(GameCont controller){
+    	this.controller = controller;
+    }  
 }

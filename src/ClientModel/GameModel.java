@@ -1,5 +1,6 @@
 package ClientModel;
 
+import Controller.GameCont;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,7 +11,7 @@ import java.util.logging.Logger;
 
 
 public class GameModel implements Runnable{
-
+        //
 	public int board[][];
 	public int SIZE = 40;
 	boolean p1Win = false;
@@ -23,13 +24,15 @@ public class GameModel implements Runnable{
 	int O = -1; // player 2 mark
         private Thread worker;
         private ServerSocket ss;
-        private Socket sc; 
+        public Socket sc; 
 	private byte[] bufferIn;
         private final int BYTE_SIZE = 1024;
         private boolean terminate = true;
         private InputStream in;
         private OutputStream out;
         private int port;
+        private ClientModel cmodel; 
+        private GameCont contGame;
 	
 	// These methods handle connecting to the other class
         // this method needs to be made by a MMcontroller with the
@@ -40,11 +43,17 @@ public class GameModel implements Runnable{
      *
      * @throws IOException.
      */
+        
     public GameModel(int port) throws IOException {
         bufferIn = new byte[BYTE_SIZE];
         this.port = port;
         ss = new ServerSocket(port);        
     } //end Server.
+    
+    public void setController(GameCont gamecontroller){
+        this.contGame = gamecontroller;
+    }
+    
         
     /**
      * Accepts connections and creates Connection object.
@@ -55,8 +64,8 @@ public class GameModel implements Runnable{
         while (true) {
             try {
                 Socket sockClient = ss.accept();
-                in = sc.getInputStream();
-                out = sc.getOutputStream();
+                in = sockClient.getInputStream();
+                out = sockClient.getOutputStream();
                 this.readClientMsg();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -100,7 +109,31 @@ public class GameModel implements Runnable{
            
             if (len > 0) {
                 info = new String(bufferIn, 0, len);
-                //insert check move methods to confirm valid move or if it is a win
+                
+                String[] split = info.split("_");	//String delimiter. 
+                String type = split[0];
+                
+                switch(type){  //these switch statements need to be implented for game play
+                    case "move":
+                        
+                        break;
+                    case "win":
+                        
+                        break;
+                    case "lose":
+                        
+                        break;
+                    case "tie":
+                        
+                        break;
+                    case "quit":
+                        
+                        break;
+                    default:
+                            
+                         break; 
+                }
+                        
                 
                 //Need to validate the info before send the information
                 this.sendServerMsg(info);//
@@ -121,39 +154,19 @@ public class GameModel implements Runnable{
         worker.start();
     } // end listen.
     
-    /*    
-    public void run() {
-       while(true){
-           try {
-               Socket sockClient = ss.accept(); // check later   
-               in = sc.getInputStream();
-               
-               listen();
-           } catch(IOException e) {
-           e.printStackTrace();
-           }        
-       }
-    } // end run
-    */
-         
-    public void readPlayerMsg(){
-         bufferIn = new byte[BYTE_SIZE];
-         
-         
-     }
     
     
-    public void listen1(){
-        while (terminate == true) {
-            readPlayerMsg();
+        public void startGame(String ip, String port){
+            sendGameSocket(ip, port);
+            cmodel.switchController("gameBoard");
+            
         }
-            try {
-                ss.close();
-            } catch (IOException ex) {
-                Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-    }
+    
+        /**
+         * method creates a socket to the opened Server socket created by the other players GameModel
+         * @param IP
+         * @param Port 
+         */
          public void sendGameSocket(String IP, String Port){
              int intPort =  Integer.parseInt(Port);
              try {
