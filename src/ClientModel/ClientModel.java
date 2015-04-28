@@ -24,6 +24,7 @@ public class ClientModel {
     private String usrInfo = "";
     private String msg = "";
     private SocketClient sock;
+    private GameModel gmodel;
 
     private boolean isValid = false;
     private boolean chat = false;
@@ -33,6 +34,7 @@ public class ClientModel {
     private LoginCont contLog;
     private RegisterCont contReg;
     private MatchCont contMatch;
+    private GameCont contGame;
     private String userName = "";
     //End declare variable
 
@@ -54,6 +56,16 @@ public class ClientModel {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }
+    
+    public void runGameServer(){
+        try {
+            gmodel = new GameModel(sock.s.getPort());
+            gmodel.setController(contGame);
+            gmodel.listen();
+        } catch (IOException ex) {
+            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * Read the controller signal to switch to another controller and view
@@ -72,6 +84,9 @@ public class ClientModel {
             } else if (c.ID.equals("RegCtrl") && isValid == true) {
                 contReg = (RegisterCont) c;
                 contReg.setVisible(false);
+            } else if (c.ID.equals("GameCtrl")) {
+                contGame = (GameCont) c;
+                contGame.setVisible(false);
             }
             c.switchView(signal);
         }

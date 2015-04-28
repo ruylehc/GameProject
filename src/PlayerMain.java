@@ -12,19 +12,25 @@ import java.io.IOException;
 import java.net.*;
 
 import ClientModel.ClientModel;
+import ClientModel.GameModel;
 import ClientModel.SocketClient;
 import Controller.LoginCont;
 import Controller.MatchCont;
 import Controller.RegisterCont;
 import Controller.StartUpCont;
+import Controller.GameCont;
 import GUIView.Login;
 import GUIView.MatchMaking;
 import GUIView.Register;
 import GUIView.StartUp;
+import GUIView.GameBoard;
 public class PlayerMain {
 
 	public static void main(String[] args) throws UnknownHostException{
-		ClientModel model = new ClientModel();	//constructor for adminModel
+		ClientModel model = new ClientModel();
+               
+
+//constructor for adminModel
                 
                 //DEBUG TEST
 		/*SocketClient sock = null;
@@ -43,6 +49,7 @@ public class PlayerMain {
 		Login viewLog = new Login();
 		Register viewReg = new Register();
 		MatchMaking viewMatch = new MatchMaking();
+                GameBoard gameBoard = new GameBoard();
 
 		//Cont
 		StartUpCont contSU = new StartUpCont();
@@ -53,6 +60,8 @@ public class PlayerMain {
 		contReg.setID("RegCtrl");
 		MatchCont contMatch = new MatchCont();
 		contMatch.setID("MatchCtrl");
+                GameCont contGame = new GameCont();
+                contGame.setID("GameCtrl");
 
 		//Glue code
 		viewSU.setVisible(true);
@@ -71,11 +80,17 @@ public class PlayerMain {
 		viewMatch.setController(contMatch);
 		contMatch.setModel(model);
 		contMatch.setView(viewMatch);
+                
+                gameBoard.setController(contGame);
+                contGame.setModel(model);
+                contGame.setView(gameBoard);
+                
 
 		model.addController(contSU);
 		model.addController(contLog);
 		model.addController(contReg);
 		model.addController(contMatch);
+                model.addController(contGame);
 		//model.setSock(sock);
 
 	}
