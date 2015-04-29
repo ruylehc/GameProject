@@ -5,6 +5,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
 import Controller.MatchCont;
+import javax.swing.JOptionPane;
 
 /**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
  * Project Part: GUI Display - Matchmaking View
@@ -228,9 +229,17 @@ public class MatchMaking extends javax.swing.JFrame {
      */
     private void inviteButtonActionPerformed(java.awt.event.ActionEvent evt) {
         String invite = "";
+        if(availableList.getSelectedValue() != null){
         invite = "sInvite_" + availableList.getSelectedValue().toString();
         controller.updateUserInfo(invite);
         controller.listen("sInvite");
+        }
+        else{// nothing is selected so dont send empty info
+            JOptionPane.showMessageDialog(null, "Please select some one to invite");
+            
+            
+        }
+            
     }                             
 
     /**
@@ -247,6 +256,7 @@ public class MatchMaking extends javax.swing.JFrame {
     
     private void acceptInviteActionPerformed(java.awt.event.ActionEvent evt) {                                             
         String accept = "";
+        if(inviteList.getSelectedValue() != null){
         accept = "accept_" + inviteList.getSelectedValue().toString();
         controller.updateUserInfo(accept);
         controller.listen("accept");
@@ -255,6 +265,8 @@ public class MatchMaking extends javax.swing.JFrame {
             if(element.equals(inviteList.getSelectedValue().toString()))
                 temp.remove(element);
         }
+        } else
+            JOptionPane.showMessageDialog(null, "Please select a game invite to accept");
     }                                            
 
     private void declineInviteActionPerformed(java.awt.event.ActionEvent evt) {

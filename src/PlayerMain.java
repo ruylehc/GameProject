@@ -28,22 +28,10 @@ public class PlayerMain {
 
 	public static void main(String[] args) throws UnknownHostException{
 		ClientModel model = new ClientModel();
-               
-
-//constructor for adminModel
+               // if(){
+                    //model.setIp(args[0]);
+               // }
                 
-                //DEBUG TEST
-		/*SocketClient sock = null;
-		try {
-			sock = new SocketClient(args[0]);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		sock.setModel(model);
-		sock.createListener();	
-                */
 		//GUI
 		StartUp viewSU = new StartUp();
 		Login viewLog = new Login();

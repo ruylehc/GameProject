@@ -118,6 +118,11 @@ public class MatchCont extends Controller {
         
     } // end updateUserInfo.
     
+    
+    /**
+     * method displays a pop-up pane that the user invite they accepted
+     * was from a suer that is no longer available (either in game or logged out)
+     */
     public void lateAcceptDisplay(){
         JOptionPane.showMessageDialog(null, "Invited user is no longer available for a game.");
     }
@@ -151,14 +156,20 @@ public class MatchCont extends Controller {
         view.setVisible(value);
     } // end setVisible.
     
-    public void acceptUserInvite(String inviteMsg){ // hitting accept sending accept status up to server
-        model.weAccept(inviteMsg);
-        
-    }
     
+    /**
+     * sets the title for the lobby view so we have the user name in title bar
+     * @param user - the user name that should be appended to the title bar
+     */
     public void setTitle(String user){
         view.setViewTitle(user);
     }
+    
+    /**
+     * this method sets the list of available players online
+     * @param inviteMsg the status string of just user names that is then passed
+     * to matchView
+     */
     public void handleInviteView(String inviteMsg){
         //implement joption pane for inviteMsg received from server =>>>> display on the invites Jlist
         view.setInviterList(inviteMsg);

@@ -39,6 +39,7 @@ public class ClientModel {
     private GameCont contGame;
     public String userName = "";
     public int port = -1; 
+    public String IP = "";
     //End declare variable
 
     /**
@@ -51,11 +52,12 @@ public class ClientModel {
     }// end addController.
     
     /**
-     * Start the new socket
+     * Start the new TCP socket to connect to the client server socket
      */
     public void runTCP(){
         try {
-            sock = new SocketClient();
+            //sock = new SocketClient(IP,52546); //this line is used for starting from cmd line
+            sock = new SocketClient(); // this line is used for non cmd line starting
             sock.setModel(this);
             sock.createListener();
         } catch (IOException ex) {
@@ -64,7 +66,8 @@ public class ClientModel {
     }
     
     /**
-     * Start the Game Server
+     * Start the Game Server to listen for a socket from the 
+     * client who invited you to a game
      */
     public void runGameServer(){
         try {            
@@ -75,6 +78,14 @@ public class ClientModel {
         } catch (IOException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }// end 
+    
+    /**
+     * this method sets the global IP for socket creation/ running from cmd line
+     * @param IP string of the IP - taken from cmd line
+     */
+    public void setIp(String IP){
+        this.IP = IP;
     }
 
     /**
@@ -106,6 +117,10 @@ public class ClientModel {
         }
     } // end switchController
     
+    /**
+     * sets the title of the lobby so we know the userName of the user
+     * @param usr - the user name passed to it to append it to the title
+     */
     public void setTitle(String usr){
         for (Controller c : list) {
             if (c.ID.equals("MatchCtrl") && isValid == true) {
@@ -168,21 +183,7 @@ public class ClientModel {
         }
     }// end sendUserInfo
 
-    public int findOpenPort() {
-        for (int i = 1; i < 65000; i++) {
-            try {
-                ServerSocket test = new ServerSocket(i);
-                test.close();
-                port = i;
-                break;
-            } catch (IOException e) {
-                System.out.println("Could not listen on port: " + i);
-                e.printStackTrace();
-    // ...
-            }
-        }
-        return port; 
-    }
+    
     
     /**
      * Update the server message
@@ -249,30 +250,18 @@ public class ClientModel {
 
         }
 
-        /*
-         if (split[0].equals("chat")) {
-         chat = true;
-         String chatMsg = split[1];
-         this.update(chatMsg + "\n");
-         } 
-         //Switch to the lobby if login or register successful.
-         else if (msg.equals("loginSuccess") || msg.equals("registerSuccess")) {
-         temp = true;
-         isValid = temp;
-         this.switchController("lobby");
-
-         } 
-         //Display the server error message.
-         else if (temp == false)
-         JOptionPane.showMessageDialog(null, msg);   //Display server messages if failed login or register
-         */
     } // end updateServerMsg            
     
-    
+    /**
+     * this method handles late expect by calling the match controller to display a error message
+     */
     public void lateAccept(){
         contMatch.lateAcceptDisplay();
     }
-    
+    /**
+     * this method handles invite by passing it to the view
+     * @param inviteMsg the status string that is passed from the other client
+     */
     public void handleInvite(String inviteMsg) { // handle received invite from server
         //contMatch.handleInviteView(inviteMsg);	 //pass to controller to handle view
         for (Controller c : list) {
@@ -300,14 +289,15 @@ public class ClientModel {
 
     }
    
-    public void weAccept(String acceptedStatus) { //sending up an accept msg from our view to the server
-        String[] split = msg.split("_");
-        String aggregate = new String(split[0] + "_" + userName + "_" + split[1]);
-        sendUserInfo(aggregate);
-    }
 
+    /**
+     * this method is a setter method for the socket client 
+     * @param sock 
+     */
     public void setSock(SocketClient sock) {
         this.sock = sock;
     } // end setSock
+    
+    
 
 }
