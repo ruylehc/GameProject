@@ -37,9 +37,28 @@ public class GameModel implements Runnable{
 	// These methods handle connecting to the other class
         // this method needs to be made by a MMcontroller with the
         // gmodel.run() when the use hits the accept button
-        
+    
     /**
-     * Default Constructor - Create the new server at assigned port.
+     * Default Constructor1 - Create the new server at assigned port.
+     *
+     * @throws IOException.
+     */
+    public GameModel(String IP, String Port) {
+        int intPort = Integer.parseInt(Port);
+        try {
+            SocketClient gameSock = new SocketClient(IP, intPort);
+        } catch (IOException ex) {
+            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
+    }//end Socket Client.
+    
+    public void setController(GameCont gamecontroller){
+        this.contGame = gamecontroller;
+    }
+    
+    /**
+     * Default Constructor1 - Create the new server at assigned port.
      *
      * @throws IOException.
      */
@@ -49,12 +68,7 @@ public class GameModel implements Runnable{
         this.port = port;
         ss = new ServerSocket(port);        
     } //end Server.
-    
-    public void setController(GameCont gamecontroller){
-        this.contGame = gamecontroller;
-    }
-    
-        
+            
     /**
      * Accepts connections and creates Connection object.
      */
@@ -173,6 +187,7 @@ public class GameModel implements Runnable{
                 SocketClient gameSock = new SocketClient(IP, intPort);
             } catch (IOException ex) {
                 Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
             
          }

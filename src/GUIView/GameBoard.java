@@ -125,6 +125,10 @@ public class GameBoard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    public void setViewTitle(String title){
+        setTitle(title);
+    }
+    
     /**
      * @param args the command line arguments
      */

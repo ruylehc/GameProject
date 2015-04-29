@@ -116,6 +116,8 @@ public class GameCont extends Controller {
         System.out.println("This is the id of the login controller: " + ID);
     } //end setID.
     
-    
+    public void setTitle(String user){
+        view.setViewTitle(user);
+    }
     
 }

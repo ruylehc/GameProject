@@ -28,7 +28,7 @@ public class Connection extends Thread {
     private boolean active = false;
     private String IP = "undef";
     private String userName = "undef";
-    private boolean inGame = false;
+    boolean inGame = false;
     // End of variables declaration.
 
     /**
@@ -170,13 +170,20 @@ public class Connection extends Thread {
                     ss.broadcast(msg);
                 } 
                 else if (type.equals("accept")){
+                    //inGame = true;
                     userName = split[2];
                     if (ss.checkOnlineUser(userName) == false){
                         sendServerMsg("lateAccept" + "_" + userName);
                     }
                     else{
+                        
+                        info += "_" + this.IP;
+                        //DEBUG
+                        System.out.println(this.IP); 
+                        System.out.println("this is the connection info for accept " + info);
                         ss.sendInvitation(userName, info); //we can use sendInvitation for generic messages to specific users
-                        sendServerMsg("acceptsuccessful"); //send a successful accept condition to user to start board
+                        sendServerMsg("acceptSuccessful_"); //send a successful accept condition to user to start board
+                        inGame = true;
                     }   
                 }
                 if (active = true) //DEBUG later
@@ -258,7 +265,10 @@ public class Connection extends Thread {
      * @param IP the IP to set.
      */
     public void setIP(String IP) {
-        this.IP = IP;
+        String newIP = IP.substring(1);
+        //DEBUG
+        System.out.println(newIP);
+        this.IP = newIP;
     } //end setIP.
 
     /**

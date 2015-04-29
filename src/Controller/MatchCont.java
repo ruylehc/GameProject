@@ -69,6 +69,15 @@ public class MatchCont extends Controller {
             model.sendUserInfo(usrInfo);
         }
         
+        if(value.equals("accept")) {
+            model.runGameServer();
+            String username = model.userName;
+            String[] split = usrInfo.split("_");
+            String newInfo = split[0] + "_" + username + "_" + split[1] + "_" + model.port;
+            System.out.println("This is the accept send in Match cont" + newInfo);
+            model.sendUserInfo(newInfo);
+        }
+        
       //Listen to close signal then update the user information to model.
         if (value.equals("close")) {
             model.sendUserInfo("close");            
@@ -102,6 +111,7 @@ public class MatchCont extends Controller {
     @Override
     public void updateUserInfo(String usrInfo) {
         this.usrInfo = usrInfo;
+        
     } // end updateUserInfo.
     
     public void lateAcceptDisplay(){

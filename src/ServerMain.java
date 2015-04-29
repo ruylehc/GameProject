@@ -28,6 +28,8 @@ public class ServerMain {
 		ss.setView(serView);
 		ss.setModel(model);
 		serView.setVisible(true);
+                
+                model.setServer(ss);
 	}//end main
 	
 }//end ServerMain

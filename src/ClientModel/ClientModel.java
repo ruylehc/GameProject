@@ -11,6 +11,7 @@ package ClientModel;
 
 import Controller.*;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,12 +31,14 @@ public class ClientModel {
     private boolean chat = false;
     private boolean userList = false;
     private boolean invited = false;
+    private boolean gameMode = false;
     
     private LoginCont contLog;
     private RegisterCont contReg;
     private MatchCont contMatch;
     private GameCont contGame;
-    private String userName = "";
+    public String userName = "";
+    public int port = -1; 
     //End declare variable
 
     /**
@@ -59,7 +62,10 @@ public class ClientModel {
     
     public void runGameServer(){
         try {
-            gmodel = new GameModel(sock.s.getPort());
+            
+            port = sock.s.getPort() + 5;
+            //gmodel = new GameModel(port);
+            gmodel = new GameModel(port); // kevins implement of using server sock port
             gmodel.setController(contGame);
             gmodel.listen();
         } catch (IOException ex) {
@@ -86,7 +92,11 @@ public class ClientModel {
                 contReg.setVisible(false);
             } else if (c.ID.equals("GameCtrl")) {
                 contGame = (GameCont) c;
-                contGame.setVisible(false);
+                contGame.setTitle(userName);
+            }
+            else if (c.ID.equals("MatchCtrl") && gameMode == true) {
+                contMatch = (MatchCont) c;
+                contMatch.setVisible(false);
             }
             c.switchView(signal);
         }
@@ -154,62 +164,22 @@ public class ClientModel {
         }
     }// end sendUserInfo
 
-    /*
-     public void authenticateStatus() throws IOException{
-     String rY = "rY"; //register success
-     String rUN = "rUN"; //register username problem
-
-     String LY = "lY"; //lY = login success
-     String LUN = "1UN"; //lUN = login username problem
-     String LUP = "1UP"; //1UP = login password incorrect
-     String status; // sendUserInfo status
-     //updateController = null;
-     boolean conn = true;
-     //while(conn) {
-     //int len = in.read(buffer) ;
-     //if (len >0) { //Display the server message if the user actually typing.
-     //status = new String(buffer, 0, len) ;
-     //updateController = status;
-
-     if (status.equals("success")){
-     //display register success
-     //			updateController = "loginSuccess";
-     //remove login view bring in lobby view
-     }
-     else if()
-     //		updateController = "loginFalse";
-
-     else if (status.equals(rUN)){
-     //display register username fail
-     //clear username field
-     }
-     else if (status.equals(LY)){
-     //StartUpCont.listen(updateController);
-     //remove login view bring in lobby view
-     }
-     else if (status.equals(LUN)){
-     //display login username fail
-     //clear username
-     }
-     else if (status.equals(LUP)){
-     //display login password problem
-     //clear password field
-     }
-
-     //}
-     //	else {
-     //view.msgTF.append("Lost Server Connection") ;
-     //	conn = false ;
-     //}
-     //} 
-     //return updateController;
-     //close the I/O Stream and the socket.
-     //out.close();
-     //in.close() ;
-     //s.close();
-     }	
-
-     */
+    public int findOpenPort() {
+        for (int i = 1; i < 65000; i++) {
+            try {
+                ServerSocket test = new ServerSocket(i);
+                test.close();
+                port = i;
+                break;
+            } catch (IOException e) {
+                System.out.println("Could not listen on port: " + i);
+                e.printStackTrace();
+    // ...
+            }
+        }
+        return port; 
+    }
+    
     /**
      * Update the server message
      *
@@ -219,7 +189,7 @@ public class ClientModel {
 
         String[] split = msg.split("_");
         //DEBUG
-        System.out.println(msg);
+        System.out.println("This is client model recieving msg from server " + msg);
 
         boolean temp = false;
 
@@ -249,7 +219,10 @@ public class ClientModel {
                 this.handleInvite(host);
                 break;
             case "accept":
+                System.out.println("this is the CModel on the recieving end " + msg);
+                gameMode = true;
                 handleAccept(msg);
+                this.switchController("gameBoard");
                 break;
             case "list":
                 //DEBUG
@@ -261,7 +234,10 @@ public class ClientModel {
                 lateAccept();
                 // close socket here
                 break;
-            case "acceptsuccessful":
+            case "acceptSuccessful":
+                gameMode = true;
+                this.switchController("gameBoard");
+                break;
                 
             default:
                 JOptionPane.showMessageDialog(null, msg);   //Display server messages if failed login or register
@@ -312,7 +288,11 @@ public class ClientModel {
         String[] split = acceptMsg.split("_");
        // String invitedUser = split[0] ;
        // if(invitedUser)
-        startGame(split[3], split[4]);
+        //runGameServer();
+        System.out.println("this is the CModel on the recieving end " + acceptMsg);
+        gmodel = new GameModel(split[4], split[3]);
+        gmodel.setController(contGame);
+        //gmodel.startGame(split[4], split[3]);
 
     }
    
@@ -326,25 +306,4 @@ public class ClientModel {
         this.sock = sock;
     } // end setSock
 
-    public void startGame(String internetAddress, String portNumber) { // startGame after we handleAccept above
-        // write startGame method with invitee's network information
-    }
-	//Comment:
-    // I dont think that this one is working for now because we already sent the information 
-    // from the client through the sendUserMsg() , which means there is no need for this method
-	/*
-     public void sendSingleInvite(String info) {
-
-     try {
-     sock.writeUserMessage(info);
-     } catch (IOException e) {
-     // TODO Auto-generated catch block
-     e.printStackTrace();
-     }
-     }
-
-     public void sendMultpleInvite(String info) {
-
-     }
-     */
 }

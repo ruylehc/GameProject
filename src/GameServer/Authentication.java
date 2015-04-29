@@ -17,14 +17,8 @@ public class Authentication {
 
     //Key is the username, value is the password (need to implement hashing + salt)
     HashMap<String, String> map = new HashMap<String, String>();
+    private Server ss;
 
-	//Key is the user name, value is the IP address in string format
-	/*
-     * Comment: This one is might be not use able because of connection could 
-     * provide ip, username 
-     *
-     *HashMap <String,String> onlineUser = new HashMap<String,String>(); 
-     */
     
     /**
      * Loading the user information from the text file when server started.
@@ -98,7 +92,11 @@ public class Authentication {
 
         if (map.containsKey(userN) && userP.equals(map.get(userN))) {
             System.out.println("log from model of sever: " + userN + ", " + userP);
-            status = "loginSuccess" + "_" + userN;
+            if (ss.checkOnlineUser(userN) == true) {
+                status = "User already login!";
+            } else {
+                status = "loginSuccess" + "_" + userN;
+            }
 
             /*
              * Comment: this is might not user anymore while connection class do the thing.
@@ -192,5 +190,9 @@ public class Authentication {
             map.put(user, pass);
         }
     }//end readTextFile.
+    
+    public void setServer(Server ss){
+        this.ss = ss;
+    }
 
 }// end Authentication.

@@ -136,9 +136,14 @@ public class Server implements Runnable {
      * @param invitation - Invitation.
      */
     public void sendInvitation(String userName, String invitation) {
+         String[] split1 = invitation.split("_");
         for (Connection c : list) {
             if (c.getUserName().equals(userName)) {
                 c.sendServerMsg(invitation);
+                if(split1[0].equals("accept"))
+                    c.inGame = true;
+                //DEBUG
+                System.out.println("This is the server in sendIvitation: "+ c.inGame);
             }
             String[] split = userName.split("_");
             if (split[0].equals("all")) {
@@ -174,7 +179,7 @@ public class Server implements Runnable {
     boolean checkOnlineUser(String userName) {
         boolean on = false;
         for (Connection c : list) {
-            if (c.getUserName().equals(userName)) {
+            if (c.getUserName().equals(userName) && c.inGame == false) {
                 on = true;
                 break;
             }

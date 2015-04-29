@@ -246,11 +246,23 @@ public class MatchMaking extends javax.swing.JFrame {
     
     
     private void acceptInviteActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
+        String accept = "";
+        accept = "accept_" + inviteList.getSelectedValue().toString();
+        controller.updateUserInfo(accept);
+        controller.listen("accept");
+        // runs trhough the list of invites and deletes the one we selected
+        for(String element:temp){
+            if(element.equals(inviteList.getSelectedValue().toString()))
+                temp.remove(element);
+        }
     }                                            
 
     private void declineInviteActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        // TODO add your handling code here:
+        // runs trhough the list of invites and deletes the one we selected
+        for(String element:temp){
+            if(element.equals(inviteList.getSelectedValue().toString()))
+                temp.remove(element);
+        }
     }                                             
 
     /**
