@@ -156,6 +156,7 @@ public class MatchCont extends Controller {
         view.setVisible(value);
     } // end setVisible.
     
+
     
     /**
      * sets the title for the lobby view so we have the user name in title bar

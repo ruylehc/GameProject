@@ -28,10 +28,12 @@ public class PlayerMain {
 
 	public static void main(String[] args) throws UnknownHostException{
 		ClientModel model = new ClientModel();
+
                // if(){
                     //model.setIp(args[0]);
                // }
                 
+
 		//GUI
 		StartUp viewSU = new StartUp();
 		Login viewLog = new Login();

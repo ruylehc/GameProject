@@ -56,8 +56,10 @@ public class ClientModel {
      */
     public void runTCP(){
         try {
+
             //sock = new SocketClient(IP,52546); //this line is used for starting from cmd line
             sock = new SocketClient(); // this line is used for non cmd line starting
+
             sock.setModel(this);
             sock.createListener();
         } catch (IOException ex) {
@@ -289,6 +291,7 @@ public class ClientModel {
 
     }
    
+
 
     /**
      * this method is a setter method for the socket client 
