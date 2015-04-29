@@ -151,9 +151,11 @@ public class Connection extends Thread {
                 } //Send server invitation message to one player.
                 else if (type.equals("sInvite")) {
                     String userToBeInvited = split[1];
-                    String msg = "invite_" + this.userName; //This String contains identity of "invite", and the inviter user name. 
-                    if (ss.checkOnlineUser(userToBeInvited) == true)   //Checks if the player is online.
-                        ss.sendInvitation(userToBeInvited, msg);
+                    String msg = "invite_" + this.userName; //This String contains identity of "invite", and the inviter user name.                     
+                    if(ss.checkOnlineUser(userToBeInvited) == true && userToBeInvited.equals(this.userName))
+                        sendServerMsg("You can't play game with yourself!");
+                    else if (ss.checkOnlineUser(userToBeInvited) == true && !userToBeInvited.equals(this.userName))   //Checks if the player is online.
+                        ss.sendInvitation(userToBeInvited, msg);                     
                     
                 } //Send server invitation messge to all players.               
                 else if(type.equals("mInvite")){

@@ -48,8 +48,11 @@ public class ClientModel {
      */
     public void addController(Controller newController) {
         list.add(newController);
-    }
+    }// end addController.
     
+    /**
+     * Start the new socket
+     */
     public void runTCP(){
         try {
             sock = new SocketClient();
@@ -60,12 +63,13 @@ public class ClientModel {
         }        
     }
     
+    /**
+     * Start the Game Server
+     */
     public void runGameServer(){
-        try {
-            
+        try {            
             port = sock.s.getPort() + 5;
-            //gmodel = new GameModel(port);
-            gmodel = new GameModel(port); // kevins implement of using server sock port
+            gmodel = new GameModel(port);
             gmodel.setController(contGame);
             gmodel.listen();
         } catch (IOException ex) {

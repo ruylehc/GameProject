@@ -257,13 +257,24 @@ public class MatchMaking extends javax.swing.JFrame {
         }
     }                                            
 
-    private void declineInviteActionPerformed(java.awt.event.ActionEvent evt) {                                              
+    private void declineInviteActionPerformed(java.awt.event.ActionEvent evt) {
         // runs trhough the list of invites and deletes the one we selected
-        for(String element:temp){
-            if(element.equals(inviteList.getSelectedValue().toString()))
-                temp.remove(element);
+
+        String user = "";
+        //controller.updateUserInfo(null);
+        controller.listen("decline");
+        int length = temp.size();
+        for (int i = 0; i < length; i++) {
+            if (temp.get(i).equals(inviteList.getSelectedValue().toString())) {
+                temp.remove(temp.get(i));                
+            }
+            if (temp.size() == 0 || temp.size() == 1) {
+                    break;                    
+            }
+            user = temp.get(i) + "_";
         }
-    }                                             
+        setInviterList(user);
+    }                             
 
     /**
      * ActionPerformed according to the login button.
@@ -286,7 +297,8 @@ public class MatchMaking extends javax.swing.JFrame {
         list = new DefaultListModel();
         
         for(String element: split)
-            list.addElement(element);        
+            if(!element.equals("undef"))
+                list.addElement(element);        
         availableList.setModel(list);
     }        
     
@@ -296,21 +308,24 @@ public class MatchMaking extends javax.swing.JFrame {
      * implement and the list will need to be re-populated every time a user plays a game or logs out
      * @param users list of just the users in format "User1_user2_..."
      */
-    ArrayList<String> temp = new ArrayList<String>();
+    
     public void setInviterList(String users) {
         //DEBUG
         System.out.println("This is the Match view: " + users);
         String[] split = users.split("_");  
         
-        if (!temp.contains(split[0]))
-            temp.add(split[0]);
-        
+        for (String name : split) {
+            if (!temp.contains(name)) 
+                temp.add(name);
+        }
         inviter = new DefaultListModel();
         
         for(String element: temp)
-            inviter.addElement(element);        
+            inviter.addElement(element);  
+        
         inviteList.setModel(inviter);
-    }               
+           
+    }
 
     public void setViewTitle(String title){
         //this.title = title;
@@ -378,5 +393,6 @@ public class MatchMaking extends javax.swing.JFrame {
     private MatchCont controller;
     private DefaultListModel list;
     private DefaultListModel inviter;
+    ArrayList<String> temp = new ArrayList<String>();
     // End of variables declaration//GEN-END:variables
 }

@@ -78,6 +78,10 @@ public class MatchCont extends Controller {
             model.sendUserInfo(newInfo);
         }
         
+        if(value.equals("decline")){
+            
+        }
+        
       //Listen to close signal then update the user information to model.
         if (value.equals("close")) {
             model.sendUserInfo("close");            
