@@ -179,6 +179,8 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private GameCont controller;
+    public int counter ; 
+    
     // End of variables declaration//GEN-END:variables
 
     /**
