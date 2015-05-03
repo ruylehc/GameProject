@@ -17,7 +17,9 @@ public class Authentication {
 
     //Key is the username, value is the password (need to implement hashing + salt)
     HashMap<String, String> map = new HashMap<String, String>();
+    HashMap <String,String> stats = new HashMap<String, String>();
     private Server ss;
+    ArrayList <String> guests = new ArrayList <String>();
 
     
     /**
@@ -60,8 +62,9 @@ public class Authentication {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            map.put(userName, userPass);	//Put new valid user into map.
-
+            String stat ="" + 0 + "_" + 0 + "_" + 0.0;  
+            map.put(userName, userPass); //Put new valid user into map.
+            stats.put(userName,stat );
             /*
              * Comment: this is might not user anymore while connection class do the thing.
              String ipaddr = "";
@@ -111,6 +114,16 @@ public class Authentication {
 
         return status;
     }// end login	
+    
+    public String registerGuest(){
+        int number =  guests.size();
+        number = number +1;
+        String username = "guest" + number;
+        guests.add(username);
+        
+        return username;
+        
+    }
 
     /**
      * This method writes the new user info to a Text file to store the user info. 
@@ -194,5 +207,32 @@ public class Authentication {
     public void setServer(Server ss){
         this.ss = ss;
     }
-
+    public void editStats(String information){
+      String[] split = information.split("_"); 
+      String theStats = stats.get(split[2]);
+      String[] statSplit = theStats.split("_");
+      double win;
+      int lose;
+      double ratio;
+      String newStats;
+      
+      switch (split[1]){
+              case "win":
+                  win = Double.parseDouble(split[0])+1;
+                  lose = Integer.parseInt(split[1]);
+                  ratio = win/lose;
+                  newStats = win  + "_" + lose + "_" + ratio + "_";
+                  stats.put(split[2],newStats);
+                  
+                  break;
+              case "lose":
+                  win = Double.parseDouble(split[0]);
+                  lose = Integer.parseInt(split[1])+1;
+                  ratio = win/lose;
+                  newStats = win  + "_" + lose + "_" + ratio + "_";
+                  stats.put(split[2],newStats);
+                  
+                  break;
+      }
+    }
 }// end Authentication.

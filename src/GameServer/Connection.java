@@ -136,6 +136,7 @@ public class Connection extends Thread {
                         userName = split[1].toLowerCase();
                         passWord = split[2];
                         rePassword = split[3];
+                        
                     }
 
                     //String Validation of the user name and password.
@@ -187,6 +188,15 @@ public class Connection extends Thread {
                         sendServerMsg("acceptSuccessful_"); //send a successful accept condition to user to start board
                         inGame = true;
                     }   
+                }
+                else if( type.equals("guest")){
+                   this.userName = model.registerGuest();
+                   active = true;
+                    sendServerMsg("guest_" + this.userName);
+                    
+                }
+                else if (type.equals("stats")){
+                    
                 }
                 if (active = true) //DEBUG later
                 //Display the user online list everytime                

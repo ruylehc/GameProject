@@ -33,10 +33,10 @@ public class AI {
      * @return 
      */
      public boolean checkWin(int[][] theboard, int playerToken) {
-     if (checkRow(theboard, playerToken) || checkCol(theboard, playerToken) || checkDiag(theboard, playerToken)) {
+      /*  if (checkRow(theboard, playerToken) == true || checkCol(theboard, playerToken) == true || checkDiag(theboard, playerToken) == true) {
      return true;
      }
-
+         */
      return false;
      }
      

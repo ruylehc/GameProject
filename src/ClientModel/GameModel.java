@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class GameModel implements Runnable {
 
@@ -37,7 +38,7 @@ public class GameModel implements Runnable {
     private int port;
     private ClientModel cmodel;
     private GameCont contGame;
-    private GameBoard gameB = new GameBoard();
+   // private GameBoard gameB = new GameBoard();
 
     // These methods handle connecting to the other class
     // this method needs to be made by a MMcontroller with the
@@ -110,6 +111,7 @@ public class GameModel implements Runnable {
             out.write(bufferOut);
             out.flush();
         } catch (IOException e) {
+            handleQuit();
             System.out.println("Connection is closed!");
             //e.printStackTrace();
             //close();
@@ -138,20 +140,23 @@ public class GameModel implements Runnable {
 
                 switch (type) {  //these switch statements need to be implented for game play
                     case "move":
-
+                        int row =  Integer.parseInt(split[2]);
+                        int col = Integer.parseInt(split[3]);
+                        
                         break;
+                        
                     case "win":
 
                         break;
-                    case "lose":
 
-                        break;
                     case "tie":
 
                         break;
+                        
                     case "quit":
-
+                        handleQuit();
                         break;
+                        
                     default:
 
                         break;
@@ -261,7 +266,10 @@ public class GameModel implements Runnable {
             return false;
         }
     }
-
+    /**
+     * this method updates the moveCounter every time a move is made
+     * 
+     */
     public void updateMoveCounter() {
         if (p1turn = true) {
             if (counter % 2 == 0) {
@@ -271,17 +279,20 @@ public class GameModel implements Runnable {
             } else {
                 p1turncounter = false;
                 p2turncounter = true;
+                counter++;
             }
         } else if (p2turn = true) {
+
             if (counter % 2 == 0) {
-                if (counter % 2 == 0) {
-                    p2turncounter = true;
-                    p1turncounter = false;
-                } else {
-                    p2turncounter = false;
-                    p1turncounter = true;
-                }
+                p2turncounter = true;
+                p1turncounter = false;
+                counter++;
+            } else {
+                p2turncounter = false;
+                p1turncounter = true;
+                counter++;
             }
+
         }
     }
 
@@ -308,18 +319,64 @@ public class GameModel implements Runnable {
         } //while
 
     }
-
+/**
+ * this method validates and draws the move; used when receiving a new move
+ * @param row the row the move was made in
+ * @param col the col the move was made in
+ * @param playerToken the player token value either 1 or 2
+ *  player token - 1 is for "home player" or you, 2 is for opponent 
+ */
+    public boolean validateOppMove(int row, int col, int playerToken){
+      if(row<SIZE && col <SIZE && row >-1 && col > -1){  // checks the boundarys of the board
+        if(validMove(row, col)){ // checks if the move location has already been taken
+            if(p2turncounter == true){
+                markBoard(playerToken, row, col);
+                drawBoard(playerToken, row, col);
+                return true; 
+            }
+            checkTie();
+        }
+      }
+      return false;
+    } // end validateMove
+    
+    
+    /**
+ * this method validates and draws the move; used to validate our move
+ * @param row the row the move was made in
+ * @param col the col the move was made in
+ * @param playerToken the player token value either 1 or 2
+ *  player token - 1 is for "home player" or you, 2 is for opponent 
+ */
+    public boolean validateOurMove(int row, int col, int playerToken){
+      if(row<SIZE && col <SIZE && row >-1 && col > -1){  // checks the boundarys of the board
+        if(validMove(row, col)){ // checks if the move location has already been taken
+            if(p1turncounter == true){
+                markBoard(playerToken, row, col);
+                drawBoard(playerToken, row, col);
+                return true; 
+            }
+            checkTie();
+        }
+      }
+      return false;
+    } // end validateMove
+    
+    
+    
     /**
      * errors are because rows and columns are not yet declared in the game
      * board class, want to wait see what you guys wanted to do
      */
-    public boolean checkTie(GameBoard gameB) {
-        if (gameB.counter == ((gameB.rows) * (gameB.columns) - 1)) {
+    public boolean checkTie() {
+        if (counter == ((SIZE) * (SIZE) +2)) {
+            handleTie();
             return true;
         } else {
             return false;
         }
     }
+    
     /*
      public void drawMove(Gameboard, int xCord, int yCord) {
      int jHeight = Jpanel.getHeight();
@@ -336,14 +393,20 @@ public class GameModel implements Runnable {
      //rightRect = (leftRect) + xrectInc;
      GameBoard.gui.fillRect(leftRect + 2, xrectInc - 2, topRect + 2, yrectInc + 2);
      }
-
-     public boolean checkWin(int[][] theboard, int playerToken) {
-     if (checkRow(theboard, playerToken) || checkCol(theboard, playerToken) || checkDiag(theboard, playerToken)) {
-     return true;
-     }
-
-     return false;
-     }*/
+*/
+    
+    /**
+     * method takes in a move and checks if the move resulted in a win
+     * @param theboard - the 2d array board passed to be checked
+     * @param playerToken - 1 or 2 to identify the player
+     * @return 
+     */
+    public boolean checkWin(int[][] theboard, int playerToken) {
+        if (checkRow(theboard, playerToken) || checkCol(theboard, playerToken) || checkDiag(theboard, playerToken)) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * checks the Rows of the board to see if there is 5 in a row
@@ -369,10 +432,9 @@ public class GameModel implements Runnable {
 
     /**
      * checks the Cols of the board to see if there is 5 in a row
-     *
      * @param theboard the 2d array to be scanned
      * @return true if the board contains 5 in a row
-     */
+     */   
     public boolean checkCol(int[][] theboard, int playerToken) {
 
         int size = theboard.length;
@@ -426,15 +488,35 @@ public class GameModel implements Runnable {
     }
 
     public void handleWin() {
-
+        cmodel.sendUserInfo("stats_" + cmodel.userName + "_win");
     }
 
     public void handleQuit() {
-
+        JOptionPane.showMessageDialog(null, "They quit!");
+        handleWin();
+        cmodel.switchController("lobby");
+        try {
+            sc.close();
+        } catch (IOException ex) {
+            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
     }
 
     public void handleTie() {
+        JOptionPane.showMessageDialog(null, "Tie!");
+        cmodel.switchController("lobby");
+        
+        try {
+            sc.close();
+        } catch (IOException ex) {
+            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
+    }
 
+    private void drawBoard(int playerToken, int row, int col) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

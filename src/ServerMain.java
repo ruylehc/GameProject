@@ -23,6 +23,7 @@ public class ServerMain {
 		Server ss = new Server(52546);
 		Authentication model = new Authentication();
 		model.loadData();
+                
 		//Connect Echo Sever, Model and the GUI
 		serView.setServer(ss);
 		ss.setView(serView);
