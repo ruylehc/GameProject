@@ -55,7 +55,8 @@ public class StartUpCont extends Controller {
             }
 
             if (value.equals("anonymous")) {
-                model.switchController("lobby");
+                model.sendUserInfo("guest_");
+                model.switchController("lobby"); // success every time so can switch views here
             }
         }
 

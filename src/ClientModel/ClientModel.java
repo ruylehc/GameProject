@@ -220,6 +220,11 @@ public class ClientModel {
                 this.switchController("lobby");
                 userName = split[1];
                 break;
+            case "guest":
+                isValid = true;
+                this.userName = split[1];
+                this.setTitle(userName);
+                break;
             case "invite":
                 invited = true;
                 String host = split[1];
@@ -245,7 +250,6 @@ public class ClientModel {
                 gameMode = true;
                 this.switchController("gameBoard");
                 break;
-                
             default:
                 JOptionPane.showMessageDialog(null, msg);   //Display server messages if failed login or register
                 break;
@@ -253,15 +257,18 @@ public class ClientModel {
         }
 
     } // end updateServerMsg            
-    
+
     /**
-     * this method handles late expect by calling the match controller to display a error message
+     * this method handles late expect by calling the match controller to
+     * display a error message
      */
-    public void lateAccept(){
+    public void lateAccept() {
         contMatch.lateAcceptDisplay();
     }
+
     /**
      * this method handles invite by passing it to the view
+     *
      * @param inviteMsg the status string that is passed from the other client
      */
     public void handleInvite(String inviteMsg) { // handle received invite from server

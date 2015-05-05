@@ -17,7 +17,9 @@ public class Authentication {
 
     //Key is the username, value is the password (need to implement hashing + salt)
     HashMap<String, String> map = new HashMap<String, String>();
+    HashMap <String,String> stats = new HashMap<String, String>();
     private Server ss;
+    ArrayList <String> guests = new ArrayList <String>();
 
     
     /**
@@ -28,6 +30,7 @@ public class Authentication {
         System.out.println("loaded user info");
         //Load the user information
         readTextFile();
+        readStatsFile();
     }// end loadData.
 
     /**
@@ -60,8 +63,9 @@ public class Authentication {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            map.put(userName, userPass);	//Put new valid user into map.
-
+            String stat ="" + 0 + "_" + 0 + "_" + 0.0;  
+            map.put(userName, userPass); //Put new valid user into map.
+            stats.put(userName,stat );
             /*
              * Comment: this is might not user anymore while connection class do the thing.
              String ipaddr = "";
@@ -111,6 +115,16 @@ public class Authentication {
 
         return status;
     }// end login	
+    
+    public String registerGuest(){
+        int number =  guests.size();
+        number = number +1;
+        String username = "guest" + number;
+        guests.add(username);
+        
+        return username;
+        
+    }
 
     /**
      * This method writes the new user info to a Text file to store the user info. 
@@ -147,7 +161,7 @@ public class Authentication {
             }
         }
     }// end writeTextFile.
-
+    
     /**
      * Reads from a text file that holds the user info when the server is shut
      * down. It reads the file line by line with each line being a diferent user
@@ -168,12 +182,7 @@ public class Authentication {
         String line;
         String user;
         String pass;
-        /*
-         String wins = ""; later implementation strings for scores in the text file
-         String loss = "";
-         String draw = "";
-         String ratio = "";
-         */
+        
         while (scan.hasNext()) {
             line = scan.nextLine();
             //String[] data = finder.split("_");
@@ -181,18 +190,121 @@ public class Authentication {
             lineScan.useDelimiter("\\s*\\_\\s*");  // delimiters are "_"
             user = lineScan.next();
             pass = lineScan.next();
-            /*
-             wins = data[2];
-             loss = data[3];
-             draw = data[4];
-             ratio = data[5];
-             */
+            
+           
             map.put(user, pass);
+        }
+    }//end readTextFile.
+    
+    /**
+     * this method reads from a file that HOLDS THE STATS
+     * @param userText - the user name passed to the method to write to the file
+     * @param statsText - the stats passed to the program to be stored/updated
+     * @throws FileNotFoundException 
+     */
+    public void writeStatsFile(String userText, String statsText) throws FileNotFoundException {
+        //public void writeTextFile (String userTextfile, ArrayList<String> info) throws FileNotFoundException{  // for updated hashmap
+        PrintWriter writer = null;
+        String userpass = new String(userText + "_" + statsText);
+        /*String pass = info.get(0);
+         String wins = "info.get(1);
+         String lose = "info.get(2);
+         String draw = "info.get(3);
+         String ratio = "info.get(4);
+         String userpass = new String(userTextfile + "_" + pass + "_" + wins + "_" + lose + "_" + ratio);
+
+         this code will be implemented when we convert our hashmap to a hashmap<String, Arraylist <String> >
+         */
+        try {
+
+            writer = new PrintWriter(new BufferedWriter(new FileWriter("StatsFile.txt", true)));
+            System.out.println("From write file: " + userpass);
+            writer.println(userpass);
+            writer.flush();
+
+        } catch (IOException ex) {
+            //Logger.getLogger(TextFileWriter.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
+    }// end writeTextFile.
+    
+    public void readStatsFile() {
+		//BufferedReader reader = new BufferedReader("SuperSecretLoginInfo.txt");
+        // Create the scanner (open the file for reading)
+        Scanner scan = null;
+        Scanner lineScan = null;  // used to parse one line
+
+        try {
+            scan = new Scanner(new File("StatsFile.txt"));
+        } catch (IOException e) {
+            System.err.println("Error reading from: StatsFile.txt");
+            System.exit(1);
+        }
+        String line;
+        String user;
+        String info;
+
+         String wins = ""; //later implementation strings for scores in the text file
+         String loss = "";
+         String draw = "";
+         String ratio = "";
+
+        while (scan.hasNext()) {
+            line = scan.nextLine(); 
+         
+            //String[] data = finder.split("_");
+            lineScan = new Scanner(line);
+            lineScan.useDelimiter("\\s*\\_\\s*");  // delimiters are "_"
+            user = lineScan.next();
+            wins = lineScan.next();
+            loss = lineScan.next();
+            ratio = lineScan.next();
+            
+            info = wins + "_" + loss + "_" + ratio + "_";
+
+            stats.put(user, info);
         }
     }//end readTextFile.
     
     public void setServer(Server ss){
         this.ss = ss;
     }
+    public void editStats(String information) {
+        String[] split = information.split("_");
+        String theStats = stats.get(split[2]);
+        String[] statSplit = theStats.split("_");
+        double win;
+        int lose;
+        double ratio;
+        String newStats = "";
 
+        switch (split[1]) {
+            case "win":
+                win = Double.parseDouble(split[0]) + 1;
+                lose = Integer.parseInt(split[1]);
+                ratio = win / lose;
+                newStats = win + "_" + lose + "_" + ratio + "_";
+                stats.put(split[2], newStats);
+
+                break;
+            case "lose":
+                win = Double.parseDouble(split[0]);
+                lose = Integer.parseInt(split[1]) + 1;
+                ratio = win / lose;
+                newStats = win + "_" + lose + "_" + ratio + "_";
+                stats.put(split[2], newStats);
+
+                break;
+        }
+        try {
+            writeStatsFile(split[2], newStats);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }// end editStats method
+    
 }// end Authentication.

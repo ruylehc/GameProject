@@ -133,7 +133,9 @@ public class Login extends javax.swing.JFrame {
      * @param evt
      */
     private void logButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        String info = "login_" + userTF.getText() + "_" + passTF.getText();
+        //Object pass = (Object) passTF.getText();
+        int hashPass = hash(passTF.getText()+"g3hzpwh46h7j"); // our hashed password with salt
+        String info = "login_" + userTF.getText() + "_" + hashPass;
         controller.updateUserInfo(info);
         controller.listen("login");
         passTF.setText("");
@@ -155,6 +157,17 @@ public class Login extends javax.swing.JFrame {
     public void setController(LoginCont controller){
     	this.controller = controller;
     }    
+    
+    /**
+     * hashes the string passed to it 
+     * @param pass the string passed to it, for this application it will be password
+     * @return the hash code of the string
+     */
+    public int hash(String pass){
+        
+        return pass.hashCode();
+        
+    }
     
     /**
      * @param args the command line arguments

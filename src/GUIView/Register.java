@@ -154,7 +154,9 @@ public class Register extends javax.swing.JFrame {
      * @param evt
      */
     private void regButtonActionPerformed(java.awt.event.ActionEvent evt) { 
-    	String info = "register_" + userTF.getText() + "_" + passTF.getText() + "_" + rePassTF.getText();
+    	int hashPass = hash(passTF.getText()+"g3hzpwh46h7j"); // our hashed password with salt
+        int hashPass2 = hash(passTF.getText()+"g3hzpwh46h7j"); // our hashed password with salt
+        String info = "register_" + userTF.getText() + "_" + hashPass + "_" + hashPass2;
         controller.updateUserInfo(info);
         controller.listen("register");
         userTF.setText("");
@@ -170,6 +172,18 @@ public class Register extends javax.swing.JFrame {
         controller.listen("close");
     }
 
+    
+    /**
+     * hashes the string passed to it 
+     * @param pass the string passed to it, for this application it will be password
+     * @return the hash code of the string
+     */
+    public int hash(String pass){
+        
+        return pass.hashCode();
+        
+    }
+    
     /**
      * Set the controller to the register view
      * @param controller

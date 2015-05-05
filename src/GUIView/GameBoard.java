@@ -343,7 +343,8 @@ public class GameBoard extends javax.swing.JFrame {
     //private int n = 30; //Size for the board.
     //private int w;
     //private int h;
-    // End of variables declaration//GEN-END:variables                 
+    public int counter ; 
+    // End of variables declaration//GEN-END:variables
 
 
     /**
