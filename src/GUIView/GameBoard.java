@@ -1,8 +1,7 @@
 package GUIView;
 
 import Controller.GameCont;
-import Controller.LoginCont;
-
+import java.io.IOException;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -31,104 +30,259 @@ public class GameBoard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         chatTA = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        msgTF = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        boardView = new BoardView();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        menu = new javax.swing.JMenu();
+        start = new javax.swing.JMenuItem();
+        logOut = new javax.swing.JMenuItem();
+        quit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        board30 = new javax.swing.JMenuItem();
+        board40 = new javax.swing.JMenuItem();
+        board50 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Play Game");
         setResizable(false);
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Game Board");
-        jScrollPane1.setViewportView(jTextArea1);
-
-        chatTA.setColumns(20);
-        chatTA.setRows(5);
-        chatTA.setText("Chat Window:\n");
-        jScrollPane2.setViewportView(chatTA);
-
-        jLabel1.setText("Type message and Press Enter");
-
-        jMenu1.setText("Game Option");
-
-        jMenuItem1.setText("30x30");
-        jMenu1.add(jMenuItem1);
-
-        jMenuItem2.setText("40x40");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
 
-        jMenuItem3.setText("50x50");
-        jMenu1.add(jMenuItem3);
+        chatTA.setBackground(new java.awt.Color(51, 51, 51));
+        chatTA.setColumns(20);
+        chatTA.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        chatTA.setForeground(new java.awt.Color(255, 255, 255));
+        chatTA.setRows(5);
+        chatTA.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Window Chat", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 0, 14), new java.awt.Color(255, 0, 51))); // NOI18N
+        jScrollPane2.setViewportView(chatTA);
 
-        jMenuBar1.add(jMenu1);
+        msgTF.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        msgTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                msgTFActionPerformed(evt);
+            }
+        });
 
-        jMenu2.setText("Quit ");
+        jLabel2.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        jLabel2.setText("                   Player Information");
+
+        jLabel3.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+        jLabel3.setText("       Turn : player ...");
+
+        jLabel4.setText("Player 1");
+
+        jLabel5.setText("Player2");
+
+        boardView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                boardViewMouseClicked(evt);
+            }
+        });
+        
+        
+        
+        javax.swing.GroupLayout boardViewLayout = new javax.swing.GroupLayout(boardView);
+        boardView.setLayout(boardViewLayout);
+        boardViewLayout.setHorizontalGroup(
+            boardViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 700, Short.MAX_VALUE)
+        );
+        boardViewLayout.setVerticalGroup(
+            boardViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        menu.setText("Menu");
+        
+        start.setText("Start Game");
+        start.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startActionPerformed(evt);
+            }
+        });
+        menu.add(start);
+
+        logOut.setText("Log Out");
+        logOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOutActionPerformed(evt);
+            }
+        });
+        menu.add(logOut);
+
+        quit.setText("Quit");
+        quit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitActionPerformed(evt);
+            }
+        });
+        menu.add(quit);
+
+        jMenuBar1.add(menu);
+
+        jMenu2.setText("Game Options");
+
+        board30.setText("30x30 (Default)");
+        board30.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                board30ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(board30);
+
+        board40.setText("40x40");
+        board40.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                board40ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(board40);
+
+        board50.setText("50x50");
+        board50.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                board50ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(board50);
+
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Log Out");
-        jMenuBar1.add(jMenu3);
-
         setJMenuBar(jMenuBar1);
+        
+        
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(boardView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2)
+                    .addComponent(msgTF)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 575, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(73, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addGap(313, 313, 313))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
+                        .addGap(192, 192, 192))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(msgTF, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 231, Short.MAX_VALUE))
+                    .addComponent(boardView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel5))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26))
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    public void setViewTitle(String title){
-        setTitle(title);
+        setLocationRelativeTo(null);
     }
+    private void quitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitActionPerformed
+        controller.listen("quit");
+    }//GEN-LAST:event_quitActionPerformed
+
+    private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
+        controller.listen("close");
+    }//GEN-LAST:event_logOutActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        controller.listen("close");
+    }//GEN-LAST:event_formWindowClosing
+
+    private void board30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board30ActionPerformed
+        controller.updateUserInfo("30");
+        controller.listen("size");
+        /*
+    	if(running == false){
+    		option = true;
+    		n = 30; w = h = 720;
+    		load();
+    	}
+    	else
+    		javax.swing.JOptionPane.showMessageDialog(this,"Game is running.");
+        */
+    }//GEN-LAST:event_board30ActionPerformed
+
+    private void board40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board40ActionPerformed
+        /*
+    	if(running == false){
+    		option = true;
+    		n = 40; w = h = 760;
+    		load();
+    	}else
+    		javax.swing.JOptionPane.showMessageDialog(this,"Game is running.");
+        */
+    }//GEN-LAST:event_board40ActionPerformed
+
+    private void board50ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board50ActionPerformed
+        /*
+    	if(running == false){
+    		option = true;
+    		n = 50; w = h = 750;
+    		load();
+    	}else
+    		javax.swing.JOptionPane.showMessageDialog(this,"Game is running.");
+        */
+    }//GEN-LAST:event_board50ActionPerformed
+
+    private void msgTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_msgTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_msgTFActionPerformed
     
+    private void boardViewMouseClicked(java.awt.event.MouseEvent evt) {                                      
+        // TODO add your handling code here:
+        int x, y ;
+        x = evt.getX();
+        y = evt.getY();
+        controller.updateUserInfo(x+"_"+y);
+        controller.listen("oneClick");
+    }      
+    
+    private void startActionPerformed(java.awt.event.ActionEvent evt) { 
+        controller.listen("start");
+        /*
+        	if( option == false)
+        		System.out.println("choose game.");
+        	else
+        		running = true;
+        */
+    }  
     /**
      * @param args the command line arguments
      */
@@ -163,23 +317,34 @@ public class GameBoard extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private boolean running = false, option = false;
+    private javax.swing.JMenuItem board30;
+    private javax.swing.JMenuItem board40;
+    private javax.swing.JMenuItem board50;
     private javax.swing.JTextArea chatTA;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JMenuItem logOut;
+    //private javax.swing.JPanel mazeview;
+    private javax.swing.JMenu menu;
+    private javax.swing.JTextField msgTF;
+    private javax.swing.JMenuItem quit;
+    private javax.swing.JMenuItem start;
     private GameCont controller;
-    // End of variables declaration//GEN-END:variables
+    private BoardView boardView;
+    //private Board board;
+    //private int n = 30; //Size for the board.
+    //private int w;
+    //private int h;
+    // End of variables declaration//GEN-END:variables                 
+
 
     /**
      * Set the controller to the login view
@@ -187,5 +352,29 @@ public class GameBoard extends javax.swing.JFrame {
      */
     public void setController(GameCont controller){
     	this.controller = controller;
+        boardView.setController(controller);
     }  
+    
+    public void setViewTitle(String title){
+        setTitle(title);
+    }
+    
+    /*
+    public void load() {
+        try {
+            board = new Board(n);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        boardView.setGrid(w, h);
+        boardView.setBoard(board);
+       
+    }
+    */
+    
+    public void updateBoard() {
+        boardView.reDrawBoard();
+    }
+   
 }

@@ -10,6 +10,7 @@ import ClientModel.ClientModel;
 import ClientModel.GameModel;
 import GUIView.GameBoard;
 import java.io.IOException;
+import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,6 +74,7 @@ public class GameCont extends Controller {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+            case "size":
         }
     }
 
@@ -118,6 +120,10 @@ public class GameCont extends Controller {
     
     public void setTitle(String user){
         view.setViewTitle(user);
+    }
+    
+    public void draw(Graphics g, int w, int h){
+        gmodel.draw(g, w, h);
     }
     
 }

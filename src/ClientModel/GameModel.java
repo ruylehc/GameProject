@@ -8,13 +8,19 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.awt.*;
 
 public class GameModel implements Runnable {
 
     //
-
-    public int board[][];
-    public int SIZE = 40;
+    //////////////////Board///////////////////
+    public int[][] board;
+    private int rows;
+    private int cols;
+    public int SIZE = 30;   //Default board size might be 30.
+    
+    private static final int BUFFER = 4;
+    /////////////////////////////////////////
     boolean p1Win = false;
     boolean p2Win = false;
     boolean p1turn;
@@ -35,8 +41,8 @@ public class GameModel implements Runnable {
     private ClientModel cmodel;
     private GameCont contGame;
 
-	// These methods handle connecting to the other class
-    // this method needs to be made by a MMcontroller with the
+    // These methods handle connecting to the other class
+    // This method needs to be made by a MMcontroller with the
     // gmodel.run() when the use hits the accept button
     /**
      * Default Constructor1 - Create the new server at assigned port.
@@ -51,6 +57,9 @@ public class GameModel implements Runnable {
             Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
+        
+        fillBoard();
+        
     }//end Socket Client.
 
     /**
@@ -63,7 +72,7 @@ public class GameModel implements Runnable {
     }
 
     /**
-     * Default Constructor1 - Create the new server at assigned port.
+     * Default Constructor2 - Create the new server at assigned port.
      *
      * @throws IOException.
      */
@@ -71,6 +80,8 @@ public class GameModel implements Runnable {
         bufferIn = new byte[BYTE_SIZE];
         this.port = port;
         ss = new ServerSocket(port);
+        
+        fillBoard();
     } //end Server.
 
     /**
@@ -217,6 +228,8 @@ public class GameModel implements Runnable {
      * initializes the board for a new game
      */
     public void fillBoard() {
+        rows = cols = SIZE;
+        board = new int[rows][cols];
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 board[i][j] = 0;
@@ -253,6 +266,46 @@ public class GameModel implements Runnable {
             return true;
         } else {
             return false;
+        }
+    }
+    
+    /**
+     * Draws this Board using the given Graphics object.
+     *
+     * @param g a Graphics object
+     * @param w the width of the canvas in pixels.
+     * @param h the height of the canvas in pixels.
+     */
+    public void draw(Graphics g, int w, int h) {
+        double cellW = (double) w / cols;
+        double cellH = (double) h / rows;
+        int cellWi = (int) Math.round(cellW);
+        int cellHi = (int) Math.round(cellH);
+
+        int x, y;
+        g.setColor(Color.white);
+        g.fillRect(0, 0, w, h);
+        g.setColor(Color.black);
+        //g.drawLine(w, 0, w, h);
+        //g.drawLine(0, h, w, h);
+        for (int r = 0; r <= rows; r++) {
+            y = (int) (r * cellH);
+            g.drawLine(0, y, w, y);
+
+            for (int c = 0; c <= cols; c++) {
+                x = (int) (c * cellW);
+                g.drawLine(x, 0, x, h);
+                int cell = board[r][c];
+                if (cell == 1) {    //Preresent for play are 1
+                    g.setColor(Color.blue);
+                    g.fillOval(x + BUFFER, y + BUFFER, cellWi - 2 * BUFFER, cellHi - 2 * BUFFER);
+                }
+                if (cell == -1) {   //Preresent for play are 2
+                    g.setColor(Color.red);
+                    g.fillOval(x + BUFFER, y + BUFFER, cellWi - 2 * BUFFER, cellHi - 2 * BUFFER);
+                }
+                g.setColor(Color.black);
+            }
         }
     }
 
