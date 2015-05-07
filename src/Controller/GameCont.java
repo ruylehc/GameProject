@@ -25,6 +25,7 @@ public class GameCont extends Controller {
     private GameModel gmodel;
     private GameBoard view;
     private String moveInfo = "";
+    private String info = "";
     String ID = "undef";
 
     /**
@@ -62,19 +63,35 @@ public class GameCont extends Controller {
         switch (value) {
             case "quit":
                 cmodel.switchController("lobby");
+                view.setVisible(false);
+                //gmodel.close();
+                /*
                 try {
                     gmodel.sc.close();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+                */
+                break;
             case "close":
                 cmodel.sendUserInfo("close");
-                try {
-                    gmodel.sc.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                //gmodel.close();
+                /*
+                 try {
+                 gmodel.sc.close();
+                 } catch (IOException ex) {
+                 ex.printStackTrace();
+                 }
+                 */
+                break;
+            case "logOut":
+                cmodel.switchController("startUp");
+                cmodel.sendUserInfo("close");
+                //gmodel.sendServerMsg("close");
+                view.setVisible(false);
+                break;
             case "size":
+                gmodel.changeSize(Integer.parseInt(info));
         }
     }
 

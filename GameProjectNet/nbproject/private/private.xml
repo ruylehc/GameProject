@@ -3,23 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/ClientModel/GameModel.java</file>
-            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/GUIView/BoardView.java</file>
             <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/GUIView/GameBoard.java</file>
             <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/Controller/GameCont.java</file>
-            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/ClientModel/Board.java</file>
-=======
-            <file>file:/X:/CSCE_320/GameProject/src/Controller/MatchCont.java</file>
-            <file>file:/X:/CSCE_320/GameProject/src/GameServer/Server.java</file>
-            <file>file:/X:/CSCE_320/GameProject/src/Controller/StartUpCont.java</file>
-            <file>file:/X:/CSCE_320/GameProject/src/GameServer/Authentication.java</file>
-            <file>file:/X:/CSCE_320/GameProject/src/ClientModel/AI.java</file>
-            <file>file:/X:/CSCE_320/GameProject/src/PlayerMain.java</file>
-            <file>file:/X:/CSCE_320/GameProject/src/ClientModel/ClientModel.java</file>
-            <file>file:/X:/CSCE_320/GameProject/src/GUIView/StartUp.java</file>
-            <file>file:/X:/CSCE_320/GameProject/src/GameServer/Connection.java</file>
->>>>>>> origin/master
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/ClientModel/ClientModel.java</file>
         </group>
     </open-files>
 </project-private>

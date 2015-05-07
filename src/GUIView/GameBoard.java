@@ -218,7 +218,7 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_quitActionPerformed
 
     private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
-        controller.listen("close");
+        controller.listen("logOut");
     }//GEN-LAST:event_logOutActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -240,6 +240,8 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_board30ActionPerformed
 
     private void board40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board40ActionPerformed
+        controller.updateUserInfo("40");
+        controller.listen("size");
         /*
     	if(running == false){
     		option = true;
@@ -251,6 +253,8 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_board40ActionPerformed
 
     private void board50ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board50ActionPerformed
+        controller.updateUserInfo("50");
+        controller.listen("size");
         /*
     	if(running == false){
     		option = true;

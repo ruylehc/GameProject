@@ -82,21 +82,38 @@ public class GameModel implements Runnable {
      *
      * @throws IOException.
      */
-    public GameModel(int port) throws IOException {
+    public GameModel(int port) {
         bufferIn = new byte[BYTE_SIZE];
         this.port = port;
-        ss = new ServerSocket(port);
+        try {
+            ss = new ServerSocket(port);
+        } catch (IOException ex) {
+            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         fillBoard();
-    } //end Server.
-
+    }
+    /**
+     * Close the I/O stream.
+     */
+    public void close() {
+        try {
+            out.close();
+            in.close();
+            sc.close();
+            terminate = false;
+            //active = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }// end close.
     /**
      * Accepts connections and creates Connection object.
      */
     @Override
     public void run() {
 
-        while (true) {
+        while (terminate == true) {
             try {
                 Socket sockClient = ss.accept();
                 in = sockClient.getInputStream();
@@ -104,6 +121,7 @@ public class GameModel implements Runnable {
                 this.readClientMsg();
             } catch (IOException e) {
                 e.printStackTrace();
+                close();
             }
         }
     } // end run.    
@@ -168,6 +186,10 @@ public class GameModel implements Runnable {
                         
                     case "quit":
                         handleQuit();
+                        break;
+                    
+                    case "close":
+                        close();
                         break;
                         
                     default:
@@ -550,13 +572,16 @@ public class GameModel implements Runnable {
     public void handleQuit() {
         JOptionPane.showMessageDialog(null, "They quit!");
         handleWin();
-        cmodel.switchController("lobby");
+        //cmodel.switchController("lobby");
+        close();
+        /*
         try {
             sc.close();
         } catch (IOException ex) {
             Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
+        */
     }
 
     public void handleTie() {

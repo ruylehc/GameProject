@@ -72,14 +72,10 @@ public class ClientModel {
      * client who invited you to a game
      */
     public void runGameServer(){
-        try {            
-            port = sock.s.getPort() + 5;
-            gmodel = new GameModel(port);
-            gmodel.setController(contGame);
-            gmodel.listen();
-        } catch (IOException ex) {
-            Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        port = sock.s.getPort() + 5;
+        gmodel = new GameModel(port);
+        gmodel.setController(contGame);
+        gmodel.listen();
     }// end 
     
     /**
@@ -297,8 +293,6 @@ public class ClientModel {
         //gmodel.startGame(split[4], split[3]);
 
     }
-   
-
 
     /**
      * this method is a setter method for the socket client 

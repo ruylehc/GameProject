@@ -261,12 +261,15 @@ public class MatchMaking extends javax.swing.JFrame {
         controller.updateUserInfo(accept);
         controller.listen("accept");
         // runs trhough the list of invites and deletes the one we selected
+        /*
         for(String element:temp){
             if(element.equals(inviteList.getSelectedValue().toString()))
                 temp.remove(element);
         }
         } else
             JOptionPane.showMessageDialog(null, "Please select a game invite to accept");
+        */
+        }
     }                                            
 
     private void declineInviteActionPerformed(java.awt.event.ActionEvent evt) {
