@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import java.awt.*;
 import javax.swing.JOptionPane;
 
-public class GameModel implements Runnable {
+public class GameModel  { // game model no longer implments runnable since it only has one connections
 
     //
     //////////////////Board///////////////////
@@ -31,10 +31,11 @@ public class GameModel implements Runnable {
     boolean p1turncounter; //access this boolean to know if p1 moves
     boolean p2turncounter; //access this boolean to know if p2 moves
     int counter = 2;
-    int p1Num = 1;
-    int p2Num = 2;
+    int P1 = 1;
+    int P2 = 2;
+    int PlayerNum = 0; // this holds the value of what player number you are
     int X = 1; // player 1 (host) mark
-    int O = -1; // player 2 mark
+    int O = 2; // player 2 mark
     private Thread worker;
     private ServerSocket ss;
     public Socket sc;
@@ -52,15 +53,19 @@ public class GameModel implements Runnable {
     // This method needs to be made by a MMcontroller with the
     // gmodel.run() when the use hits the accept button
     /**
-     * Default Constructor1 - Create the new server at assigned port.
+     * Default Constructor1 - Create the new socket to connect to serverSocket on other side.
      *
      * @throws IOException.
      */
-    public GameModel(String IP, String Port) {
+    public void createSocket(String IP, String Port) {
         int intPort = Integer.parseInt(Port);
         try {
-            SocketClient gameSock = new SocketClient(IP, intPort);
-            gameSock.createListener();
+            //SocketClient gameSock = new SocketClient(IP, intPort); changing from a socketclient to a normal Socket
+            Socket gameSock = new Socket(IP, intPort);
+            InputStream in = gameSock.getInputStream();
+            OutputStream out = gameSock.getOutputStream();
+            
+            
         } catch (IOException ex) {
             Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
@@ -69,8 +74,48 @@ public class GameModel implements Runnable {
         fillBoard();
 //        contGame.updateBoard();
         
-    }//end Socket Client.
+    }//end Socket
+    
+/**
+     * Default Constructor2 - Create the new server at assigned port.
+     *
+     * @throws IOException.
+     */
+    public void createServer(int port) {
+        bufferIn = new byte[BYTE_SIZE];
+        this.port = port;
+        try {
+            ss = new ServerSocket(port);
+        } catch (IOException ex) {
+            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+      // fillBoard();
+       //contGame.updateBoard();
+        
+    }
+    
+    /**
+     * method creates a socket to the opened Server socket created by the other
+     * players GameModel
+     *
+     * @param IP
+     * @param Port
+     *
+    public void sendGameSocket(String IP, String Port) {
+        int intPort = Integer.parseInt(Port);
+        try {
+            SocketClient gameSock = new SocketClient(IP, intPort);
+        } catch (IOException ex) {
+            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
 
+    }
+     */ //this method is a duplicate of the one above it, im commenting it out to be confirmed by the group and 
+    //then deleted for polishing of the code
+    
+    
     /**
      * method sets the controller for game model
      *
@@ -80,24 +125,7 @@ public class GameModel implements Runnable {
         this.contGame = gamecontroller;
     }
 
-    /**
-     * Default Constructor2 - Create the new server at assigned port.
-     *
-     * @throws IOException.
-     */
-    public GameModel(int port) {
-        bufferIn = new byte[BYTE_SIZE];
-        this.port = port;
-        try {
-            ss = new ServerSocket(port);
-        } catch (IOException ex) {
-            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-       fillBoard();
-       //contGame.updateBoard();
-        
-    }
+    
     /**
      * Close the I/O stream.
      */
@@ -112,9 +140,11 @@ public class GameModel implements Runnable {
             e.printStackTrace();
         }
     }// end close.
+    
     /**
      * Accepts connections and creates Connection object.
-     */
+      // we do not need to accept multiple connections so I am commenting this method out to be deleted lated after group approval
+    
     @Override
     public void run() {
 
@@ -130,13 +160,14 @@ public class GameModel implements Runnable {
             }
         }
     } // end run.    
-
+ */
+    
     /**
-     * Thread One: sends a message to the Client called by the Server.
+     *sends a message to the other player (client) 
      *
      * @throws IOException.
      */
-    public void sendServerMsg(String msg) {
+    public void sendMsg(String msg) {
         //DEBUG
         System.out.println("This is the Connection-ServerModel from server: " + msg);
 
@@ -154,10 +185,7 @@ public class GameModel implements Runnable {
     } // end sendServerMsg.
 
     /**
-     * this method is our string listen that is listening for a 
-     * string to be send to us to inform us what move was made
-     * Thread Two: + Reads a message from the Client 
-     *             + Send server message back to the Client
+     * This method will read from the TCP waiting for a msg from the other player
      */
     public void readClientMsg() {
 
@@ -198,14 +226,18 @@ public class GameModel implements Runnable {
                         break;
                         
                     case "chat":
-                        sendServerMsg(split[1]);
+                        sendMsg(split[1]);
+                        
+                    case "size":
+                        
+                        changeSize(Integer.parseInt(split[1]));
                     default:
 
                         break;
                 }
 
                 //Need to validate the info before send the information
-                this.sendServerMsg(info);//
+                // this.sendMsg(info);// we don't need to send information back immediately but rather wait till the player makes their move
             }
         } // Catch the error excepion then close the connection
         catch (IOException e) {
@@ -217,42 +249,29 @@ public class GameModel implements Runnable {
 
     /**
      * Calls run() in the new Thread.
-     */
+     *
     public void listen() {
         worker = new Thread(this);
         worker.start();
     } // end listen.
+    * / // this method will also be deleted because we no longer are implementing runnable
 
+    
     /**
      * this method starts the game by sending a socket to the client server and
      * then switches views to the game board
      *
      * @param ip - IP of the server socket that was created
      * @param port -- available port passed by server socket
-     */
+     *
     public void startGame(String ip, String port) {
         sendGameSocket(ip, port);
         cmodel.switchController("gameBoard");
 
     }
-
-    /**
-     * method creates a socket to the opened Server socket created by the other
-     * players GameModel
-     *
-     * @param IP
-     * @param Port
-     */
-    public void sendGameSocket(String IP, String Port) {
-        int intPort = Integer.parseInt(Port);
-        try {
-            SocketClient gameSock = new SocketClient(IP, intPort);
-        } catch (IOException ex) {
-            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-        }
-
-    }
+    * / // this method is also a duplicate of other methods functions so it will be deleted upon approval
+    
+    
 
     /**
      * method changes the size of the game board if they players so desire
@@ -453,11 +472,12 @@ public class GameModel implements Runnable {
     
     
     /**
-     * errors are because rows and columns are not yet declared in the game
-     * board class, want to wait see what you guys wanted to do
+     * based on the size of the board it calculated how many turns it would take to fill the board
+     * it waits till the last move to check since a player could win in the last move
+     
      */
     public boolean checkTie() {
-        if (counter == ((SIZE) * (SIZE) +2)) {
+        if (counter >= ((SIZE) * (SIZE) +2)) {
             handleTie();
             return true;
         } else {
@@ -577,6 +597,8 @@ public class GameModel implements Runnable {
 
     public void handleWin() {
         cmodel.sendUserInfo("stats_" + cmodel.userName + "_win");
+        // need code to exit us from the game and display the lobby view/ is below code enough?
+        cmodel.switchController("lobby");
     }
 
     public void handleQuit() {

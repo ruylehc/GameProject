@@ -28,6 +28,9 @@ public class PlayerMain {
 
 	public static void main(String[] args) throws UnknownHostException{
 		ClientModel model = new ClientModel();
+                GameModel gmodel = new GameModel(); // this was added since we took away our consturtors that required an ip and port
+                //this allows us to create game model and game controller at beginning without needing the port and ip
+                //when we move to a game it calls createServer/createSocket 
                     //model.setIp(args[0]);
 		//GUI
 		StartUp viewSU = new StartUp();
@@ -68,7 +71,10 @@ public class PlayerMain {
                 
                 viewGame.setController(contGame);
                 contGame.setModel(model);
+                contGame.setGModel(gmodel);
                 contGame.setView(viewGame);
+                
+                
                 
 
 		model.addController(contSU);
@@ -76,6 +82,7 @@ public class PlayerMain {
 		model.addController(contReg);
 		model.addController(contMatch);
                 model.addController(contGame);
+                gmodel.setController(contGame); // uses set rather than add since gmodel only has 1 controller
 		//model.setSock(sock);
 
 	}

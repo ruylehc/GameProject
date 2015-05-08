@@ -75,20 +75,8 @@ public class ClientModel {
         //DEBUG
         System.out.println("Game server is created");
         port = sock.s.getPort() + 5;
-        gmodel = new GameModel(port);
-        for (Controller c : list) {
-            if (c.ID.equals("GameCtrl")) {
-                contGame = (GameCont) c;
-                gmodel.setController(contGame);
-                contGame.setGModel(gmodel);
-                 //DEBUG
-                System.out.println("ClientModel: Game is start(server) check board loaded");
-                //contGame.updateBoard();
-                //gmodel.drawBoard();
-            }
-        }
-        //gmodel.drawBoard();
-        gmodel.listen();
+        gmodel.createServer(port);     
+        
     }// end 
     
     /**
@@ -307,18 +295,10 @@ public class ClientModel {
        // if(invitedUser)
         //runGameServer();
         System.out.println("this is the CModel on the recieving end " + acceptMsg);
-        gmodel = new GameModel(split[4], split[3]);
-        for (Controller c : list) {
-            if (c.ID.equals("GameCtrl")) {
-                contGame = (GameCont) c;
-                gmodel.setController(contGame);
-                contGame.setGModel(gmodel);
-                //DEBUG
-                System.out.println("ClientModel: Game is start(socket client) check board loaded");
-                //contGame.updateBoard();
-            }
-        }
-        //gmodel.startGame(split[4], split[3]);
+        gmodel.createSocket(split[4], split[3]);
+        
+        
+        
 
     }
 

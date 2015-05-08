@@ -141,6 +141,14 @@ public class SocketClient implements Runnable{
 	public void setModel(ClientModel model){
 		this.model = model;
 	} //end setModel.
+        
+        /**
+	 * Set the Client model into the socket client.
+	 * @param model CLientModel.
+	 */
+	public void setGModel(GameModel model){
+		this.gmodel = model;
+	} //end setModel.
 }
 
 //end SocketClient

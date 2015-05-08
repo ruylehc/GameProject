@@ -97,7 +97,7 @@ public class GameCont extends Controller {
                 view.reDrawGrid();
                 break;
             case "chat":
-                gmodel.sendServerMsg(info);
+                gmodel.sendMsg(info);
                 break;
         }
     }
