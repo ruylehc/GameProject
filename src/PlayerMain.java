@@ -28,6 +28,7 @@ public class PlayerMain {
 
 	public static void main(String[] args) throws UnknownHostException{
 		ClientModel model = new ClientModel();
+                GameModel gmodel = new GameModel();
                     //model.setIp(args[0]);
 		//GUI
 		StartUp viewSU = new StartUp();
@@ -68,6 +69,7 @@ public class PlayerMain {
                 
                 viewGame.setController(contGame);
                 contGame.setModel(model);
+                contGame.setGModel(gmodel);
                 contGame.setView(viewGame);
                 
 
@@ -76,6 +78,8 @@ public class PlayerMain {
 		model.addController(contReg);
 		model.addController(contMatch);
                 model.addController(contGame);
+                model.addSubModel(gmodel);
+                gmodel.setController(contGame);
 		//model.setSock(sock);
 
 	}

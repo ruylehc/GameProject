@@ -343,7 +343,6 @@ public class MatchMaking extends javax.swing.JFrame {
     }
 
     public void setViewTitle(String title){
-        //this.title = title;
         setTitle("Lobby of: "+ title);
     }
     /**

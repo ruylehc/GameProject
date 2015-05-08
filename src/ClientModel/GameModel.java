@@ -20,6 +20,8 @@ public class GameModel implements Runnable {
     public int[][] board;
     private int rows;
     private int cols;
+    private double cellW;
+    private double cellH;
     public int SIZE = 30;   //Default board size might be 30.
     
     private static final int BUFFER = 4;
@@ -56,7 +58,7 @@ public class GameModel implements Runnable {
      *
      * @throws IOException.
      */
-    public GameModel(String IP, String Port) {
+    public void createSocket(String IP, String Port) {
         int intPort = Integer.parseInt(Port);
         try {
             SocketClient gameSock = new SocketClient(IP, intPort);
@@ -85,7 +87,7 @@ public class GameModel implements Runnable {
      *
      * @throws IOException.
      */
-    public GameModel(int port) {
+    public void createSever(int port) {
         bufferIn = new byte[BYTE_SIZE];
         this.port = port;
         try {
@@ -269,6 +271,8 @@ public class GameModel implements Runnable {
      * board for a new game
      */
     public void fillBoard() {
+        //DEBUG
+        System.out.println("Board JPanel is actived");
         rows = cols = SIZE;
         board = new int[rows][cols];
         for (int i = 0; i < SIZE; i++) {
@@ -319,22 +323,22 @@ public class GameModel implements Runnable {
      * @param h the height of the canvas in pixels.
      */
     public void draw(Graphics g, int w, int h) {
+        //DEBUG
+        System.out.println("model - raw - activie");
         double cellW = (double) w / cols;
         double cellH = (double) h / rows;
         int cellWi = (int) Math.round(cellW);
         int cellHi = (int) Math.round(cellH);
 
         int x, y;
-        g.setColor(Color.white);
+
         g.fillRect(0, 0, w, h);
         g.setColor(Color.black);
-        //g.drawLine(w, 0, w, h);
-        //g.drawLine(0, h, w, h);
-        for (int r = 0; r <= rows; r++) {
+        for (int r = 0; r < rows; r++) {
             y = (int) (r * cellH);
             g.drawLine(0, y, w, y);
 
-            for (int c = 0; c <= cols; c++) {
+            for (int c = 0; c < cols; c++) {
                 x = (int) (c * cellW);
                 g.drawLine(x, 0, x, h);
                 int cell = board[r][c];
@@ -342,7 +346,7 @@ public class GameModel implements Runnable {
                     g.setColor(Color.blue);
                     g.fillOval(x + BUFFER, y + BUFFER, cellWi - 2 * BUFFER, cellHi - 2 * BUFFER);
                 }
-                if (cell == -1) {   //Preresent for play are 2
+                if (cell == 2) {   //Preresent for play are 2
                     g.setColor(Color.red);
                     g.fillOval(x + BUFFER, y + BUFFER, cellWi - 2 * BUFFER, cellHi - 2 * BUFFER);
                 }
@@ -352,6 +356,8 @@ public class GameModel implements Runnable {
     }
 
     public void drawBoard(){
+        //DEBUG
+        System.out.println("draw board is actived");
         contGame.updateBoard();
     }
     /**

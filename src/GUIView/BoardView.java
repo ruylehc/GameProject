@@ -24,19 +24,23 @@ public class BoardView extends JPanel {
      * Creates a "blank" BoardView. The view is initially
      */
     public BoardView() {
+        //DEBUG
+        System.out.println("Board JPanel is actived");
+        
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics g = img.getGraphics();
         g.setColor(Color.white);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
         //controller = null;
-        reDrawBoard();
+        
     }
 
     /**
      * Draws the content for this BoardView.
      */
     public void paintComponent(Graphics g) {
+        //DEBUG
+        System.out.println("Board JPanel - paint is actived");
         super.paintComponent(g);
 
         g.drawImage(img, 0, 0, this);
@@ -46,6 +50,8 @@ public class BoardView extends JPanel {
      * Initiates a redraw of the board. If the Board is not set
      */
     public void reDrawBoard() {
+        //DEBUG
+        System.out.println("Board JPanel - reDrawboard is actived");
         if (controller != null) {
             Graphics g = img.getGraphics();
             controller.draw(g, WIDTH, HEIGHT);
@@ -59,10 +65,14 @@ public class BoardView extends JPanel {
      * @param b a Board.
      */
     public void setController(GameCont controller) {
+        //DEBUG
+        System.out.println("Board JPanel - set Controller is actived");
         this.controller = controller;
     }
 
     public void setGrid(int w, int h) {
+        //DEBUG
+        System.out.println("Board JPanel  - set Grid is actived");
         this.WIDTH = w;
         this.HEIGHT = h;
     }
