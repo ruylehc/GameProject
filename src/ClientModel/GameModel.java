@@ -2,6 +2,7 @@ package ClientModel;
 
 import Controller.GameCont;
 import GUIView.GameBoard;
+import java.awt.Graphics;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -59,12 +60,14 @@ public class GameModel implements Runnable {
         int intPort = Integer.parseInt(Port);
         try {
             SocketClient gameSock = new SocketClient(IP, intPort);
+            gameSock.createListener();
         } catch (IOException ex) {
             Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
         
         fillBoard();
+//        contGame.updateBoard();
         
     }//end Socket Client.
 
@@ -91,7 +94,9 @@ public class GameModel implements Runnable {
             Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        fillBoard();
+       fillBoard();
+       //contGame.updateBoard();
+        
     }
     /**
      * Close the I/O stream.
@@ -192,6 +197,8 @@ public class GameModel implements Runnable {
                         close();
                         break;
                         
+                    case "chat":
+                        sendServerMsg(split[1]);
                     default:
 
                         break;
@@ -344,6 +351,9 @@ public class GameModel implements Runnable {
         }
     }
 
+    public void drawBoard(){
+        contGame.updateBoard();
+    }
     /**
      * this method updates the moveCounter every time a move is made
      * 

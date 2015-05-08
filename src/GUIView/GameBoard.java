@@ -1,6 +1,12 @@
 package GUIView;
 
 import Controller.GameCont;
+import java.awt.Color;
+import static java.awt.Color.white;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -37,6 +43,10 @@ public class GameBoard extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        
+        //testview = new javax.swing.JPanel();
+        //testview.setBackground(new java.awt.Color(255,255,255));
+        
         boardView = new BoardView();
         jMenuBar1 = new javax.swing.JMenuBar();
         menu = new javax.swing.JMenu();
@@ -49,7 +59,7 @@ public class GameBoard extends javax.swing.JFrame {
         board50 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Play Game");
+        //setTitle("Play Game");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -82,12 +92,14 @@ public class GameBoard extends javax.swing.JFrame {
 
         jLabel5.setText("Player2");
 
+        //boardView.addMouseListener(new java.awt.event.MouseAdapter() {
         boardView.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 boardViewMouseClicked(evt);
             }
         });
         
+       
         
         
         javax.swing.GroupLayout boardViewLayout = new javax.swing.GroupLayout(boardView);
@@ -228,6 +240,8 @@ public class GameBoard extends javax.swing.JFrame {
     private void board30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board30ActionPerformed
         controller.updateUserInfo("30");
         controller.listen("size");
+        //drawGrid(30,30);
+        //testview.setVisible(true);
         /*
     	if(running == false){
     		option = true;
@@ -237,11 +251,13 @@ public class GameBoard extends javax.swing.JFrame {
     	else
     		javax.swing.JOptionPane.showMessageDialog(this,"Game is running.");
         */
+        //load();
     }//GEN-LAST:event_board30ActionPerformed
 
     private void board40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board40ActionPerformed
-        controller.updateUserInfo("40");
-        controller.listen("size");
+        //controller.updateUserInfo("40");
+        //controller.listen("size");
+        //drawGrid(40,40);
         /*
     	if(running == false){
     		option = true;
@@ -253,8 +269,9 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_board40ActionPerformed
 
     private void board50ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board50ActionPerformed
-        controller.updateUserInfo("50");
-        controller.listen("size");
+//        controller.updateUserInfo("50");
+       // controller.listen("size");
+        //drawGrid(50,50);
         /*
     	if(running == false){
     		option = true;
@@ -266,7 +283,9 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_board50ActionPerformed
 
     private void msgTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_msgTFActionPerformed
-        // TODO add your handling code here:
+        controller.updateUserInfo("chat_"+msgTF.getText());
+        controller.listen("chat");
+        msgTF.setText("");
     }//GEN-LAST:event_msgTFActionPerformed
     
     private void boardViewMouseClicked(java.awt.event.MouseEvent evt) {                                      
@@ -318,6 +337,8 @@ public class GameBoard extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GameBoard().setVisible(true);
+                
+                
             }
         });
     }
@@ -336,7 +357,7 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JMenuItem logOut;
-    //private javax.swing.JPanel mazeview;
+    private javax.swing.JPanel testview;
     private javax.swing.JMenu menu;
     private javax.swing.JTextField msgTF;
     private javax.swing.JMenuItem quit;
@@ -345,9 +366,10 @@ public class GameBoard extends javax.swing.JFrame {
     private BoardView boardView;
     //private Board board;
     //private int n = 30; //Size for the board.
-    //private int w;
-    //private int h;
+    private int w = 720;
+    private int h = 720;
     public int counter ; 
+    private BufferedImage img;
     // End of variables declaration//GEN-END:variables
 
 
@@ -364,22 +386,88 @@ public class GameBoard extends javax.swing.JFrame {
         setTitle(title);
     }
     
-    /*
-    public void load() {
-        try {
-            board = new Board(n);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        boardView.setGrid(w, h);
-        boardView.setBoard(board);
-       
-    }
-    */
     
-    public void updateBoard() {
-        boardView.reDrawBoard();
+    public void load() {
+        //DEBUG
+        System.out.println("load is ready");
+        testview.setPreferredSize(new Dimension(w, h));
+        //img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = img.getGraphics();
+        g.setColor(Color.white);
+        g.fillRect(0, 0, w, h);
+        //reDrawBoard();
+       // drawGrid();
     }
-   
+    
+    public void drawGrid(int rows, int cols){
+        
+        
+        
+        System.out.println("this is just the draw grid method being called from the grid select");
+        testview.setPreferredSize(new Dimension(w, h));
+        img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+       Graphics g = testview.getGraphics();
+       
+        g.setColor(Color.white);
+        g.fillRect(0, 0, w, h);
+       
+       //testview.paintComponents(g);
+       System.out.println("gets past paintcomponent");
+        //int cols = 30; //change into another variable
+        //int rows = 30;//change into another variable
+        int BUFFER = 4;
+        double cellW = (double) w / cols;//change into another variable
+        double cellH = (double) h / rows;//change into another variable
+        int cellWi = (int) Math.round(cellW);
+        int cellHi = (int) Math.round(cellH);
+
+        int x, y;
+        //g.setColor(Color.white);
+        //g.fillRect(0, 0, w, h);
+        g.setColor(Color.black);
+        
+        for (int r = 0; r <= rows; r++) {
+            y = (int) (r * cellH);
+            g.drawLine(0, y, w, y);
+        }
+        for (int c = 0; c <= cols; c++) {
+            x = (int) (c * cellW);
+            g.drawLine(x, 0, x, h);
+        }
+        
+        g.dispose();
+        //repaint();
+    }
+    
+    public void drawToken(int player, int r, int c){
+        Graphics g = img.getGraphics();
+        int cols = 30;
+        int rows = 30;
+        int BUFFER = 4;
+        double cellW = (double) WIDTH / cols;
+        double cellH = (double) HEIGHT / rows;
+        int cellWi = (int) Math.round(cellW);
+        int cellHi = (int) Math.round(cellH);
+
+        int x = (int) (c * cellW), y = (int) (r * cellH);
+        if (player == 1) {    //Preresent for play are 1
+                    g.setColor(Color.blue);
+                    g.fillOval(x + BUFFER, y + BUFFER, cellWi - 2 * BUFFER, cellHi - 2 * BUFFER);
+                }
+                if (player == -1) {   //Preresent for play are 2
+                    g.setColor(Color.red);
+                    g.fillOval(x + BUFFER, y + BUFFER, cellWi - 2 * BUFFER, cellHi - 2 * BUFFER);
+                }
+                g.setColor(Color.black);
+    }
+    
+    public void reDrawGrid() {
+        /*
+        Graphics g = img.getGraphics();
+        controller.draw(g, WIDTH, HEIGHT);
+        testview.repaint();
+                */
+        boardView.reDrawBoard();
+    }  
+    
 }

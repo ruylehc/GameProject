@@ -37,7 +37,7 @@ public class ClientModel {
     private RegisterCont contReg;
     private MatchCont contMatch;
     private GameCont contGame;
-    public String userName = "";
+    public String userName = "undef";
     public int port = -1; 
     public String IP = "";
     //End declare variable
@@ -71,10 +71,23 @@ public class ClientModel {
      * Start the Game Server to listen for a socket from the 
      * client who invited you to a game
      */
-    public void runGameServer(){
+    public void runGameServer() {
+        //DEBUG
+        System.out.println("Game server is created");
         port = sock.s.getPort() + 5;
         gmodel = new GameModel(port);
-        gmodel.setController(contGame);
+        for (Controller c : list) {
+            if (c.ID.equals("GameCtrl")) {
+                contGame = (GameCont) c;
+                gmodel.setController(contGame);
+                contGame.setGModel(gmodel);
+                 //DEBUG
+                System.out.println("ClientModel: Game is start(server) check board loaded");
+                //contGame.updateBoard();
+                //gmodel.drawBoard();
+            }
+        }
+        //gmodel.drawBoard();
         gmodel.listen();
     }// end 
     
@@ -103,7 +116,7 @@ public class ClientModel {
             } else if (c.ID.equals("RegCtrl") && isValid == true) {
                 contReg = (RegisterCont) c;
                 contReg.setVisible(false);
-            } else if (c.ID.equals("GameCtrl")) {
+            } else if (c.ID.equals("GameCtrl") && gameMode == true) {
                 contGame = (GameCont) c;
                 contGame.setTitle(userName);
             }
@@ -124,6 +137,10 @@ public class ClientModel {
             if (c.ID.equals("MatchCtrl") && isValid == true) {
                 contMatch = (MatchCont) c;
                 contMatch.setTitle(usr);
+            }
+            if (c.ID.equals("GameCtrl") && gameMode == true) {
+                contGame = (GameCont) c;
+                contGame.setTitle(userName);
             }
         }
     }
@@ -230,6 +247,7 @@ public class ClientModel {
                 System.out.println("this is the CModel on the recieving end " + msg);
                 gameMode = true;
                 handleAccept(msg);
+                this.setTitle(userName);
                 this.switchController("gameBoard");
                 break;
             case "list":
@@ -244,6 +262,7 @@ public class ClientModel {
                 break;
             case "acceptSuccessful":
                 gameMode = true;
+                this.setTitle(userName);
                 this.switchController("gameBoard");
                 break;
             default:
@@ -289,7 +308,16 @@ public class ClientModel {
         //runGameServer();
         System.out.println("this is the CModel on the recieving end " + acceptMsg);
         gmodel = new GameModel(split[4], split[3]);
-        gmodel.setController(contGame);
+        for (Controller c : list) {
+            if (c.ID.equals("GameCtrl")) {
+                contGame = (GameCont) c;
+                gmodel.setController(contGame);
+                contGame.setGModel(gmodel);
+                //DEBUG
+                System.out.println("ClientModel: Game is start(socket client) check board loaded");
+                //contGame.updateBoard();
+            }
+        }
         //gmodel.startGame(split[4], split[3]);
 
     }

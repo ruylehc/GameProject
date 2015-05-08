@@ -28,7 +28,9 @@ public class BoardView extends JPanel {
         img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics g = img.getGraphics();
         g.setColor(Color.white);
-        controller = null;
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+        //controller = null;
+        reDrawBoard();
     }
 
     /**
