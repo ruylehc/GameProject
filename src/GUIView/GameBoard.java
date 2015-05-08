@@ -59,7 +59,6 @@ public class GameBoard extends javax.swing.JFrame {
         board50 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        //setTitle("Play Game");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -92,7 +91,6 @@ public class GameBoard extends javax.swing.JFrame {
 
         jLabel5.setText("Player2");
 
-        //boardView.addMouseListener(new java.awt.event.MouseAdapter() {
         boardView.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 boardViewMouseClicked(evt);
@@ -255,8 +253,8 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_board30ActionPerformed
 
     private void board40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board40ActionPerformed
-        //controller.updateUserInfo("40");
-        //controller.listen("size");
+        controller.updateUserInfo("40");
+        controller.listen("size");
         //drawGrid(40,40);
         /*
     	if(running == false){
@@ -269,8 +267,8 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_board40ActionPerformed
 
     private void board50ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board50ActionPerformed
-//        controller.updateUserInfo("50");
-       // controller.listen("size");
+        controller.updateUserInfo("50");
+        controller.listen("size");
         //drawGrid(50,50);
         /*
     	if(running == false){
@@ -295,6 +293,7 @@ public class GameBoard extends javax.swing.JFrame {
         y = evt.getY();
         controller.updateUserInfo(x+"_"+y);
         controller.listen("oneClick");
+        System.out.println(x+"_"+y);
     }      
     
     private void startActionPerformed(java.awt.event.ActionEvent evt) { 
@@ -364,14 +363,8 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JMenuItem start;
     private GameCont controller;
     private BoardView boardView;
-    //private Board board;
-    //private int n = 30; //Size for the board.
-    private int w = 720;
-    private int h = 720;
     public int counter ; 
-    private BufferedImage img;
     // End of variables declaration//GEN-END:variables
-
 
     /**
      * Set the controller to the login view
@@ -382,91 +375,11 @@ public class GameBoard extends javax.swing.JFrame {
         boardView.setController(controller);
     }  
     
-    public void setViewTitle(String title){
-        setTitle(title);
+    public void setViewTitle(String usr){
+        setTitle("Game Room of: " + usr);
     }
     
-    
-    public void load() {
-        //DEBUG
-        System.out.println("load is ready");
-        testview.setPreferredSize(new Dimension(w, h));
-        //img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = img.getGraphics();
-        g.setColor(Color.white);
-        g.fillRect(0, 0, w, h);
-        //reDrawBoard();
-       // drawGrid();
-    }
-    
-    public void drawGrid(int rows, int cols){
-        
-        
-        
-        System.out.println("this is just the draw grid method being called from the grid select");
-        testview.setPreferredSize(new Dimension(w, h));
-        img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-       Graphics g = testview.getGraphics();
-       
-        g.setColor(Color.white);
-        g.fillRect(0, 0, w, h);
-       
-       //testview.paintComponents(g);
-       System.out.println("gets past paintcomponent");
-        //int cols = 30; //change into another variable
-        //int rows = 30;//change into another variable
-        int BUFFER = 4;
-        double cellW = (double) w / cols;//change into another variable
-        double cellH = (double) h / rows;//change into another variable
-        int cellWi = (int) Math.round(cellW);
-        int cellHi = (int) Math.round(cellH);
-
-        int x, y;
-        //g.setColor(Color.white);
-        //g.fillRect(0, 0, w, h);
-        g.setColor(Color.black);
-        
-        for (int r = 0; r <= rows; r++) {
-            y = (int) (r * cellH);
-            g.drawLine(0, y, w, y);
-        }
-        for (int c = 0; c <= cols; c++) {
-            x = (int) (c * cellW);
-            g.drawLine(x, 0, x, h);
-        }
-        
-        g.dispose();
-        //repaint();
-    }
-    
-    public void drawToken(int player, int r, int c){
-        Graphics g = img.getGraphics();
-        int cols = 30;
-        int rows = 30;
-        int BUFFER = 4;
-        double cellW = (double) WIDTH / cols;
-        double cellH = (double) HEIGHT / rows;
-        int cellWi = (int) Math.round(cellW);
-        int cellHi = (int) Math.round(cellH);
-
-        int x = (int) (c * cellW), y = (int) (r * cellH);
-        if (player == 1) {    //Preresent for play are 1
-                    g.setColor(Color.blue);
-                    g.fillOval(x + BUFFER, y + BUFFER, cellWi - 2 * BUFFER, cellHi - 2 * BUFFER);
-                }
-                if (player == -1) {   //Preresent for play are 2
-                    g.setColor(Color.red);
-                    g.fillOval(x + BUFFER, y + BUFFER, cellWi - 2 * BUFFER, cellHi - 2 * BUFFER);
-                }
-                g.setColor(Color.black);
-    }
-    
-    public void reDrawGrid() {
-        /*
-        Graphics g = img.getGraphics();
-        controller.draw(g, WIDTH, HEIGHT);
-        testview.repaint();
-                */
+    public void reDrawBoard() {
         boardView.reDrawBoard();
     }  
     

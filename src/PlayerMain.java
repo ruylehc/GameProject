@@ -83,6 +83,10 @@ public class PlayerMain {
 		model.addController(contMatch);
                 model.addController(contGame);
                 gmodel.setController(contGame); // uses set rather than add since gmodel only has 1 controller
+
+                model.addSubModel(gmodel);
+                gmodel.setController(contGame);
+
 		//model.setSock(sock);
 
 	}
