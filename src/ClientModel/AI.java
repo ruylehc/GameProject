@@ -317,15 +317,33 @@ public class AI {
             
                 
             case "diagLtoR":
-                
+                if (blockx != -1 || blocky != -1) { // top right side is blocked; check bottom left
+                    if (startx-1 >= 0 && starty-1 >= 0 && theboard[startx-1][starty-1] == empty){
+                        makeMove(startx-1, starty-1); // make move bottom left
+                    }    
+                }
+                if (startx-1 >= 0 && starty-1 >= 0 && theboard[startx-1][starty-1] == AI){ // we're blocking bottom left
+                    makeMove(endx+1, endy+1); // make move top right
+                }
+                if (starty - 1 >= 0 && startx-1 >= 0){ //default open blocks on both ends make move bottom left
+                    makeMove(startx-1, starty-1);
+                }
                 
                 break;
                 
             case "diagRtoL":
-                
-                
+                if (blockx != -1 || blocky != -1){ // bottom left is blocked check right
+                    if (startx+1 >= 0 && starty+1 >= 0 && theboard[startx+1][starty+1] == empty){ //top right block is open make move
+                        makeMove(startx+1, starty+1);
+                    }
+                if (startx+1 >= 0 && starty+1 >=0 && theboard[startx+1][starty+1] == AI){ //we're blocking top right
+                        makeMove(endx-1, endy-1); //make move bottom left
+                }
+                if (starty + 1 >=0 && startx + 1 >= 0){ //default open blocks on both ends make move top right
+                        makeMove(startx+1, starty+1);
+                }
                 break;
-                
+                } 
             default: // shouldnt get here, exit
                    break;   
         }
