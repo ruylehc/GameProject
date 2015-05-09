@@ -16,16 +16,18 @@ import javax.swing.JOptionPane;
 public class GameModel  { // game model no longer implments runnable since it only has one connections
 
     //
-    //////////////////Board///////////////////
+    //////////////////Board//////////////////////////////
     public int[][] board;
     private int rows;
     private int cols;
     private double cellW;
     private double cellH;
-    public int SIZE = 30;   //Default board size might be 30.
+    private int SIZE = 30;   //Default board size might be 30.
     
     private static final int BUFFER = 4;
-    /////////////////////////////////////////
+    ///////////////////end Board/////////////////////////
+    
+    ////////////////////Player///////////////////////////
     boolean p1Win = false;
     boolean p2Win = false;
     boolean p1turn;
@@ -35,9 +37,12 @@ public class GameModel  { // game model no longer implments runnable since it on
     int counter = 2;
     int P1 = 1;
     int P2 = 2;
-    int PlayerNum = 0; // this holds the value of what player number you are
+    int PlayerNum = 1; // this holds the value of what player number you are
     int X = 1; // player 1 (host) mark
     int O = 2; // player 2 mark
+    ////////////////////end-Player///////////////////////
+    
+    //////////////////Socket-&-Server////////////////////
     private Thread worker;
     private ServerSocket ss;
     public Socket sc;
@@ -47,9 +52,11 @@ public class GameModel  { // game model no longer implments runnable since it on
     private InputStream in;
     private OutputStream out;
     private int port;
+    ///////////////////////////////////////////////////
+    
     private ClientModel cmodel;
     private GameCont contGame;
-   // private GameBoard gameB = new GameBoard();
+    private String userID = "undef";
 
     // These methods handle connecting to the other class
     // This method needs to be made by a MMcontroller with the
@@ -65,17 +72,13 @@ public class GameModel  { // game model no longer implments runnable since it on
             //SocketClient gameSock = new SocketClient(IP, intPort); changing from a socketclient to a normal Socket
             Socket gameSock = new Socket(IP, intPort);
             InputStream in = gameSock.getInputStream();
-            OutputStream out = gameSock.getOutputStream();
-            
-            
+            OutputStream out = gameSock.getOutputStream();            
         } catch (IOException ex) {
             Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
-        
-        fillBoard();
-//        contGame.updateBoard();
-        
+        //Call the default contructor for board game - 2D array variable
+        fillBoard();       
     }//end Socket
     
 /**
@@ -90,12 +93,9 @@ public class GameModel  { // game model no longer implments runnable since it on
             ss = new ServerSocket(port);
         } catch (IOException ex) {
             Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-      // fillBoard();
-       //contGame.updateBoard();
-        
-    }
+        }        
+      fillBoard(); 
+    }// end createServer.
     
     /**
      * method creates a socket to the opened Server socket created by the other
@@ -125,8 +125,16 @@ public class GameModel  { // game model no longer implments runnable since it on
      */
     public void setController(GameCont gamecontroller) {
         this.contGame = gamecontroller;
-    }
+    }//end setController.
 
+    /**
+     * Set the specify user name to this model.
+     * @param userID 
+     */
+    public void setUserID(String userID){
+        this.userID = userID;
+        this.contGame.setTitle(userID);
+    }// end setUserID
     
     /**
      * Close the I/O stream.
@@ -282,7 +290,6 @@ public class GameModel  { // game model no longer implments runnable since it on
      */
     public void changeSize(int newSize) {
         SIZE = newSize;
-
     }
 
     /**
@@ -316,7 +323,28 @@ public class GameModel  { // game model no longer implments runnable since it on
         } else {
             board[row][col] = O;
         }
-
+    }// end mark board method
+    
+    /**
+     * method marks the board for a given player move
+     *
+     * @param playerNum - whether the player is first or second player
+     * @param row - the row they clicked
+     * @param col the col they clicked
+     */
+    public void markBoard(int row, int col) {
+       board[row][col] = PlayerNum;
+    }// end mark board method
+    
+    /**
+     * method marks the board for a given player move
+     *
+     * @param playerNum - whether the player is first or second player
+     * @param row - the row they clicked
+     * @param col the col they clicked
+     */
+    public void eraseBoard(int row, int col) {
+       board[row][col] = 0;
     }// end mark board method
 
     /**
@@ -330,6 +358,7 @@ public class GameModel  { // game model no longer implments runnable since it on
         if (board[row][col] == 0) {
             return true;
         } else {
+            JOptionPane.showMessageDialog(null,"Please choose a valid move!");
             return false;
         }
     }
@@ -344,8 +373,8 @@ public class GameModel  { // game model no longer implments runnable since it on
     public void draw(Graphics g, int w, int h) {
         //DEBUG
         System.out.println("model - raw - activie");
-        double cellW = (double) w / cols;
-        double cellH = (double) h / rows;
+        cellW = (double) w / cols;
+        cellH = (double) h / rows;
         int cellWi = (int) Math.round(cellW);
         int cellHi = (int) Math.round(cellH);
 
@@ -354,12 +383,12 @@ public class GameModel  { // game model no longer implments runnable since it on
         g.fillRect(0, 0, w, h);
         g.setColor(Color.black);
         for (int r = 0; r < rows; r++) {
-            y = (int) (r * cellH);
-            g.drawLine(0, y, w, y);
+            x = (int) (r * cellH);
+            g.drawLine(0, x, w, x);
 
             for (int c = 0; c < cols; c++) {
-                x = (int) (c * cellW);
-                g.drawLine(x, 0, x, h);
+                y = (int) (c * cellW);
+                g.drawLine(y, 0, y, h);
                 int cell = board[r][c];
                 if (cell == 1) {    //Preresent for play are 1
                     g.setColor(Color.blue);
@@ -430,27 +459,31 @@ public class GameModel  { // game model no longer implments runnable since it on
                 p1turn = true;
             }
         } //while
-
     }
-/**
- * this method validates and draws the move; used when receiving a new move
- * @param row the row the move was made in
- * @param col the col the move was made in
- * @param playerToken the player token value either 1 or 2
- *  player token - 1 is for "home player" or you, 2 is for opponent 
- */
-    public boolean validateOppMove(int row, int col, int playerToken){
-      if(row<SIZE && col <SIZE && row >-1 && col > -1){  // checks the boundarys of the board
-        if(validMove(row, col)){ // checks if the move location has already been taken
-            if(p2turncounter == true){
-                markBoard(playerToken, row, col);
-                drawBoard(playerToken, row, col);
-                return true; 
+    
+    /**
+     * this method validates and draws the move; used when receiving a new move
+     *
+     * @param row the row the move was made in
+     * @param col the col the move was made in
+     * @param playerToken the player token value either 1 or 2 player token - 1
+     * is for "home player" or you, 2 is for opponent
+     */
+    public boolean validateOppMove(int row, int col, int playerToken) {
+        row = (int) (row%this.cellH);
+        col = (int) (col%this.cellW);
+        if (row < SIZE && col < SIZE && row > -1 && col > -1) {  // checks the boundarys of the board
+            if (validMove(row, col)) { // checks if the move location has already been taken
+                if (p2turncounter == true) {
+                    markBoard(playerToken, row, col);
+                    //drawBoard(playerToken, row, col);
+                    //this.drawBoard();
+                    return true;
+                }
+                checkTie();
             }
-            checkTie();
         }
-      }
-      return false;
+        return false;
     } // end validateMove
     
     
@@ -466,7 +499,8 @@ public class GameModel  { // game model no longer implments runnable since it on
         if(validMove(row, col)){ // checks if the move location has already been taken
             if(p1turncounter == true){
                 markBoard(playerToken, row, col);
-                drawBoard(playerToken, row, col);
+                //drawBoard(playerToken, row, col);
+                
                 return true; 
             }
             checkTie();
@@ -475,6 +509,20 @@ public class GameModel  { // game model no longer implments runnable since it on
       return false;
     } // end validateMove
     
+    public void executeClick(int row, int col, int count){
+        System.out.println(cellW +"_"+ cellH);
+        System.out.println(row +"_"+ col);
+        row = (int) (row/this.cellH);
+        col = (int) (col/this.cellW);
+        System.out.println(row +"_"+ col);
+        if(validMove(row,col) == true){
+            this.markBoard(row, col);
+            this.drawBoard();
+        }
+        
+        if(count == 1)
+            this.eraseBoard(row, col);
+    }
     
     
     /**
@@ -634,8 +682,10 @@ public class GameModel  { // game model no longer implments runnable since it on
         }
     }
 
+    /* We dont need this one anymore while the draw method was already handle this
     private void drawBoard(int playerToken, int row, int col) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    */
 
 }

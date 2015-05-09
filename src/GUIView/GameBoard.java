@@ -292,7 +292,10 @@ public class GameBoard extends javax.swing.JFrame {
         x = evt.getX();
         y = evt.getY();
         controller.updateUserInfo(x+"_"+y);
-        controller.listen("oneClick");
+        if(evt.getClickCount() == 1)
+            controller.listen("singleClick");
+        else
+            controller.listen("doubleClick");
         System.out.println(x+"_"+y);
     }      
     

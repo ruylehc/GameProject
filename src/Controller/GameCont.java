@@ -63,6 +63,7 @@ public class GameCont extends Controller {
     public void listen(String value) {
         
         String[] split = info.split("_");
+        int row, col;
         
         switch (value) {
             case "quit":
@@ -90,9 +91,17 @@ public class GameCont extends Controller {
             case "chat":
                 gmodel.sendMsg(info);
                 break;
-            case "oneClick":
-
+            case "singleClick":
+                row = Integer.parseInt(split[0]); 
+                col = Integer.parseInt(split[1]);       
+                gmodel.executeClick(row, col, 1);
                 break;
+            case "doubleClick":   
+                row = Integer.parseInt(split[0]); 
+                col = Integer.parseInt(split[1]); 
+                gmodel.executeClick(row, col, 2);
+                break;
+                
         }
     }
 
