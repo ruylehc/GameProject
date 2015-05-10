@@ -26,6 +26,7 @@ public class ClientModel {
     private String msg = "";
     private SocketClient sock;
     private GameModel gmodel;
+    public AI ai = new AI();
 
     private boolean isValid = false;
     private boolean chat = false;

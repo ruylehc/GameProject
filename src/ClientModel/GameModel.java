@@ -23,7 +23,9 @@ public class GameModel  { // game model no longer implments runnable since it on
     private double cellW;
     private double cellH;
     public int SIZE = 30;   //Default board size might be 30.
+    int difficulty;
     
+    public AI ai;
     private static final int BUFFER = 4;
     /////////////////////////////////////////
     boolean p1Win = false;
@@ -384,7 +386,7 @@ public class GameModel  { // game model no longer implments runnable since it on
      * 
      */
     public void updateMoveCounter() {
-        if (p1turn = true) {
+        //if (p1turn = true) {
             if (counter % 2 == 0) {
                 p1turncounter = true;
                 p2turncounter = false;
@@ -394,7 +396,7 @@ public class GameModel  { // game model no longer implments runnable since it on
                 p2turncounter = true;
                 counter++;
             }
-        } else if (p2turn = true) {
+         /*else if (p2turn = true) {
 
             if (counter % 2 == 0) {
                 p2turncounter = true;
@@ -406,7 +408,7 @@ public class GameModel  { // game model no longer implments runnable since it on
                 counter++;
             }
 
-        }
+        }*/
     }
 
     //Decide which player gets to go first
@@ -439,6 +441,7 @@ public class GameModel  { // game model no longer implments runnable since it on
  * @param playerToken the player token value either 1 or 2
  *  player token - 1 is for "home player" or you, 2 is for opponent 
  */
+    /*
     public boolean validateOppMove(int row, int col, int playerToken){
       if(row<SIZE && col <SIZE && row >-1 && col > -1){  // checks the boundarys of the board
         if(validMove(row, col)){ // checks if the move location has already been taken
@@ -452,7 +455,7 @@ public class GameModel  { // game model no longer implments runnable since it on
       }
       return false;
     } // end validateMove
-    
+    */
     
     /**
  * this method validates and draws the move; used to validate our move
@@ -461,6 +464,7 @@ public class GameModel  { // game model no longer implments runnable since it on
  * @param playerToken the player token value either 1 or 2
  *  player token - 1 is for "home player" or you, 2 is for opponent 
  */
+    /*
     public boolean validateOurMove(int row, int col, int playerToken){
       if(row<SIZE && col <SIZE && row >-1 && col > -1){  // checks the boundarys of the board
         if(validMove(row, col)){ // checks if the move location has already been taken
@@ -474,7 +478,7 @@ public class GameModel  { // game model no longer implments runnable since it on
       }
       return false;
     } // end validateMove
-    
+    */
     
     
     /**
@@ -634,8 +638,6 @@ public class GameModel  { // game model no longer implments runnable since it on
         }
     }
 
-    private void drawBoard(int playerToken, int row, int col) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+  
 
 }
