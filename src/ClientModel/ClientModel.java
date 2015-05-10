@@ -76,7 +76,7 @@ public class ClientModel {
         System.out.println("Game server is created");
         port = sock.s.getPort() + 5;
         gmodel.createServer(port); 
-        gmodel.setUserID(userName);
+        gmodel.setUserID(userName,1);
         gmodel.drawBoard();
     }// end 
     
@@ -289,7 +289,7 @@ public class ClientModel {
         
         String[] split = acceptMsg.split("_");
         gmodel.createSocket(split[4], split[3]);
-        gmodel.setUserID(userName);
+        gmodel.setUserID(userName,2);
         gmodel.drawBoard();
     }// end handleAccept.
 

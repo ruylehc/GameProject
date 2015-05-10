@@ -85,11 +85,10 @@ public class GameCont extends Controller {
                 break;
             case "size":
                 gmodel.changeSize(Integer.parseInt(info));
-                gmodel.fillBoard();                
-                view.reDrawBoard();
                 break;
             case "chat":
-                gmodel.sendMsg(info);
+                gmodel.sendMsg("chat_"+gmodel.getUserID()+": "+info);
+                view.chatTA.append(gmodel.getUserID()+": "+info + "\n");
                 break;
             case "singleClick":
                 row = Integer.parseInt(split[0]); 
@@ -100,6 +99,9 @@ public class GameCont extends Controller {
                 row = Integer.parseInt(split[0]); 
                 col = Integer.parseInt(split[1]); 
                 gmodel.executeClick(row, col, 2);
+                break;
+            case "start":
+                gmodel.setStart(true);
                 break;
                 
         }
@@ -155,9 +157,17 @@ public class GameCont extends Controller {
     }
     
     public void updateBoard(){
-        //DEBUG
-        System.out.println("board is loading");
         view.reDrawBoard();
     }
+    
+    /**
+     * Update the chat message from all online user.
+     * @param msg - chat message.
+     */
+    public void updateModelMsg(String msg) {
+        //DEBUG
+        System.out.println("This is the display on view: " + msg);
+        view.chatTA.append(msg+"\n");
+    } // end updateModelMsg.
     
 }

@@ -238,50 +238,20 @@ public class GameBoard extends javax.swing.JFrame {
     private void board30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board30ActionPerformed
         controller.updateUserInfo("30");
         controller.listen("size");
-        //drawGrid(30,30);
-        //testview.setVisible(true);
-        /*
-    	if(running == false){
-    		option = true;
-    		n = 30; w = h = 720;
-    		load();
-    	}
-    	else
-    		javax.swing.JOptionPane.showMessageDialog(this,"Game is running.");
-        */
-        //load();
     }//GEN-LAST:event_board30ActionPerformed
 
     private void board40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board40ActionPerformed
         controller.updateUserInfo("40");
         controller.listen("size");
-        //drawGrid(40,40);
-        /*
-    	if(running == false){
-    		option = true;
-    		n = 40; w = h = 760;
-    		load();
-    	}else
-    		javax.swing.JOptionPane.showMessageDialog(this,"Game is running.");
-        */
     }//GEN-LAST:event_board40ActionPerformed
 
     private void board50ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board50ActionPerformed
         controller.updateUserInfo("50");
         controller.listen("size");
-        //drawGrid(50,50);
-        /*
-    	if(running == false){
-    		option = true;
-    		n = 50; w = h = 750;
-    		load();
-    	}else
-    		javax.swing.JOptionPane.showMessageDialog(this,"Game is running.");
-        */
     }//GEN-LAST:event_board50ActionPerformed
 
     private void msgTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_msgTFActionPerformed
-        controller.updateUserInfo("chat_"+msgTF.getText());
+        controller.updateUserInfo(msgTF.getText());
         controller.listen("chat");
         msgTF.setText("");
     }//GEN-LAST:event_msgTFActionPerformed
@@ -296,17 +266,10 @@ public class GameBoard extends javax.swing.JFrame {
             controller.listen("singleClick");
         else
             controller.listen("doubleClick");
-        System.out.println(x+"_"+y);
     }      
     
     private void startActionPerformed(java.awt.event.ActionEvent evt) { 
         controller.listen("start");
-        /*
-        	if( option == false)
-        		System.out.println("choose game.");
-        	else
-        		running = true;
-        */
     }  
     /**
      * @param args the command line arguments
@@ -338,19 +301,16 @@ public class GameBoard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GameBoard().setVisible(true);
-                
-                
+                new GameBoard().setVisible(true);                
             }
         });
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private boolean running = false, option = false;
     private javax.swing.JMenuItem board30;
     private javax.swing.JMenuItem board40;
     private javax.swing.JMenuItem board50;
-    private javax.swing.JTextArea chatTA;
+    public javax.swing.JTextArea chatTA;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -359,7 +319,6 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JMenuItem logOut;
-    private javax.swing.JPanel testview;
     private javax.swing.JMenu menu;
     private javax.swing.JTextField msgTF;
     private javax.swing.JMenuItem quit;

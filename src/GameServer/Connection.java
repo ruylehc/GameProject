@@ -189,11 +189,10 @@ public class Connection extends Thread {
                         inGame = true;
                     }   
                 }
-                else if( type.equals("guest")){
-                   this.userName = model.registerGuest();
-                   active = true;
+                else if (type.equals("guest")) {
+                    this.userName = model.registerGuest();
+                    active = true;
                     sendServerMsg("guest_" + this.userName);
-                    
                 }
                 else if (type.equals("stats")){
                     
@@ -203,15 +202,7 @@ public class Connection extends Thread {
                 {
                     ss.broadcast(ss.getOnlineUserList());
                 }
-
             }
-
-            /* } //Try to terminate the socket if the user exit, need to modify at the close signal from gui or user try to log out
-             else if (sock.isClosed()) //add on today
-             {
-             terminate = false;				
-             }
-             */
         } // Catch the error excepion then close the connection
         catch (IOException e) {
             System.out.println("Connection is closed!");
@@ -308,6 +299,13 @@ public class Connection extends Thread {
     public boolean isInGame() {
         return inGame;
     } // end isInGame.
+    
+    /**
+     * Set the available of the player.
+     */
+    public void setInGame(boolean value) {
+        this.inGame = value;
+    } // end setInGame.
 
 }// End Class Connection
 

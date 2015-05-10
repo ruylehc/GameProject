@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import java.awt.*;
 import javax.swing.JOptionPane;
 
-public class GameModel  { // game model no longer implments runnable since it only has one connections
+public class GameModel{ // game model no longer implments runnable since it only has one connections
 
     //
     //////////////////Board//////////////////////////////
@@ -37,7 +37,7 @@ public class GameModel  { // game model no longer implments runnable since it on
     int counter = 2;
     int P1 = 1;
     int P2 = 2;
-    int PlayerNum = 1; // this holds the value of what player number you are
+    int PlayerNum = -1; // this holds the value of what player number you are
     int X = 1; // player 1 (host) mark
     int O = 2; // player 2 mark
     ////////////////////end-Player///////////////////////
@@ -46,9 +46,9 @@ public class GameModel  { // game model no longer implments runnable since it on
     private Thread worker;
     private ServerSocket ss;
     public Socket sc;
-    private byte[] bufferIn;
+    private byte[] buffer;
     private final int BYTE_SIZE = 1024;
-    private boolean terminate = true;
+    private boolean terminate = false;
     private InputStream in;
     private OutputStream out;
     private int port;
@@ -57,66 +57,71 @@ public class GameModel  { // game model no longer implments runnable since it on
     private ClientModel cmodel;
     private GameCont contGame;
     private String userID = "undef";
+    private boolean start = false;
+    private boolean turn;
 
     // These methods handle connecting to the other class
     // This method needs to be made by a MMcontroller with the
     // gmodel.run() when the use hits the accept button
     /**
-     * Default Constructor1 - Create the new socket to connect to serverSocket on other side.
+     * Default Constructor1 - Create the new socket to connect to serverSocket
+     * on other side.
      *
      * @throws IOException.
      */
     public void createSocket(String IP, String Port) {
         int intPort = Integer.parseInt(Port);
-        try {
-            //SocketClient gameSock = new SocketClient(IP, intPort); changing from a socketclient to a normal Socket
-            Socket gameSock = new Socket(IP, intPort);
-            InputStream in = gameSock.getInputStream();
-            OutputStream out = gameSock.getOutputStream();            
-        } catch (IOException ex) {
-            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-        }
-        //Call the default contructor for board game - 2D array variable
-        fillBoard();       
-    }//end Socket
-    
-/**
+        buffer = new byte[BYTE_SIZE];
+        (new Thread() {
+            @Override
+            public void run() {
+                try {
+                    //SocketClient gameSock = new SocketClient(IP, intPort); changing from a socketclient to a normal Socket
+                    Socket gameSock = new Socket(IP, intPort);
+                    in = gameSock.getInputStream();
+                    out = gameSock.getOutputStream();
+
+                    //Waiting and reading the meassage from the server side
+                    while (terminate == false) {
+                        readClientMsg();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
+                }
+            }
+        }).start();
+        fillBoard();    //Call the default contructor for board game - 2D array variable
+    }//end createSocket
+
+    /**
      * Default Constructor2 - Create the new server at assigned port.
      *
      * @throws IOException.
      */
     public void createServer(int port) {
-        bufferIn = new byte[BYTE_SIZE];
+        buffer = new byte[BYTE_SIZE];
         this.port = port;
-        try {
-            ss = new ServerSocket(port);
-        } catch (IOException ex) {
-            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
-        }        
-      fillBoard(); 
-    }// end createServer.
-    
-    /**
-     * method creates a socket to the opened Server socket created by the other
-     * players GameModel
-     *
-     * @param IP
-     * @param Port
-     *
-    public void sendGameSocket(String IP, String Port) {
-        int intPort = Integer.parseInt(Port);
-        try {
-            SocketClient gameSock = new SocketClient(IP, intPort);
-        } catch (IOException ex) {
-            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-        }
-
-    }
-     */ //this method is a duplicate of the one above it, im commenting it out to be confirmed by the group and 
-    //then deleted for polishing of the code
-    
+        (new Thread() {
+            @Override
+            public void run() {
+                try {
+                    ss = new ServerSocket(port);
+                    Socket sock = ss.accept();
+                    in = sock.getInputStream();
+                    out = sock.getOutputStream();
+                    
+                    //Waiting and reading the message from the socket side
+                    while (terminate == false) {
+                        readClientMsg();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }).start();
+        fillBoard();    //Call the default contructor for board game - 2D array variable
+    }// end createServer.    
     
     /**
      * method sets the controller for game model
@@ -131,9 +136,18 @@ public class GameModel  { // game model no longer implments runnable since it on
      * Set the specify user name to this model.
      * @param userID 
      */
-    public void setUserID(String userID){
+    public void setUserID(String userID, int playerNum){
+        this.PlayerNum = playerNum;
         this.userID = userID;
         this.contGame.setTitle(userID);
+    }// end setUserID
+    
+    /**
+     * Set the specify user name to this model.
+     * @param userID 
+     */
+    public String getUserID(){
+        return userID;
     }// end setUserID
     
     /**
@@ -144,33 +158,12 @@ public class GameModel  { // game model no longer implments runnable since it on
             out.close();
             in.close();
             sc.close();
-            terminate = false;
+            terminate = true;
             //active = false;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }// end close.
-    
-    /**
-     * Accepts connections and creates Connection object.
-      // we do not need to accept multiple connections so I am commenting this method out to be deleted lated after group approval
-    
-    @Override
-    public void run() {
-
-        while (terminate == true) {
-            try {
-                Socket sockClient = ss.accept();
-                in = sockClient.getInputStream();
-                out = sockClient.getOutputStream();
-                this.readClientMsg();
-            } catch (IOException e) {
-                e.printStackTrace();
-                close();
-            }
-        }
-    } // end run.    
- */
     
     /**
      *sends a message to the other player (client) 
@@ -179,7 +172,7 @@ public class GameModel  { // game model no longer implments runnable since it on
      */
     public void sendMsg(String msg) {
         //DEBUG
-        System.out.println("This is the Connection-ServerModel from server: " + msg);
+        System.out.println("This is the GameModel send - write to Output Stream: "+ this.getUserID()+"-" + msg);
 
         byte[] bufferOut = msg.getBytes();
         //Send the message to the Client
@@ -189,7 +182,6 @@ public class GameModel  { // game model no longer implments runnable since it on
         } catch (IOException e) {
             handleQuit();
             System.out.println("Connection is closed!");
-            //e.printStackTrace();
             //close();
         }
     } // end sendServerMsg.
@@ -203,20 +195,22 @@ public class GameModel  { // game model no longer implments runnable since it on
 
         try {
 
-            bufferIn = new byte[in.available()];
-            int len = in.read(bufferIn);
-
+            buffer = new byte[in.available()];
+            int len = in.read(buffer);
+            int playerNum, row, col;
             if (len > 0) {
-                info = new String(bufferIn, 0, len);
+                info = new String(buffer, 0, len);
 
                 String[] split = info.split("_");	//String delimiter. 
                 String type = split[0];
 
                 switch (type) {  //these switch statements need to be implented for game play
                     case "move":
-                        int row =  Integer.parseInt(split[2]);
-                        int col = Integer.parseInt(split[3]);
-                        
+                        playerNum =   Integer.parseInt(split[1]);
+                        row =  Integer.parseInt(split[2]);
+                        col = Integer.parseInt(split[3]);
+                        this.markBoard(playerNum, row, col);
+                        this.drawBoard();
                         break;
                         
                     case "win":
@@ -236,11 +230,15 @@ public class GameModel  { // game model no longer implments runnable since it on
                         break;
                         
                     case "chat":
-                        sendMsg(split[1]);
+                        contGame.updateModelMsg(split[1]);
+                        break;
                         
-                    case "size":
+                    case "size":                        
+                        this.SIZE = Integer.parseInt(split[1]);
+                        this.fillBoard();
+                        this.drawBoard();
+                        break;
                         
-                        changeSize(Integer.parseInt(split[1]));
                     default:
 
                         break;
@@ -255,33 +253,7 @@ public class GameModel  { // game model no longer implments runnable since it on
             e.printStackTrace();
             //close();
         }
-    }// End readClientMsg.
-
-    /**
-     * Calls run() in the new Thread.
-     *
-    public void listen() {
-        worker = new Thread(this);
-        worker.start();
-    } // end listen.
-    * / // this method will also be deleted because we no longer are implementing runnable
-
-    
-    /**
-     * this method starts the game by sending a socket to the client server and
-     * then switches views to the game board
-     *
-     * @param ip - IP of the server socket that was created
-     * @param port -- available port passed by server socket
-     *
-    public void startGame(String ip, String port) {
-        sendGameSocket(ip, port);
-        cmodel.switchController("gameBoard");
-
-    }
-    * / // this method is also a duplicate of other methods functions so it will be deleted upon approval
-    
-    
+    }// End readClientMsg.    
 
     /**
      * method changes the size of the game board if they players so desire
@@ -289,7 +261,16 @@ public class GameModel  { // game model no longer implments runnable since it on
      * @param newSize new size to change the board to
      */
     public void changeSize(int newSize) {
-        SIZE = newSize;
+        if(PlayerNum == 1 && !start){
+            SIZE = newSize;
+            fillBoard();
+            drawBoard();
+            this.sendMsg("size_"+ newSize);
+            System.out.println("size_"+ newSize);
+        }else if(PlayerNum == 1 && start)
+            JOptionPane.showMessageDialog(null,"Game is running!");
+        else if(this.PlayerNum == 2)
+            JOptionPane.showMessageDialog(null,"You do not have the game option");
     }
 
     /**
@@ -323,17 +304,6 @@ public class GameModel  { // game model no longer implments runnable since it on
         } else {
             board[row][col] = O;
         }
-    }// end mark board method
-    
-    /**
-     * method marks the board for a given player move
-     *
-     * @param playerNum - whether the player is first or second player
-     * @param row - the row they clicked
-     * @param col the col they clicked
-     */
-    public void markBoard(int row, int col) {
-       board[row][col] = PlayerNum;
     }// end mark board method
     
     /**
@@ -403,11 +373,15 @@ public class GameModel  { // game model no longer implments runnable since it on
         }
     }
 
+    /**
+     * Update the game board 
+     */
     public void drawBoard(){
         //DEBUG
         System.out.println("draw board is actived");
         contGame.updateBoard();
     }
+    
     /**
      * this method updates the moveCounter every time a move is made
      * 
@@ -454,11 +428,12 @@ public class GameModel  { // game model no longer implments runnable since it on
             result = p1Flip.compareTo(p2Flip);
 
             if (result == -1) {
-                p2turn = true;
+                turn = true;
             } else {
-                p1turn = true;
+                turn = false;
             }
         } //while
+        System.out.println(turn);
     }
     
     /**
@@ -509,19 +484,36 @@ public class GameModel  { // game model no longer implments runnable since it on
       return false;
     } // end validateMove
     
+    /**
+     * Handle player move and click.
+     * Modifies and displays the win and lose  
+     * @param row
+     * @param col
+     * @param count Mouse Click counter
+     */
     public void executeClick(int row, int col, int count){
-        System.out.println(cellW +"_"+ cellH);
-        System.out.println(row +"_"+ col);
+        //Taking the 2D array coordinate from the JPanel pixels. 
         row = (int) (row/this.cellH);
         col = (int) (col/this.cellW);
-        System.out.println(row +"_"+ col);
-        if(validMove(row,col) == true){
-            this.markBoard(row, col);
-            this.drawBoard();
+
+        if (turn == true) {
+            if (validMove(row, col) == true) {
+                this.markBoard(PlayerNum, row, col);
+                this.drawBoard();
+            }
+            if (count == 1) {
+                this.eraseBoard(row, col);
+            } else {
+                if (this.checkWin(board, PlayerNum) == true) {
+                    this.handleWin();
+                } else {
+                    this.sendMsg("move_" + this.PlayerNum + "_" + row + "_" + col);
+                    turn = false;
+                }
+            }
         }
-        
-        if(count == 1)
-            this.eraseBoard(row, col);
+        else 
+            JOptionPane.showMessageDialog(null,"It is not your turn!\nPlease wait!");
     }
     
     
@@ -538,24 +530,6 @@ public class GameModel  { // game model no longer implments runnable since it on
             return false;
         }
     }
-    
-    /*
-     public void drawMove(Gameboard, int xCord, int yCord) {
-     int jHeight = Jpanel.getHeight();
-     int jWidth = Jpanel.getWidth();
-     int gameSize = Gameboard.boardSize;
-
-     yrectInc = (jHeight / gameSize);
-     xrectInc = (jWidth / gameSize);
-
-     topRect = (rectInc) * xCord;
-     leftRect = (xrectInc) * yCord;
-
-     //bottomRect = (topRect) - yrectInc;
-     //rightRect = (leftRect) + xrectInc;
-     GameBoard.gui.fillRect(leftRect + 2, xrectInc - 2, topRect + 2, yrectInc + 2);
-     }
-*/
     
     /**
      * method takes in a move and checks if the move resulted in a win
@@ -588,7 +562,6 @@ public class GameModel  { // game model no longer implments runnable since it on
                 }
             }
         }
-
         return false;
     }
 
@@ -609,7 +582,6 @@ public class GameModel  { // game model no longer implments runnable since it on
                 }
             }
         }
-
         return false;
     }
 
@@ -634,10 +606,8 @@ public class GameModel  { // game model no longer implments runnable since it on
                         && theboard[r + 4][c - 4] == playerToken) {
                     return true;
                 }
-
             }
         }
-
         return false;
     }
 
@@ -653,6 +623,7 @@ public class GameModel  { // game model no longer implments runnable since it on
         cmodel.sendUserInfo("stats_" + cmodel.userName + "_win");
         // need code to exit us from the game and display the lobby view/ is below code enough?
         cmodel.switchController("lobby");
+        close();
     }
 
     public void handleQuit() {
@@ -682,10 +653,13 @@ public class GameModel  { // game model no longer implments runnable since it on
         }
     }
 
-    /* We dont need this one anymore while the draw method was already handle this
-    private void drawBoard(int playerToken, int row, int col) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * @param start the start to set
+     */
+    public void setStart(boolean start) {
+        if(this.PlayerNum == 1)
+            this.start = start;
+        else
+            JOptionPane.showMessageDialog(null,"You do not have the game option");
     }
-    */
-
 }
