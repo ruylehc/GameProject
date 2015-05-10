@@ -66,7 +66,7 @@ public class ClientModel {
         } catch (IOException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
         }        
-    }
+    }//end runTCP.
     
     /**
      * Start the Game Server to listen for a socket from the 
@@ -76,8 +76,9 @@ public class ClientModel {
         //DEBUG
         System.out.println("Game server is created");
         port = sock.s.getPort() + 5;
-        gmodel.createServer(port);     
-        
+        gmodel.createServer(port); 
+        gmodel.setUserID(userName);
+        gmodel.drawBoard();
     }// end 
     
     /**
@@ -86,7 +87,7 @@ public class ClientModel {
      */
     public void setIp(String IP){
         this.IP = IP;
-    }
+    }//end setIP.
 
     /**
      * Read the controller signal to switch to another controller and view
@@ -113,7 +114,7 @@ public class ClientModel {
                 contMatch.setVisible(false);
             } c.switchView(signal);
         }
-    } // end switchController
+    } // end switchController.
     
     /**
      * sets the title of the lobby so we know the userName of the user
@@ -123,14 +124,10 @@ public class ClientModel {
         for (Controller c : list) {
             if (c.ID.equals("MatchCtrl") && isValid == true) {
                 contMatch = (MatchCont) c;
-                contMatch.setTitle(usr);
-            }
-            if (c.ID.equals("GameCtrl") && gameMode == true) {
-                contGame = (GameCont) c;
-                contGame.setTitle(usr);
+                contMatch.setTitle(usr); 
             }
         }
-    }
+    }// end setTitle.
     /**
      * Update the chat server message into the MatchMaking controller.
      *
@@ -236,7 +233,7 @@ public class ClientModel {
                 gameMode = true;
                 handleAccept(msg);
                 this.switchController("gameBoard");
-                this.setTitle(userName);
+                //this.setTitle(userName);
                 break;
             case "list":
                 //DEBUG
@@ -251,14 +248,12 @@ public class ClientModel {
             case "acceptSuccessful":
                 gameMode = true;
                 this.switchController("gameBoard");
-                this.setTitle(userName);
+                //this.setTitle(userName);
                 break;
             default:
                 JOptionPane.showMessageDialog(null, msg);   //Display server messages if failed login or register
                 break;
-
         }
-
     } // end updateServerMsg            
 
     /**
@@ -267,7 +262,7 @@ public class ClientModel {
      */
     public void lateAccept() {
         contMatch.lateAcceptDisplay();
-    }
+    }//end lateAccept.
 
     /**
      * this method handles invite by passing it to the view
@@ -282,7 +277,7 @@ public class ClientModel {
                 contMatch.handleInviteView(inviteMsg);
             }
         }
-    }
+    }//end handelInvite.
 
     /**
      * Connect the socket client into the model.
@@ -290,17 +285,14 @@ public class ClientModel {
      * @param sock Socket
      */
     public void handleAccept(String acceptMsg) { // handles an accept msg from the server (after we've sent an invite)
-        String[] split = acceptMsg.split("_");
-       // String invitedUser = split[0] ;
-       // if(invitedUser)
-        //runGameServer();
+        //DEBUG
         System.out.println("this is the CModel on the recieving end " + acceptMsg);
+        
+        String[] split = acceptMsg.split("_");
         gmodel.createSocket(split[4], split[3]);
+        gmodel.setUserID(userName);
         gmodel.drawBoard();
-        
-        
-
-    }
+    }// end handleAccept.
 
     /**
      * this method is a setter method for the socket client 
@@ -308,10 +300,14 @@ public class ClientModel {
      */
     public void setSock(SocketClient sock) {
         this.sock = sock;
-    } // end setSock
+    } // end setSock.
     
+    /**
+     * Add the connection with Game model
+     * @param model Game Model
+     */
     public void addSubModel(GameModel model){
         this.gmodel = model;
-    }
+    }// end addSubModel.
 
 }
