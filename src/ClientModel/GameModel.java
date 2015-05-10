@@ -22,8 +22,10 @@ public class GameModel{ // game model no longer implments runnable since it only
     private int cols;
     private double cellW;
     private double cellH;
-    private int SIZE = 30;   //Default board size might be 30.
+    public int SIZE = 30;   //Default board size might be 30.
+    int difficulty;
     
+    public AI ai;
     private static final int BUFFER = 4;
     ///////////////////end Board/////////////////////////
     
@@ -387,7 +389,7 @@ public class GameModel{ // game model no longer implments runnable since it only
      * 
      */
     public void updateMoveCounter() {
-        if (p1turn = true) {
+        //if (p1turn = true) {
             if (counter % 2 == 0) {
                 p1turncounter = true;
                 p2turncounter = false;
@@ -397,7 +399,7 @@ public class GameModel{ // game model no longer implments runnable since it only
                 p2turncounter = true;
                 counter++;
             }
-        } else if (p2turn = true) {
+         /*else if (p2turn = true) {
 
             if (counter % 2 == 0) {
                 p2turncounter = true;
@@ -409,7 +411,7 @@ public class GameModel{ // game model no longer implments runnable since it only
                 counter++;
             }
 
-        }
+        }*/
     }
 
     //Decide which player gets to go first
@@ -435,32 +437,28 @@ public class GameModel{ // game model no longer implments runnable since it only
         } //while
         System.out.println(turn);
     }
-    
-    /**
-     * this method validates and draws the move; used when receiving a new move
-     *
-     * @param row the row the move was made in
-     * @param col the col the move was made in
-     * @param playerToken the player token value either 1 or 2 player token - 1
-     * is for "home player" or you, 2 is for opponent
-     */
-    public boolean validateOppMove(int row, int col, int playerToken) {
-        row = (int) (row%this.cellH);
-        col = (int) (col%this.cellW);
-        if (row < SIZE && col < SIZE && row > -1 && col > -1) {  // checks the boundarys of the board
-            if (validMove(row, col)) { // checks if the move location has already been taken
-                if (p2turncounter == true) {
-                    markBoard(playerToken, row, col);
-                    //drawBoard(playerToken, row, col);
-                    //this.drawBoard();
-                    return true;
+/**
+ * this method validates and draws the move; used when receiving a new move
+ * @param row the row the move was made in
+ * @param col the col the move was made in
+ * @param playerToken the player token value either 1 or 2
+ *  player token - 1 is for "home player" or you, 2 is for opponent 
+ */
+    /*
+    public boolean validateOppMove(int row, int col, int playerToken){
+      if(row<SIZE && col <SIZE && row >-1 && col > -1){  // checks the boundarys of the board
+        if(validMove(row, col)){ // checks if the move location has already been taken
+            if(p2turncounter == true){
+                markBoard(playerToken, row, col);
+                drawBoard(playerToken, row, col);
+                return true; 
                 }
                 checkTie();
             }
         }
         return false;
     } // end validateMove
-    
+    */
     
     /**
  * this method validates and draws the move; used to validate our move
@@ -469,6 +467,7 @@ public class GameModel{ // game model no longer implments runnable since it only
  * @param playerToken the player token value either 1 or 2
  *  player token - 1 is for "home player" or you, 2 is for opponent 
  */
+    /*
     public boolean validateOurMove(int row, int col, int playerToken){
       if(row<SIZE && col <SIZE && row >-1 && col > -1){  // checks the boundarys of the board
         if(validMove(row, col)){ // checks if the move location has already been taken
@@ -483,6 +482,7 @@ public class GameModel{ // game model no longer implments runnable since it only
       }
       return false;
     } // end validateMove
+    */
     
     /**
      * Handle player move and click.
@@ -515,6 +515,7 @@ public class GameModel{ // game model no longer implments runnable since it only
         else 
             JOptionPane.showMessageDialog(null,"It is not your turn!\nPlease wait!");
     }
+
     
     
     /**

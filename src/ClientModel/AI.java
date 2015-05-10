@@ -13,9 +13,11 @@ import java.util.ArrayList;
  *
  * @author PLUCSCE
  */
-public class AI {
-    
-    int difficulty = 0;
+public class AI implements Runnable {
+    GameModel gm = new GameModel();
+    public int[][] boardArray;
+    boolean turnHolder;
+    int difficulty;
     int ThreatLvl1; // pair of hausers, blocked or not -- easy
     int ThreatLvl2; // 3 hausers blocked on 1 side -- easy
     int ThreatLvl3; // open space 3 Hausers -- easy
@@ -40,18 +42,19 @@ public class AI {
     int AI = 2; // AI will always be the second player making his tokens value = 2
     int opp = 1; // the player will always be first player so we can hard code it
     static final int empty = 0;
+    int playerToken = 1;
     
-    
+    public void AI(){
+        this.boardArray = gm.board;
+        this.difficulty = gm.difficulty;
+    }
     
     /**
      * methods sets the difficulty rating
      * 1 = easy, 2 = medium, 3 = impossible
      * @param value 
      */
-    public void setDifficulty(int value){
-        difficulty = value; 
-        
-    }
+   
     
     /**
      * method checks the board for a cases of 5 in a row
@@ -63,7 +66,6 @@ public class AI {
          if (checkRowWin(theboard, playerToken) == true || checkColWin(theboard,playerToken) == true || checkDiagWin(theboard,playerToken)== true)  {
              return true;
          }
-
          return false;
      }
      
@@ -76,9 +78,9 @@ public class AI {
      
     
     public void checkRow(int[][] theboard) {
-
+    
         int size = theboard.length;
-
+        
         for (int r = 0; r < size; r++) { // moves through the rows once col -4 have been checked
             for (int c = 0; c < size - 4; c++) {
 
@@ -160,7 +162,7 @@ public class AI {
      * @param theboard the 2d array to be scanned
      * @return true if the board contains 5 in a row
      */
-    public void checkDiag(int[][] theboard, int playerToken) {
+    public void checkDiag(int[][] theboard) {
 
         int size = theboard.length;
             
@@ -249,7 +251,7 @@ public class AI {
         String highestThreat = "";
         int lvl = 0;
         int temp = 0;
-      
+        
         for (int i = 0; i < threats.size(); i++) { // for loop doesn't handle threats of equal level
             char level = threats.get(i).charAt(0);
             temp = (int) level;
@@ -279,6 +281,50 @@ public class AI {
         else 
             direction = "diagRtoL";
         
+        
+        if(difficulty == 1 && Integer.parseInt(highestThreat) <= 2){
+            for (int i = 0; i < size; i++){
+                for (int j = 0; j < size; j++){ //iterate through board
+                    if (theboard[i][j] == 1){ // if we detect opposing player token
+                        if (theboard[i][j-1] == 0 && j > 0 ){ //if the column before token on the same row is empty and in bounds, place a move
+                            makeMove(i, j-1);
+                        break;
+                        }
+                        else if (theboard[i][j+1]  == 0 && j < size-1){ //same row, token after 
+                            makeMove(j, j+1);
+                        break;
+                        }
+                        else if (theboard[i-1][j] == 0 && i > 0){ //same column, row before
+                            makeMove(i-1, j);
+                        break;
+                        }
+                        else if (theboard[i+1][j] == 0 && i < size-1){ //same column, row after
+                            makeMove(i+1, j);
+                        break;
+                        }
+                        else if (theboard[i-1][j-1] == 0 && j > 0 && i >0){
+                            makeMove(i-1,j-1);
+                        break;
+                        }
+                        else if (theboard[i+1][j+1] == 0 && j < size-1 && i < size-1){
+                            makeMove(i+1, j+1);
+                        break;
+                        }
+                        else if (theboard[i-1][j+1] == 0 && j < size-1 && i > 0){
+                            makeMove(i-1,j+1);
+                        break;
+                        }
+                        else if (theboard[i+1][j-1] == 0 && i < size-1 && j > 0){
+                            makeMove(i+1, j-1);
+                        break;
+                        }
+                    break;
+                    }
+                }  
+            }
+        }
+        
+        else{
          // we know the direction of the threat, now we check adjacent blocks
         switch(direction){
             case "col":
@@ -349,13 +395,20 @@ public class AI {
         }
    
     }
-    
+}    
     
     
     /**
      * checks the Rows of the board to see if there is 5 in a row
      *
      * @param theboard the 2d array to be scanned
+     * @return true if the board contains 5 in a row
+     */
+
+    /**
+     * checks the Rows of the board to see if there is 5 in a row
+     * @param theboard the 2d array to be scanned
+     * @param playerToken
      * @return true if the board contains 5 in a row
      */
     public boolean checkRowWin(int[][] theboard, int playerToken) {
@@ -377,6 +430,7 @@ public class AI {
     /**
      * checks the Cols of the board to see if there is 5 in a row
      * @param theboard the 2d array to be scanned
+     * @param playerToken
      * @return true if the board contains 5 in a row
      */   
     public boolean checkColWin(int[][] theboard, int playerToken) {
@@ -424,9 +478,34 @@ public class AI {
     }
 
     private void makeMove(int row, int col) {
-        
-        
-        
+        boardArray[row][col] = 2; 
+   
+    }
+
+    @Override
+    public void run() {
+        while(true){
+           turnHolder = gm.p2turncounter; //initialize our turn counter to the board's turn counter
+           if (turnHolder){ //if it is our turn complete a check and make a move
+           
+               if (checkWin(boardArray, playerToken)){ //if we detect a win, exit
+                   exit();
+               }
+               
+               else { //if it's our turn and no one has won make a move and update turn counter
+                    checkCol(boardArray);
+                    checkDiag(boardArray);
+                    checkRow(boardArray);
+                    threatDetect(boardArray);
+                    gm.updateMoveCounter();
+            }
+        }
+               
     }
     
+}
+
+    private void exit() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
