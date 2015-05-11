@@ -18,6 +18,7 @@ public class StartUpCont extends Controller {
     //Declare variable
     private ClientModel model;
     private StartUp view;
+    String info = "";
     //End declare variable
 
     /**
@@ -60,9 +61,12 @@ public class StartUpCont extends Controller {
             }
         }
 
-        if (value.equals("play")) {
-            model.switchController("game");
+        if (value.equals("play")) { 
+            model.setDifficutly(info);
+            model.switchController("gameBoard");
+            
         }
+        
         
         /* Comment: This is none use method will be delete after we have review it
         if (value.equals("close")) {
@@ -89,7 +93,7 @@ public class StartUpCont extends Controller {
      */
     @Override
     public void updateUserInfo(String usrInfo) {
-        //N/A		
+        this.info = usrInfo;	
     }
 
     /**
