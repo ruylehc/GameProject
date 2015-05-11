@@ -273,6 +273,11 @@ public class Authentication {
     public void setServer(Server ss){
         this.ss = ss;
     }
+    
+    /**
+     * this method puts the stats from the stats array and edits the proper values
+     * @param information the string of information for whose stats to update and what value (wins or loses)
+     */
     public void editStats(String information) {
         
         String[] split = information.split("_");

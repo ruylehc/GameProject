@@ -31,7 +31,7 @@ public class PlayerMain {
                 GameModel gmodel = new GameModel(); // this was added since we took away our consturtors that required an ip and port
                 //this allows us to create game model and game controller at beginning without needing the port and ip
                 //when we move to a game it calls createServer/createSocket 
-                    //model.setIp(args[0]);
+                    model.setIp(args[0]);
 		//GUI
 		StartUp viewSU = new StartUp();
 		Login viewLog = new Login();
