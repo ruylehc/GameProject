@@ -310,4 +310,10 @@ public class ClientModel {
         this.gmodel = model;
     }// end addSubModel.
 
+    public void setDifficutly(String info) {
+        ai.difficulty(info);
+        
+        
+    }
+
 }

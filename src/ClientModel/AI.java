@@ -504,6 +504,24 @@ public class AI implements Runnable {
     }
     
 }
+    
+    public void difficulty(String level){
+        switch(level){
+            
+            case "Easy":
+                difficulty = 1;
+                break;
+            case"Medium":
+                difficulty = 2;
+                break;
+            case "Hard": 
+                difficulty = 3;
+                break;
+            default:
+                difficulty = 1;
+                break;
+        }    
+    }
 
     private void exit() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
