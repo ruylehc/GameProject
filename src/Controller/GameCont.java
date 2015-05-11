@@ -104,7 +104,10 @@ public class GameCont extends Controller {
             case "start":
                 gmodel.setStart(true);
                 break;
-                
+            case "lobby":
+                cmodel.switchController("lobby");
+                cmodel.sendUserInfo("endGame_");
+                view.setVisible(false);
         }
     }
 
