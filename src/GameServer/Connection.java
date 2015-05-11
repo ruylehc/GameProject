@@ -204,7 +204,7 @@ public class Connection extends Thread {
                         active = true;
                         sendServerMsg("guest_" + this.userName);
                         break;
-                    case "game":
+                    case "endGame":
                         inGame = false;
                         ss.broadcast(ss.getOnlineUserList());
                         break;                        
