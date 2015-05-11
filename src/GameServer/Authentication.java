@@ -274,14 +274,19 @@ public class Authentication {
         this.ss = ss;
     }
     public void editStats(String information) {
+        
         String[] split = information.split("_");
+        
+        if(split[2].substring(0,4) != "guest"){ 
+            
         String theStats = stats.get(split[2]);
         String[] statSplit = theStats.split("_");
         double win;
         int lose;
         double ratio;
         String newStats = "";
-
+        
+        
         switch (split[1]) {
             case "win":
                 win = Double.parseDouble(split[0]) + 1;
@@ -305,6 +310,8 @@ public class Authentication {
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
+        }// ends if statement, stops editing of stats if the user is guest
+        
     }// end editStats method
     
 }// end Authentication.
