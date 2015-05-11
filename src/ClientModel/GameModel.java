@@ -47,7 +47,7 @@ public class GameModel{ // game model no longer implments runnable since it only
     //////////////////Socket-&-Server////////////////////
     private Thread worker;
     private ServerSocket ss;
-    public Socket sc;
+    public Socket sock, gameSock;
     private byte[] buffer;
     private final int BYTE_SIZE = 1024;
     private boolean terminate = false;
@@ -79,7 +79,7 @@ public class GameModel{ // game model no longer implments runnable since it only
             public void run() {
                 try {
                     //SocketClient gameSock = new SocketClient(IP, intPort); changing from a socketclient to a normal Socket
-                    Socket gameSock = new Socket(IP, intPort);
+                    gameSock = new Socket(IP, intPort);
                     in = gameSock.getInputStream();
                     out = gameSock.getOutputStream();
 
@@ -109,7 +109,7 @@ public class GameModel{ // game model no longer implments runnable since it only
             public void run() {
                 try {
                     ss = new ServerSocket(port);
-                    Socket sock = ss.accept();
+                    sock = ss.accept();
                     in = sock.getInputStream();
                     out = sock.getOutputStream();
                     
@@ -159,7 +159,7 @@ public class GameModel{ // game model no longer implments runnable since it only
         try {
             out.close();
             in.close();
-            sc.close();
+            sock.close();
             terminate = true;
             //active = false;
         } catch (IOException e) {
@@ -208,15 +208,23 @@ public class GameModel{ // game model no longer implments runnable since it only
 
                 switch (type) {  //these switch statements need to be implented for game play
                     case "move":
-                        playerNum =   Integer.parseInt(split[1]);
+                        playerNum = Integer.parseInt(split[1]);
                         row =  Integer.parseInt(split[2]);
                         col = Integer.parseInt(split[3]);
+                        turn = Boolean.parseBoolean(split[4]);
                         this.markBoard(playerNum, row, col);
                         this.drawBoard();
                         break;
                         
                     case "win":
-
+                        playerNum = Integer.parseInt(split[1]);
+                        row =  Integer.parseInt(split[2]);
+                        col = Integer.parseInt(split[3]);
+                        turn = Boolean.parseBoolean(split[4]);
+                        this.markBoard(playerNum, row, col);
+                        this.drawBoard();
+                        JOptionPane.showMessageDialog(null, "You have lost!");
+                        cmodel.switchController("lobby");
                         break;
 
                     case "tie":
@@ -241,6 +249,13 @@ public class GameModel{ // game model no longer implments runnable since it only
                         this.drawBoard();
                         break;
                         
+                    case "start":
+                        start = true;
+                        turn = Boolean.parseBoolean(split[1]);
+                        break;
+                        
+                    case "turn":
+                        JOptionPane.showMessageDialog(null,split[1]);
                     default:
 
                         break;
@@ -335,6 +350,13 @@ public class GameModel{ // game model no longer implments runnable since it only
         }
     }
     
+    public void setTurn() {
+        if (turn == true) {
+            contGame.updatePlayerTurn(this.userID);
+            this.sendMsg("turn_" + userID);
+        }
+
+    }
     /**
      * Draws this Board using the given Graphics object.
      *
@@ -437,52 +459,6 @@ public class GameModel{ // game model no longer implments runnable since it only
         } //while
         System.out.println(turn);
     }
-/**
- * this method validates and draws the move; used when receiving a new move
- * @param row the row the move was made in
- * @param col the col the move was made in
- * @param playerToken the player token value either 1 or 2
- *  player token - 1 is for "home player" or you, 2 is for opponent 
- */
-    /*
-    public boolean validateOppMove(int row, int col, int playerToken){
-      if(row<SIZE && col <SIZE && row >-1 && col > -1){  // checks the boundarys of the board
-        if(validMove(row, col)){ // checks if the move location has already been taken
-            if(p2turncounter == true){
-                markBoard(playerToken, row, col);
-                drawBoard(playerToken, row, col);
-                return true; 
-                }
-                checkTie();
-            }
-        }
-        return false;
-    } // end validateMove
-    */
-    
-    /**
- * this method validates and draws the move; used to validate our move
- * @param row the row the move was made in
- * @param col the col the move was made in
- * @param playerToken the player token value either 1 or 2
- *  player token - 1 is for "home player" or you, 2 is for opponent 
- */
-    /*
-    public boolean validateOurMove(int row, int col, int playerToken){
-      if(row<SIZE && col <SIZE && row >-1 && col > -1){  // checks the boundarys of the board
-        if(validMove(row, col)){ // checks if the move location has already been taken
-            if(p1turncounter == true){
-                markBoard(playerToken, row, col);
-                //drawBoard(playerToken, row, col);
-                
-                return true; 
-            }
-            checkTie();
-        }
-      }
-      return false;
-    } // end validateMove
-    */
     
     /**
      * Handle player move and click.
@@ -491,29 +467,35 @@ public class GameModel{ // game model no longer implments runnable since it only
      * @param col
      * @param count Mouse Click counter
      */
-    public void executeClick(int row, int col, int count){
+    public void executeClick(int row, int col, int count) {
         //Taking the 2D array coordinate from the JPanel pixels. 
-        row = (int) (row/this.cellH);
-        col = (int) (col/this.cellW);
+        int[][] temp = board;
+        row = (int) (row / this.cellH);
+        col = (int) (col / this.cellW);
+        if (start == true) {
+            if (turn == true) {
+                if (validMove(row, col) == true) {
+                    this.markBoard(PlayerNum, row, col);
+                    this.drawBoard();
 
-        if (turn == true) {
-            if (validMove(row, col) == true) {
-                this.markBoard(PlayerNum, row, col);
-                this.drawBoard();
-            }
-            if (count == 1) {
-                this.eraseBoard(row, col);
-            } else {
-                if (this.checkWin(board, PlayerNum) == true) {
-                    this.handleWin();
-                } else {
-                    this.sendMsg("move_" + this.PlayerNum + "_" + row + "_" + col);
-                    turn = false;
+                    if (count == 1) {
+                        this.eraseBoard(row, col);
+                        board = temp;
+                    } else {
+                        if (this.checkWin(board, PlayerNum) == true) {
+                            this.sendMsg("win_" + this.PlayerNum + "_" + row + "_" + col + "_" + turn);
+                            this.handleWin();
+                        } else {
+                            this.sendMsg("move_" + this.PlayerNum + "_" + row + "_" + col + "_" + turn);
+                            turn = false;
+                        }
+                    }
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "It is not your turn!\nPlease wait!");
             }
-        }
-        else 
-            JOptionPane.showMessageDialog(null,"It is not your turn!\nPlease wait!");
+        }else
+            JOptionPane.showMessageDialog(null, "Game was not start!\nPlease wait!");
     }
 
     
@@ -630,7 +612,6 @@ public class GameModel{ // game model no longer implments runnable since it only
     public void handleQuit() {
         JOptionPane.showMessageDialog(null, "They quit!");
         handleWin();
-        //cmodel.switchController("lobby");
         close();
         /*
         try {
@@ -647,7 +628,7 @@ public class GameModel{ // game model no longer implments runnable since it only
         cmodel.switchController("lobby");
         
         try {
-            sc.close();
+            sock.close();
         } catch (IOException ex) {
             Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
@@ -658,9 +639,22 @@ public class GameModel{ // game model no longer implments runnable since it only
      * @param start the start to set
      */
     public void setStart(boolean start) {
-        if(this.PlayerNum == 1)
+        if(this.PlayerNum == 1 && !this.start){
             this.start = start;
+            this.flipCoin();
+            this.sendMsg("start_" + !turn);
+            if(turn == true)
+                JOptionPane.showMessageDialog(null,"It is your turn.");
+            else
+                sendMsg("turn_It is your turn");
+            this.updateMoveCounter();
+            
+        }
         else
             JOptionPane.showMessageDialog(null,"You do not have the game option");
+    }
+    
+    public void setSubModel(ClientModel cmodel){
+        this.cmodel = cmodel;
     }
 }

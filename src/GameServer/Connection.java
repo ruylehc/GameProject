@@ -96,7 +96,6 @@ public class Connection extends Thread {
 
             bufferIn = new byte[in.available()];
             int len = in.read(bufferIn);
-            
 
             if (len > 0) {
                 info = new String(bufferIn, 0, len);	//Reading user info to string.
@@ -107,101 +106,114 @@ public class Connection extends Thread {
                 String passWord = "";
                 String rePassword = "";
                 String chatMsg = "";
+                String msg = "";
 
                 //Sends server message back to login user. 
-                if (type.equals("login")) {
-                    if (split.length == 3) {
-                        userName = split[1].toLowerCase();
-                        passWord = split[2];
-                    }
+                switch (type) {
+                    case "login":
+                        if (split.length == 3) {
+                            userName = split[1].toLowerCase();
+                            passWord = split[2];
+                        }
 
-                    //String Validation of the user name and password.
-                    String loginStatus = model.login(userName, passWord);
-                    //DEBUG
-                    System.out.println("This is the connection status from login: " + loginStatus);
-                    if (loginStatus.equals("loginSuccess_"+userName)) {	//Set the user name into connection.
-                        this.userName = userName;
-                        active = true;
-                    }
-                    //DEBUG
-                    System.out.println("login " + userName + ", " + passWord);
-                    System.out.println("From connection, server side: " + loginStatus);
-                    sendServerMsg(loginStatus);
-                } //Close the connection.
-                else if (type.equals("close")) {
-                    close();
-                } //Sends server message back to register user.
-                else if (type.equals("register")) {
-                    if (split.length == 4) {
-                        userName = split[1].toLowerCase();
-                        passWord = split[2];
-                        rePassword = split[3];
-                        
-                    }
-
-                    //String Validation of the user name and password.
-                    String registerStatus = model.registerUser(userName, passWord, rePassword);
-                    if (registerStatus.equals("registerSuccess_"+userName)) {	//Set the user name into connection.
-                        this.userName = userName;
-                        active = true;
-                    }
-                    //DEBUG
-                    System.out.println("register :" + userName + ", " + passWord);
-                    sendServerMsg(registerStatus);
-
-                } //Send server invitation message to one player.
-                else if (type.equals("sInvite")) {
-                    String userToBeInvited = split[1];
-                    String msg = "invite_" + this.userName; //This String contains identity of "invite", and the inviter user name.                     
-                    if(ss.checkOnlineUser(userToBeInvited) == true && userToBeInvited.equals(this.userName))
-                        sendServerMsg("You can't play game with yourself!");
-                    else if (ss.checkOnlineUser(userToBeInvited) == true && !userToBeInvited.equals(this.userName))   //Checks if the player is online.
-                        ss.sendInvitation(userToBeInvited, msg);                     
-                    
-                } //Send server invitation messge to all players.               
-                else if(type.equals("mInvite")){
-                    String msg = "invite_" + this.userName; //This String contains identity of "invite", and the inviter user name. 
-                    ss.sendInvitation("all_"+this.userName, msg);
-                    
-                } //Send the chat message to all current connected user. 
-                else if (type.equals("chat")) {
-                    if (split.length == 2) ;
-                        chatMsg = split[1];                  
-                    String msg = "chat_" + this.getUserName() + ": " + chatMsg;
-                    //DEBUG
-                    System.out.println("This is the chat msg in run - connection: " + msg);
-                    ss.broadcast(msg);
-                } 
-                else if (type.equals("accept")){
-                    //inGame = true;
-                    userName = split[2];
-                    if (ss.checkOnlineUser(userName) == false){
-                        sendServerMsg("lateAccept" + "_" + userName);
-                    }
-                    else{
-                        
-                        info += "_" + this.IP;
+                        //String Validation of the user name and password.
+                        String loginStatus = model.login(userName, passWord);
                         //DEBUG
-                        System.out.println(this.IP); 
-                        System.out.println("this is the connection info for accept " + info);
-                        ss.sendInvitation(userName, info); //we can use sendInvitation for generic messages to specific users
-                        sendServerMsg("acceptSuccessful_"); //send a successful accept condition to user to start board
-                        inGame = true;
-                    }   
-                }
-                else if (type.equals("guest")) {
-                    this.userName = model.registerGuest();
-                    active = true;
-                    sendServerMsg("guest_" + this.userName);
-                }
-                else if (type.equals("stats")){
-                    
+                        System.out.println("This is the connection status from login: " + loginStatus);
+                        if (loginStatus.equals("loginSuccess_" + userName)) {	//Set the user name into connection.
+                            this.userName = userName;
+                            active = true;
+                        }
+                        //DEBUG
+                        System.out.println("login " + userName + ", " + passWord);
+                        System.out.println("From connection, server side: " + loginStatus);
+                        sendServerMsg(loginStatus);
+
+                        break;
+                    //Close the connection.
+                    case "close":
+                        close();
+
+                        break;
+                    //Sends server message back to register user.
+                    case "register":
+                        if (split.length == 4) {
+                            userName = split[1].toLowerCase();
+                            passWord = split[2];
+                            rePassword = split[3];
+
+                        }
+
+                        //String Validation of the user name and password.
+                        String registerStatus = model.registerUser(userName, passWord, rePassword);
+                        if (registerStatus.equals("registerSuccess_" + userName)) {	//Set the user name into connection.
+                            this.userName = userName;
+                            active = true;
+                        }
+                        //DEBUG
+                        System.out.println("register :" + userName + ", " + passWord);
+                        sendServerMsg(registerStatus);
+
+                        break;
+                    //Send server invitation message to one player.
+                    case "sInvite":
+                        String userToBeInvited = split[1];
+                        msg = "invite_" + this.userName; //This String contains identity of "invite", and the inviter user name.                     
+                        if (ss.checkOnlineUser(userToBeInvited) == true && userToBeInvited.equals(this.userName)) {
+                            sendServerMsg("You can't play game with yourself!");
+                        } else if (ss.checkOnlineUser(userToBeInvited) == true && !userToBeInvited.equals(this.userName)) //Checks if the player is online.
+                        {
+                            ss.sendInvitation(userToBeInvited, msg);
+                        }
+
+                        break;
+                    case "mInvite":
+                        //Send server invitation messge to all players.
+                        msg = "invite_" + this.userName; //This String contains identity of "invite", and the inviter user name. 
+                        ss.sendInvitation("all_" + this.userName, msg);
+
+                        break;
+                    //Send the chat message to all current connected user. 
+                    case "chat":
+                        if (split.length == 2) ;
+                        chatMsg = split[1];
+                        msg = "chat_" + this.getUserName() + ": " + chatMsg;
+                        //DEBUG
+                        System.out.println("This is the chat msg in run - connection: " + msg);
+                        ss.broadcast(msg);
+
+                        break;
+                    case "accept":
+                        //inGame = true;
+                        userName = split[2];
+                        if (ss.checkOnlineUser(userName) == false) {
+                            sendServerMsg("lateAccept" + "_" + userName);
+                        } else {
+
+                            info += "_" + this.IP;
+                            //DEBUG
+                            System.out.println(this.IP);
+                            System.out.println("this is the connection info for accept " + info);
+                            ss.sendInvitation(userName, info); //we can use sendInvitation for generic messages to specific users
+                            sendServerMsg("acceptSuccessful_"); //send a successful accept condition to user to start board
+                            inGame = true;
+                        }
+                        break;
+                    case "guest":
+                        this.userName = model.registerGuest();
+                        active = true;
+                        sendServerMsg("guest_" + this.userName);
+                        break;
+                    case "game":
+                        inGame = false;
+                        ss.broadcast(ss.getOnlineUserList());
+                        break;                        
                 }
                 if (active = true) //DEBUG later
-                //Display the user online list everytime                
-                {
-                    ss.broadcast(ss.getOnlineUserList());
-                }
+                        //Display the user online list everytime                
+                        {
+                            ss.broadcast(ss.getOnlineUserList());
+                        }
             }
         } // Catch the error excepion then close the connection
         catch (IOException e) {
@@ -299,7 +311,7 @@ public class Connection extends Thread {
     public boolean isInGame() {
         return inGame;
     } // end isInGame.
-    
+
     /**
      * Set the available of the player.
      */

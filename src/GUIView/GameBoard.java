@@ -85,7 +85,7 @@ public class GameBoard extends javax.swing.JFrame {
         jLabel2.setText("                   Player Information");
 
         jLabel3.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
-        jLabel3.setText("       Turn : player ...");
+        //jLabel3.setText("       Turn : player ...");
 
         jLabel4.setText("Player 1");
 
@@ -339,6 +339,10 @@ public class GameBoard extends javax.swing.JFrame {
     
     public void setViewTitle(String usr){
         setTitle("Game Room of: " + usr);
+    }
+    
+    public void setJLable(String player){
+        jLabel3.setText("       Turn : " + player);
     }
     
     public void reDrawBoard() {

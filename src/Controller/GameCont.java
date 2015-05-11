@@ -68,19 +68,20 @@ public class GameCont extends Controller {
         switch (value) {
             case "quit":
                 cmodel.switchController("lobby");
+                cmodel.sendUserInfo("game");
                 view.setVisible(false);
                 //gmodel.close();
                 
                 break;
             case "close":
                 cmodel.sendUserInfo("close");
-                //gmodel.close();
+                //gmodel.sendMsg("close");
                 
                 break;
             case "logOut":
                 cmodel.switchController("startUp");
                 cmodel.sendUserInfo("close");
-                //gmodel.sendServerMsg("close");
+                //gmodel.sendMsg("close");
                 view.setVisible(false);
                 break;
             case "size":
@@ -150,6 +151,10 @@ public class GameCont extends Controller {
     
     public void setTitle(String user){
         view.setViewTitle(user);
+    }
+    
+    public void updatePlayerTurn(String player){
+        view.setJLable(player);
     }
     
     public void draw(Graphics g, int w, int h){
