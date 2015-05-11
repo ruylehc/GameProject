@@ -47,7 +47,7 @@ public class GameModel{ // game model no longer implments runnable since it only
     //////////////////Socket-&-Server////////////////////
     private Thread worker;
     private ServerSocket ss;
-    public Socket sock;
+    public Socket sock, gameSock;
     private byte[] buffer;
     private final int BYTE_SIZE = 1024;
     private boolean terminate = false;
@@ -79,9 +79,9 @@ public class GameModel{ // game model no longer implments runnable since it only
             public void run() {
                 try {
                     //SocketClient gameSock = new SocketClient(IP, intPort); changing from a socketclient to a normal Socket
-                    sock = new Socket(IP, intPort);
-                    in = sock.getInputStream();
-                    out = sock.getOutputStream();
+                    gameSock = new Socket(IP, intPort);
+                    in = gameSock.getInputStream();
+                    out = gameSock.getOutputStream();
 
                     //Waiting and reading the meassage from the server side
                     while (terminate == false) {
@@ -155,12 +155,28 @@ public class GameModel{ // game model no longer implments runnable since it only
     /**
      * Close the I/O stream.
      */
-    public void close() {
+    public void closeServer() {
         try {
             out.close();
             in.close();
             sock.close();
             terminate = true;
+            //active = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }// end closeServer.
+    
+    /**
+     * Close the I/O stream.
+     */
+    public void closeSocket() {
+        try {
+            out.close();
+            in.close();
+            gameSock.close();
+            terminate = true;
+            //active = false;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -224,7 +240,6 @@ public class GameModel{ // game model no longer implments runnable since it only
                         this.drawBoard();
                         JOptionPane.showMessageDialog(null, "You have lost!");
                         contGame.listen("lobby");
-                        close();
                         break;
 
                     case "tie":
@@ -236,7 +251,7 @@ public class GameModel{ // game model no longer implments runnable since it only
                         break;
                     
                     case "close":
-                        close();
+                        closeServer();
                         break;
                         
                     case "chat":
@@ -268,7 +283,7 @@ public class GameModel{ // game model no longer implments runnable since it only
         catch (IOException e) {
             System.out.println("Connection is closed!");
             e.printStackTrace();
-            close();
+            //close();
         }
     }// End readClientMsg.    
 
@@ -603,17 +618,17 @@ public class GameModel{ // game model no longer implments runnable since it only
     }
 
     public void handleWin() {
-        //cmodel.sendUserInfo("stats_" + cmodel.userName + "_win");
+        cmodel.sendUserInfo("stats_" + cmodel.userName + "_win");
         // need code to exit us from the game and display the lobby view/ is below code enough?
         JOptionPane.showMessageDialog(null,"Congrats! You are victorious!");
         contGame.listen("lobby");
-        close();
+        closeServer();
     }
 
     public void handleQuit() {
         JOptionPane.showMessageDialog(null, "They quit!");
         handleWin();
-        //close();
+        closeServer();
         /*
         try {
             sc.close();

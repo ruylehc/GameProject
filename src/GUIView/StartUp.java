@@ -199,8 +199,7 @@ public class StartUp extends javax.swing.JFrame {
      * @param evt
      */
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
-    	controller.updateUserInfo(AIChoices.getSelectedItem().toString());
-        controller.listen("play");
+    	controller.listen("play");
     }                                          
 
     /**
@@ -215,10 +214,8 @@ public class StartUp extends javax.swing.JFrame {
      * ActionPerformed according to the AIChoices.
      * @param evt
      */
-    private void AIChoicesActionPerformed(java.awt.event.ActionEvent evt) {  
-        controller.updateUserInfo(AIChoices.getSelectedItem().toString());
-    	controller.listen("AI");
-        
+    private void AIChoicesActionPerformed(java.awt.event.ActionEvent evt) {                                          
+    	
     }                                         
 
     /**
