@@ -107,6 +107,7 @@ public class GameCont extends Controller {
             case "lobby":
                 cmodel.switchController("lobby");
                 cmodel.sendUserInfo("endGame_");
+                view.chatTA.setText("");
                 view.setVisible(false);
         }
     }

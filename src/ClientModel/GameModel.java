@@ -1,3 +1,4 @@
+
 package ClientModel;
 
 import Controller.GameCont;
@@ -87,6 +88,7 @@ public class GameModel{ // game model no longer implments runnable since it only
                     while (terminate == false) {
                         readClientMsg();
                     }
+                    close();
                 } catch (IOException ex) {
                     Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
                     ex.printStackTrace();
@@ -117,8 +119,10 @@ public class GameModel{ // game model no longer implments runnable since it only
                     while (terminate == false) {
                         readClientMsg();
                     }
+                    ss.close();
                 } catch (IOException ex) {
                     Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+                    
                 }
             }
         }).start();
@@ -161,6 +165,8 @@ public class GameModel{ // game model no longer implments runnable since it only
             in.close();
             sock.close();
             terminate = true;
+            start = false;
+            turn = false;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -181,8 +187,8 @@ public class GameModel{ // game model no longer implments runnable since it only
             out.write(bufferOut);
             out.flush();
         } catch (IOException e) {
-            handleQuit();
-            System.out.println("Connection is closed!");
+            //handleQuit();
+            System.out.println("Connection is closed! Cannot execute send message!");
             //close();
         }
     } // end sendServerMsg.
@@ -195,8 +201,9 @@ public class GameModel{ // game model no longer implments runnable since it only
         String info = null;
 
         try {
-
+            
             buffer = new byte[in.available()];
+            
             int len = in.read(buffer);
             int playerNum, row, col;
             if (len > 0) {
@@ -266,7 +273,7 @@ public class GameModel{ // game model no longer implments runnable since it only
             }
         } // Catch the error excepion then close the connection
         catch (IOException e) {
-            System.out.println("Connection is closed!");
+            System.out.println("Connection is closed! Cannot execute read client message");
             e.printStackTrace();
             close();
         }
@@ -494,8 +501,12 @@ public class GameModel{ // game model no longer implments runnable since it only
             } else {
                 JOptionPane.showMessageDialog(null, "It is not your turn!\nPlease wait!");
             }
-        }else
-            JOptionPane.showMessageDialog(null, "Game was not start!\nPlease wait!");
+        }else{
+            if(this.PlayerNum == 2)
+                JOptionPane.showMessageDialog(null, "Game was not start!\nPlease wait!");
+            else
+                JOptionPane.showMessageDialog(null, "Game was not start!\nPlease start the game!");
+        }
     }
 
     
