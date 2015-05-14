@@ -13,9 +13,12 @@ import java.util.ArrayList;
  *
  * @author PLUCSCE
  */
-public class AI implements Runnable {
-    GameModel gm = new GameModel();
-    public int[][] boardArray;
+public class AI {
+    private GameModel gmodel;
+    //private ClientModel model; will check back
+    //public int[][] boardArray;
+    
+    // attempt to put it here so we can use default constructor
     boolean turnHolder;
     int difficulty;
     int ThreatLvl1; // pair of hausers, blocked or not -- easy
@@ -45,8 +48,9 @@ public class AI implements Runnable {
     int playerToken = 1; // ai is always second player
     
     public void AI(){
-        this.boardArray = gm.board;
-        this.difficulty = gm.difficulty;
+       // this.boardArray = gmodel.board;
+        //this.difficulty = gm.difficulty;
+        run();
     }
     
     /**
@@ -287,35 +291,35 @@ public class AI implements Runnable {
                 for (int j = 0; j < size; j++){ //iterate through board
                     if (theboard[i][j] == 1){ // if we detect opposing player token
                         if (theboard[i][j-1] == 0 && j > 0 ){ //if the column before token on the same row is empty and in bounds, place a move
-                            makeMove(i, j-1);
+                            makeMove(i, j-1,theboard);
                         break;
                         }
                         else if (theboard[i][j+1]  == 0 && j < size-1){ //same row, token after 
-                            makeMove(j, j+1);
+                            makeMove(j, j+1,theboard);
                         break;
                         }
                         else if (theboard[i-1][j] == 0 && i > 0){ //same column, row before
-                            makeMove(i-1, j);
+                            makeMove(i-1, j,theboard);
                         break;
                         }
                         else if (theboard[i+1][j] == 0 && i < size-1){ //same column, row after
-                            makeMove(i+1, j);
+                            makeMove(i+1, j,theboard);
                         break;
                         }
                         else if (theboard[i-1][j-1] == 0 && j > 0 && i >0){
-                            makeMove(i-1,j-1);
+                            makeMove(i-1,j-1,theboard);
                         break;
                         }
                         else if (theboard[i+1][j+1] == 0 && j < size-1 && i < size-1){
-                            makeMove(i+1, j+1);
+                            makeMove(i+1, j+1,theboard);
                         break;
                         }
                         else if (theboard[i-1][j+1] == 0 && j < size-1 && i > 0){
-                            makeMove(i-1,j+1);
+                            makeMove(i-1,j+1,theboard);
                         break;
                         }
                         else if (theboard[i+1][j-1] == 0 && i < size-1 && j > 0){
-                            makeMove(i+1, j-1);
+                            makeMove(i+1, j-1,theboard);
                         break;
                         }
                     break;
@@ -477,7 +481,7 @@ public class AI implements Runnable {
         return false;
     }
 
-    private void makeMove(int row, int col) {
+    private void makeMove(int row, int col, int[][] boardArray) {
         boardArray[row][col] = 2; 
    
     }
@@ -485,7 +489,7 @@ public class AI implements Runnable {
     @Override
     public void run() {
         while(true){
-           turnHolder = !gm.turn; //initialize our turn counter to the board's turn counter
+           turnHolder = !gmodel.turn; //initialize our turn counter to the board's turn counter
            if (turnHolder){ //if it is our turn complete a check and make a move
            
                if (checkWin(boardArray, playerToken)){ //if we detect a win, exit
@@ -497,7 +501,7 @@ public class AI implements Runnable {
                     checkDiag(boardArray);
                     checkRow(boardArray);
                     threatDetect(boardArray);
-                    gm.updateMoveCounter();
+                    gmodel.turn = true;
             }
         }
                
@@ -505,7 +509,7 @@ public class AI implements Runnable {
     
 }
     
-    public void difficulty(String level){
+    public void setDifficulty(String level){
         switch(level){
             
             case "Easy":
@@ -520,9 +524,27 @@ public class AI implements Runnable {
             default:
                 difficulty = 1;
                 break;
-        }    
+                
+        }  
+        System.out.println("The difficulty from the AI class" + difficulty);
     }
-
+    
+    /**
+     * This will set the Model into the controller.
+     * @param model ClientModel.
+     */
+    public void setModel(ClientModel model) {
+        this.model = model;
+    } // end setModel.
+    
+    /**
+     * This will set the Model into the controller.
+     * @param model ClientModel.
+     */
+    public void setGModel(GameModel gmodel) {
+        this.gmodel = gmodel;
+    } // end setModel.
+    
     private void exit() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

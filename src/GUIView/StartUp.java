@@ -216,8 +216,8 @@ public class StartUp extends javax.swing.JFrame {
      * @param evt
      */
     private void AIChoicesActionPerformed(java.awt.event.ActionEvent evt) {  
-        controller.updateUserInfo(AIChoices.getSelectedItem().toString());
-    	controller.listen("AI");
+       // controller.updateUserInfo(AIChoices.getSelectedItem().toString());
+    	//controller.listen("AI");
         
     }                                         
 

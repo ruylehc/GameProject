@@ -32,7 +32,7 @@ public class GameModel{ // game model no longer implments runnable since it only
     
     
      /////////////////// AI variables ///////////////////
-     public AI ai;
+    public AI ai;
     int aiMarker;
     boolean aiGame = false; 
     
@@ -685,15 +685,16 @@ public class GameModel{ // game model no longer implments runnable since it only
         this.cmodel = cmodel;
     }
 
-    void difficulty(String info) {
-        ai.difficulty(info);
+    public void difficulty(String info) {
+        ai.setDifficulty(info);
     }
     
-    public void startGame(){
+    public void startAIGame(){
         aiMarker = P2;
-        p1turn = true;  // sets the first turn to the human
+        turn = true;  // sets the first turn to the human
         aiGame = true;  // tells the gamemodel it is a AI game so it doesnt use socket
-        
+        fillBoard();
+           
    
     }   
 }
