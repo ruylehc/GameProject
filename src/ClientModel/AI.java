@@ -42,7 +42,7 @@ public class AI implements Runnable {
     int AI = 2; // AI will always be the second player making his tokens value = 2
     int opp = 1; // the player will always be first player so we can hard code it
     static final int empty = 0;
-    int playerToken = 1;
+    int playerToken = 1; // ai is always second player
     
     public void AI(){
         this.boardArray = gm.board;
@@ -485,7 +485,7 @@ public class AI implements Runnable {
     @Override
     public void run() {
         while(true){
-           turnHolder = gm.p2turncounter; //initialize our turn counter to the board's turn counter
+           turnHolder = !gm.turn; //initialize our turn counter to the board's turn counter
            if (turnHolder){ //if it is our turn complete a check and make a move
            
                if (checkWin(boardArray, playerToken)){ //if we detect a win, exit
@@ -511,7 +511,7 @@ public class AI implements Runnable {
             case "Easy":
                 difficulty = 1;
                 break;
-            case"Medium":
+            case "Normal":
                 difficulty = 2;
                 break;
             case "Hard": 

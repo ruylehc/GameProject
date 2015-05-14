@@ -26,9 +26,16 @@ public class GameModel{ // game model no longer implments runnable since it only
     public int SIZE = 30;   //Default board size might be 30.
     int difficulty;
     
-    public AI ai;
+   
     private static final int BUFFER = 4;
     ///////////////////end Board/////////////////////////
+    
+    
+     /////////////////// AI variables ///////////////////
+     public AI ai;
+    int aiMarker;
+    boolean aiGame = false; 
+    
     
     ////////////////////Player///////////////////////////
     boolean p1Win = false;
@@ -61,7 +68,7 @@ public class GameModel{ // game model no longer implments runnable since it only
     private GameCont contGame;
     private String userID = "undef";
     private boolean start = false;
-    private boolean turn;
+    boolean turn;
 
     // These methods handle connecting to the other class
     // This method needs to be made by a MMcontroller with the
@@ -482,6 +489,14 @@ public class GameModel{ // game model no longer implments runnable since it only
         if (start == true) {
             if (turn == true) {
                 if (validMove(row, col) == true) {
+                    // this is the AI condition that will be valid if aiGame = true
+                    if(aiGame== true){
+                       this.markBoard(P1, row, col); // will always be player 1
+                       this.drawBoard();
+                       turn = false;        
+                    }
+                    
+                    
                     this.markBoard(PlayerNum, row, col);
                     this.drawBoard();
 
@@ -669,4 +684,16 @@ public class GameModel{ // game model no longer implments runnable since it only
     public void setSubModel(ClientModel cmodel){
         this.cmodel = cmodel;
     }
+
+    void difficulty(String info) {
+        ai.difficulty(info);
+    }
+    
+    public void startGame(){
+        aiMarker = P2;
+        p1turn = true;  // sets the first turn to the human
+        aiGame = true;  // tells the gamemodel it is a AI game so it doesnt use socket
+        
+   
+    }   
 }

@@ -311,7 +311,7 @@ public class ClientModel {
     }// end addSubModel.
 
     public void setDifficutly(String info) {
-        ai.difficulty(info);
+        gmodel.difficulty(info);
         
         
     }
