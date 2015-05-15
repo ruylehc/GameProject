@@ -5,11 +5,15 @@
         <group>
             <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/Controller/MatchCont.java</file>
             <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/ClientModel/GameModel.java</file>
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/ClientModel/testPlayercounter.java</file>
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/GameServer/Connection.java</file>
             <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/GUIView/StartUp.java</file>
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/ClientModel/AI.java</file>
             <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/GUIView/GameBoard.java</file>
             <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/Controller/GameCont.java</file>
             <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/GUIView/MatchMaking.java</file>
             <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/ClientModel/ClientModel.java</file>
+            <file>file:/X:/CSCE320/GameProjectNew/GameProject/src/ClientModel/SocketClient.java</file>
         </group>
     </open-files>
 </project-private>

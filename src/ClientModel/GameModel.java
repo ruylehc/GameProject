@@ -171,18 +171,13 @@ public class GameModel{ // game model no longer implments runnable since it only
             this.SIZE = 30;
             out.close();
             in.close();
-            //sock.close();
             terminate = true;
             start = false;
-            turn = false;
-            //sock = null;
-            //in = null;
-            //out = null;
             if(PlayerNum==1)
                 ss.close();
-                //ss = null;
             else
                 sock.close();
+            this.setTurn();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -241,6 +236,7 @@ public class GameModel{ // game model no longer implments runnable since it only
                         turn = Boolean.parseBoolean(split[4]);
                         this.markBoard(playerNum, row, col);
                         this.drawBoard();
+                        this.setTurn();
                         break;
                         
                     case "win":
@@ -280,6 +276,7 @@ public class GameModel{ // game model no longer implments runnable since it only
                     case "start":
                         start = true;
                         turn = Boolean.parseBoolean(split[1]);
+                        this.setTurn();
                         break;
                         
                     case "turn":
@@ -378,12 +375,18 @@ public class GameModel{ // game model no longer implments runnable since it only
         }
     }
     
+    /**
+     * Update the turn label to the view
+     * Display opponent turn - offender
+     * Display defender turn
+     */
     public void setTurn() {
-        if (turn == true) {
-            contGame.updatePlayerTurn(this.userID);
-            this.sendMsg("turn_" + userID);
-        }
-
+        if(terminate == true)
+            contGame.updatePlayerTurn("--waiting--");
+        else if (turn == true)            
+            contGame.updatePlayerTurn("Your Turn!");
+        else
+            contGame.updatePlayerTurn("Opponent Turn!");
     }
     /**
      * Draws this Board using the given Graphics object.
@@ -449,6 +452,8 @@ public class GameModel{ // game model no longer implments runnable since it only
                 p2turncounter = true;
                 counter++;
             }
+            
+            ////////////////////Will be delete next time-Please comfirm it///////////////////////
          /*else if (p2turn = true) {
 
             if (counter % 2 == 0) {
@@ -500,7 +505,7 @@ public class GameModel{ // game model no longer implments runnable since it only
         int[][] temp = board;
         row = (int) (row / this.cellH);
         col = (int) (col / this.cellW);
-        if (start == true) {
+        if (start == true) {            
             if (turn == true) {
                 if (validMove(row, col) == true) {
                     // this is the AI condition that will be valid if aiGame = true
@@ -527,9 +532,7 @@ public class GameModel{ // game model no longer implments runnable since it only
                             this.handleWin();
                         } else {
                             if(!aiGame){
-                            this.sendMsg("move_" + this.PlayerNum + "_" + row + "_" + col + "_" + turn);
-                            
-                            
+                            this.sendMsg("move_" + this.PlayerNum + "_" + row + "_" + col + "_" + turn);                      
                             }
                             else{
                             ai.aiMove(board);
@@ -537,6 +540,7 @@ public class GameModel{ // game model no longer implments runnable since it only
                             this.drawBoard(); // this method calls all functions needed for AI to make a move
                             }
                             turn = false;
+                            this.setTurn();
                         }
                     }
                 }
@@ -647,14 +651,23 @@ public class GameModel{ // game model no longer implments runnable since it only
         return false;
     }
 
+    /**
+     * ////////////////////Add description please///////////////////////
+     */
     public void pause() {
 
     }
 
+    /**
+     * ////////////////////Add description please///////////////////////
+     */
     public void gameStartClock() {
 
     }
 
+    /**
+     * ////////////////////Add description please///////////////////////
+     */
     public void handleWin() {
         //cmodel.sendUserInfo("stats_" + cmodel.userName + "_win");
         // need code to exit us from the game and display the lobby view/ is below code enough?
@@ -663,21 +676,18 @@ public class GameModel{ // game model no longer implments runnable since it only
         close();
     }
 
+    /**
+     * ////////////////////Add description please///////////////////////
+     */
     public void handleQuit() {
         JOptionPane.showMessageDialog(null, "They quit!");
         contGame.listen("lobby");
-        //handleWin();
-        close();
-        /*
-        try {
-            sc.close();
-        } catch (IOException ex) {
-            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-        }
-        */
+        close();        
     }
 
+    /**
+     * ////////////////////Add description please///////////////////////
+     */
     public void handleTie() {
         JOptionPane.showMessageDialog(null, "Tie!");
         contGame.listen("lobby");
@@ -691,38 +701,49 @@ public class GameModel{ // game model no longer implments runnable since it only
     }
 
     /**
+     * Start the game
      * @param start the start to set
      */
     public void setStart(boolean start) {
         if(sock == null){
-           startAIGame();
-          
+           startAIGame();          
         }
         else if(this.PlayerNum == 1 && !this.start && sock != null){
             this.start = start;
             this.flipCoin();
             this.sendMsg("start_" + !turn);
-            if(turn == true)
+            if(turn == true){
+                this.setTurn();
                 JOptionPane.showMessageDialog(null,"It is your turn.");
+            }
             else
                 sendMsg("turn_It is your turn");
-            this.updateMoveCounter();
-            
-        }
-        
+            this.updateMoveCounter();            
+        }        
         else
             JOptionPane.showMessageDialog(null,"You do not have the game option");
     }
     
+    /**
+     * 
+     * @param cmodel 
+     */
     public void setSubModel(ClientModel cmodel){
         this.cmodel = cmodel;
     }
 
+    /**
+     * ////////////////////Add description please///////////////////////
+     * @param info 
+     */
     public void setDifficulty(String info) {
         System.out.println("this is the game model displaying difficulty: " + info );
         ai.setDifficulty(info);
     }
     
+    /**
+     * ////////////////////Add description please///////////////////////
+     */
     public void startAIGame(){
         aiMarker = P2;
         turn = true;  // sets the first turn to the human
@@ -734,6 +755,10 @@ public class GameModel{ // game model no longer implments runnable since it only
    
     }   
 
+    /**
+     * ////////////////////Add description please///////////////////////
+     * @param ai 
+     */
     public void setAI(AI ai) {
        this.ai = ai;
     }
