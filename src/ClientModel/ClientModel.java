@@ -311,7 +311,8 @@ public class ClientModel {
     }// end addSubModel.
 
     public void setDifficutly(String info) {
-        gmodel.difficulty(info);
+        System.out.println("this is the Client model displaying difficulty: " + info );//debugging
+        gmodel.setDifficulty(info);
         
         
     }

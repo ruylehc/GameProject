@@ -34,8 +34,8 @@ public class PlayerMain {
                 //when we move to a game it calls createServer/createSocket 
                     //model.setIp(args[0]);
                 AI ai = new AI();
-                ai.setModel(model);
                 ai.setGModel(gmodel);
+                gmodel.setAI(ai);
                 
 		//GUI
 		StartUp viewSU = new StartUp();

@@ -491,24 +491,35 @@ public class GameModel{ // game model no longer implments runnable since it only
                 if (validMove(row, col) == true) {
                     // this is the AI condition that will be valid if aiGame = true
                     if(aiGame== true){
+                       
+                       ai.aiMove(board);
                        this.markBoard(P1, row, col); // will always be player 1
-                       this.drawBoard();
-                       turn = false;        
+                       this.drawBoard(); // this method calls all functions needed for AI to make a move
+                       // turn = false;   dont change turn, simply make AI move     
                     }
-                    
-                    
+                    else{
                     this.markBoard(PlayerNum, row, col);
                     this.drawBoard();
+                    }
 
                     if (count == 1) {
                         this.eraseBoard(row, col);
                         board = temp;
                     } else {
                         if (this.checkWin(board, PlayerNum) == true) {
+                           if(!aiGame){
                             this.sendMsg("win_" + this.PlayerNum + "_" + row + "_" + col + "_" + turn);
+                           } // skipps this step if you are playing an AI
                             this.handleWin();
                         } else {
+                            if(!aiGame){
                             this.sendMsg("move_" + this.PlayerNum + "_" + row + "_" + col + "_" + turn);
+                            
+                            
+                            }
+                            ai.aiMove(board);
+                            //this.markBoard(P1, row, col); // will always be player 1
+                            this.drawBoard(); // this method calls all functions needed for AI to make a move
                             turn = false;
                         }
                     }
@@ -666,7 +677,11 @@ public class GameModel{ // game model no longer implments runnable since it only
      * @param start the start to set
      */
     public void setStart(boolean start) {
-        if(this.PlayerNum == 1 && !this.start){
+        if(sock == null){
+           startAIGame();
+          
+        }
+        else if(this.PlayerNum == 1 && !this.start && sock != null){
             this.start = start;
             this.flipCoin();
             this.sendMsg("start_" + !turn);
@@ -677,6 +692,7 @@ public class GameModel{ // game model no longer implments runnable since it only
             this.updateMoveCounter();
             
         }
+        
         else
             JOptionPane.showMessageDialog(null,"You do not have the game option");
     }
@@ -685,7 +701,8 @@ public class GameModel{ // game model no longer implments runnable since it only
         this.cmodel = cmodel;
     }
 
-    public void difficulty(String info) {
+    public void setDifficulty(String info) {
+        System.out.println("this is the game model displaying difficulty: " + info );
         ai.setDifficulty(info);
     }
     
@@ -693,8 +710,14 @@ public class GameModel{ // game model no longer implments runnable since it only
         aiMarker = P2;
         turn = true;  // sets the first turn to the human
         aiGame = true;  // tells the gamemodel it is a AI game so it doesnt use socket
+        start = true;
         fillBoard();
+        drawBoard();
            
    
     }   
+
+    public void setAI(AI ai) {
+       this.ai = ai;
+    }
 }

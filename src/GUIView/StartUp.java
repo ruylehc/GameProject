@@ -200,6 +200,7 @@ public class StartUp extends javax.swing.JFrame {
      */
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
     	controller.updateUserInfo(AIChoices.getSelectedItem().toString());
+        
         controller.listen("play");
     }                                          
 
