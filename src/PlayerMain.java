@@ -8,22 +8,23 @@
  * 			Question notes from talking with Dr Hauser.
  */
 
-import java.io.IOException;
-import java.net.*;
-
+import ClientModel.AI;
 import ClientModel.ClientModel;
 import ClientModel.GameModel;
 import ClientModel.SocketClient;
+import Controller.GameCont;
 import Controller.LoginCont;
 import Controller.MatchCont;
 import Controller.RegisterCont;
 import Controller.StartUpCont;
-import Controller.GameCont;
+import GUIView.GameBoard;
 import GUIView.Login;
 import GUIView.MatchMaking;
 import GUIView.Register;
 import GUIView.StartUp;
-import GUIView.GameBoard;
+import java.io.IOException;
+import java.net.*;
+
 public class PlayerMain {
 
 	public static void main(String[] args) throws UnknownHostException{
@@ -32,6 +33,10 @@ public class PlayerMain {
                 //this allows us to create game model and game controller at beginning without needing the port and ip
                 //when we move to a game it calls createServer/createSocket 
                     //model.setIp(args[0]);
+                AI ai = new AI();
+                ai.setGModel(gmodel);
+                gmodel.setAI(ai);
+                
 		//GUI
 		StartUp viewSU = new StartUp();
 		Login viewLog = new Login();

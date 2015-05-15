@@ -62,7 +62,8 @@ public class StartUpCont extends Controller {
         }
 
         if (value.equals("play")) { 
-            model.setDifficutly(info);
+           System.out.println("this is the start up view displaying difficulty: " + info );
+            model.setDifficutly(info);      
             model.switchController("gameBoard");
             
         }

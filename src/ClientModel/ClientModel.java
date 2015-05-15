@@ -26,7 +26,7 @@ public class ClientModel {
     private String msg = "";
     private SocketClient sock;
     private GameModel gmodel;
-    public AI ai = new AI();
+    private AI ai;
 
     private boolean isValid = false;
     private boolean chat = false;
@@ -311,7 +311,8 @@ public class ClientModel {
     }// end addSubModel.
 
     public void setDifficutly(String info) {
-        gmodel.difficulty(info);
+        System.out.println("this is the Client model displaying difficulty: " + info );//debugging
+        gmodel.setDifficulty(info);
         
         
     }

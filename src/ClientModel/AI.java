@@ -13,9 +13,12 @@ import java.util.ArrayList;
  *
  * @author PLUCSCE
  */
-public class AI implements Runnable {
-    GameModel gm = new GameModel();
-    public int[][] boardArray;
+public class AI {
+    private GameModel gmodel;
+    //private ClientModel model; will check back
+    //public int[][] boardArray;
+    
+    // attempt to put it here so we can use default constructor
     boolean turnHolder;
     int difficulty;
     int ThreatLvl1; // pair of hausers, blocked or not -- easy
@@ -45,8 +48,9 @@ public class AI implements Runnable {
     int playerToken = 1; // ai is always second player
     
     public void AI(){
-        this.boardArray = gm.board;
-        this.difficulty = gm.difficulty;
+       // this.boardArray = gmodel.board;
+        //this.difficulty = gm.difficulty;
+        //run();
     }
     
     /**
@@ -115,6 +119,7 @@ public class AI implements Runnable {
         }// end inner for loop,
   
     } // end outer loop
+        threats.add("0000000"); // this is the 0 threat case and should queue the AI to make an offensive move
     }
 
     /**
@@ -154,6 +159,8 @@ public class AI implements Runnable {
                 }// end else if's
             } // end inner for loop     
         } // end outer for loop
+         
+         threats.add("0000000"); // this is the 0 threat case and should queue the AI to make an offensive move
     } // end checkCol method
 
     /**
@@ -234,7 +241,7 @@ public class AI implements Runnable {
             } // end inner for loop     
         } // end outer for loop
         
-
+        threats.add("0000000"); // this is the 0 threat case and should queue the AI to make an offensive move
         
     }
     
@@ -252,21 +259,24 @@ public class AI implements Runnable {
         int lvl = 0;
         int temp = 0;
         
+        System.out.println("the first element in Threats list: " + threats.get(0));
         for (int i = 0; i < threats.size(); i++) { // for loop doesn't handle threats of equal level
-            char level = threats.get(i).charAt(0);
-            temp = (int) level;
-            if (lvl < temp) {
+            String level = threats.get(i).substring(0,0);
+            temp = Integer.parseInt(level);
+            if (lvl <= temp) {
                 lvl = temp;
                 highestThreat = threats.get(i);
             }
         }
+        
+        System.out.println("the highet threat String: " + highestThreat);
         // now have the highest level threat in the string set start and end points
-        startx = (int) highestThreat.charAt(1);
-        endx = (int) highestThreat.charAt(2);
-        starty = (int) highestThreat.charAt(3);
-        endy = (int) highestThreat.charAt(4);
-        blockx = (int) highestThreat.charAt(5);
-        blocky = (int) highestThreat.charAt(6);
+        startx = Integer.parseInt(highestThreat.substring(1,1));
+        endx = Integer.parseInt(highestThreat.substring(2,2));
+        starty = Integer.parseInt(highestThreat.substring(3,3));
+        endy = Integer.parseInt(highestThreat.substring(4,4));
+        blockx = Integer.parseInt(highestThreat.substring(5,5));
+        blocky = Integer.parseInt(highestThreat.substring(6,6));
         
         // check dimensions of the threat.
         int DeltaX = endx - startx;
@@ -287,35 +297,35 @@ public class AI implements Runnable {
                 for (int j = 0; j < size; j++){ //iterate through board
                     if (theboard[i][j] == 1){ // if we detect opposing player token
                         if (theboard[i][j-1] == 0 && j > 0 ){ //if the column before token on the same row is empty and in bounds, place a move
-                            makeMove(i, j-1);
+                            makeMove(i, j-1,theboard);
                         break;
                         }
                         else if (theboard[i][j+1]  == 0 && j < size-1){ //same row, token after 
-                            makeMove(j, j+1);
+                            makeMove(j, j+1,theboard);
                         break;
                         }
                         else if (theboard[i-1][j] == 0 && i > 0){ //same column, row before
-                            makeMove(i-1, j);
+                            makeMove(i-1, j,theboard);
                         break;
                         }
                         else if (theboard[i+1][j] == 0 && i < size-1){ //same column, row after
-                            makeMove(i+1, j);
+                            makeMove(i+1, j,theboard);
                         break;
                         }
                         else if (theboard[i-1][j-1] == 0 && j > 0 && i >0){
-                            makeMove(i-1,j-1);
+                            makeMove(i-1,j-1,theboard);
                         break;
                         }
                         else if (theboard[i+1][j+1] == 0 && j < size-1 && i < size-1){
-                            makeMove(i+1, j+1);
+                            makeMove(i+1, j+1,theboard);
                         break;
                         }
                         else if (theboard[i-1][j+1] == 0 && j < size-1 && i > 0){
-                            makeMove(i-1,j+1);
+                            makeMove(i-1,j+1,theboard);
                         break;
                         }
                         else if (theboard[i+1][j-1] == 0 && i < size-1 && j > 0){
-                            makeMove(i+1, j-1);
+                            makeMove(i+1, j-1,theboard);
                         break;
                         }
                     break;
@@ -330,16 +340,16 @@ public class AI implements Runnable {
             case "col":
                 if (blockx != -1 || blocky != -1) { // bottom side IS blocked; check top side
                     if (starty - 1 >= 0 && theboard[startx][starty - 1] == empty) {
-                        makeMove(startx, starty - 1);
+                        makeMove(startx, starty - 1,theboard);
                     }
                 } //the bottom side is NOT blocked; check if TOP side is
                 
                 if (starty - 1 >= 0 && theboard[startx][starty - 1] == AI)  { // top side IS blocked
-                    makeMove(endx, endy + 1); // block on bottom
+                    makeMove(endx, endy + 1,theboard); // block on bottom
                 } // neither side is blocked, this dum-dum will choose top every time
                 
                 if (starty - 1 >= 0){ // checks out of bounds condition   
-                    makeMove(startx, starty - 1);
+                    makeMove(startx, starty - 1,theboard);
                 }
 
                 break;
@@ -348,14 +358,14 @@ public class AI implements Runnable {
             case "row":
                 if (blockx != -1 || blocky != -1) { // right side IS blocked; check left side
                     if (startx-1 >= 0 && theboard[startx-1][starty] == empty) {
-                        makeMove(startx-1, starty);
+                        makeMove(startx-1, starty,theboard);
                     }
                 } //the right side is NOT blocked; check if left side is
                 if (starty - 1 >= 0 && theboard[startx][starty - 1] == AI)  { // left side IS blocked
-                    makeMove(endx + 1, endy); // block on right
+                    makeMove(endx + 1, endy,theboard); // block on right
                 } // neither side is blocked, this dum-dum will choose left every time
                 if (starty - 1 >= 0){ // checks out of bounds condition   
-                    makeMove(startx, starty - 1);
+                    makeMove(startx, starty - 1,theboard);
                 }
                 
                 
@@ -365,14 +375,14 @@ public class AI implements Runnable {
             case "diagLtoR":
                 if (blockx != -1 || blocky != -1) { // top right side is blocked; check bottom left
                     if (startx-1 >= 0 && starty-1 >= 0 && theboard[startx-1][starty-1] == empty){
-                        makeMove(startx-1, starty-1); // make move bottom left
+                        makeMove(startx-1, starty-1,theboard); // make move bottom left
                     }    
                 }
                 if (startx-1 >= 0 && starty-1 >= 0 && theboard[startx-1][starty-1] == AI){ // we're blocking bottom left
-                    makeMove(endx+1, endy+1); // make move top right
+                    makeMove(endx+1, endy+1,theboard); // make move top right
                 }
                 if (starty - 1 >= 0 && startx-1 >= 0){ //default open blocks on both ends make move bottom left
-                    makeMove(startx-1, starty-1);
+                    makeMove(startx-1, starty-1,theboard);
                 }
                 
                 break;
@@ -380,13 +390,13 @@ public class AI implements Runnable {
             case "diagRtoL":
                 if (blockx != -1 || blocky != -1){ // bottom left is blocked check right
                     if (startx+1 >= 0 && starty+1 >= 0 && theboard[startx+1][starty+1] == empty){ //top right block is open make move
-                        makeMove(startx+1, starty+1);
+                        makeMove(startx+1, starty+1,theboard);
                     }
                 if (startx+1 >= 0 && starty+1 >=0 && theboard[startx+1][starty+1] == AI){ //we're blocking top right
-                        makeMove(endx-1, endy-1); //make move bottom left
+                        makeMove(endx-1, endy-1,theboard); //make move bottom left
                 }
                 if (starty + 1 >=0 && startx + 1 >= 0){ //default open blocks on both ends make move top right
-                        makeMove(startx+1, starty+1);
+                        makeMove(startx+1, starty+1,theboard);
                 }
                 break;
                 } 
@@ -477,15 +487,32 @@ public class AI implements Runnable {
         return false;
     }
 
-    private void makeMove(int row, int col) {
+    private void makeMove(int row, int col, int[][] boardArray) {
         boardArray[row][col] = 2; 
    
     }
 
+    /**
+     * this method makes a move for the AI, will be called immediate after the player makes a move
+     * @param board - the 2d array from gameModel 
+     */
+    public void aiMove(int[][] board){
+        if(checkWin(board,1)==true){
+            // AI has lost, exit smoothly
+        }
+        else 
+           checkRow(board);
+           checkCol(board);
+           checkDiag(board);
+           threatDetect(board);
+           
+    }
+   
+    /*
     @Override
     public void run() {
         while(true){
-           turnHolder = !gm.turn; //initialize our turn counter to the board's turn counter
+           turnHolder = !gmodel.turn; //initialize our turn counter to the board's turn counter
            if (turnHolder){ //if it is our turn complete a check and make a move
            
                if (checkWin(boardArray, playerToken)){ //if we detect a win, exit
@@ -497,7 +524,7 @@ public class AI implements Runnable {
                     checkDiag(boardArray);
                     checkRow(boardArray);
                     threatDetect(boardArray);
-                    gm.updateMoveCounter();
+                    gmodel.turn = true;
             }
         }
                
@@ -505,11 +532,13 @@ public class AI implements Runnable {
     
 }
     
-    public void difficulty(String level){
+    */
+    
+    public void setDifficulty(String level){
         switch(level){
             
             case "Easy":
-                difficulty = 1;
+                difficulty = 1;               
                 break;
             case "Normal":
                 difficulty = 2;
@@ -520,9 +549,30 @@ public class AI implements Runnable {
             default:
                 difficulty = 1;
                 break;
-        }    
+                
+        }  
+        System.out.println("The difficulty from the AI class" + difficulty);
     }
-
+    
+    /**
+     * This will set the Model into the controller.
+     * @param model ClientModel.
+     
+    
+    public void setModel(ClientModel model) {
+        this.model = model;
+    } // end setModel.
+    
+    */
+    
+    /**
+     * This will set the Model into the controller.
+     * @param model ClientModel.
+     */
+    public void setGModel(GameModel gmodel) {
+        this.gmodel = gmodel;
+    } // end setModel.
+    
     private void exit() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
