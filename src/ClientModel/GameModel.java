@@ -53,7 +53,6 @@ public class GameModel{ // game model no longer implments runnable since it only
     ////////////////////end-Player///////////////////////
     
     //////////////////Socket-&-Server////////////////////
-    private Thread worker;
     private ServerSocket ss;
     public Socket sock;
     private byte[] buffer;
@@ -126,7 +125,7 @@ public class GameModel{ // game model no longer implments runnable since it only
                     while (terminate == false) {
                         readClientMsg();
                     }
-                    ss.close();
+                    
                 } catch (IOException ex) {
                     Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
                     
@@ -168,12 +167,17 @@ public class GameModel{ // game model no longer implments runnable since it only
      */
     public void close() {
         try {
+            this.SIZE = 30;
             out.close();
             in.close();
             sock.close();
             terminate = true;
             start = false;
             turn = false;
+            sock = null;
+            if(PlayerNum==1)
+                ss.close();
+                ss = null;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -193,6 +197,10 @@ public class GameModel{ // game model no longer implments runnable since it only
         try {
             out.write(bufferOut);
             out.flush();
+            if(msg.equals("quit")){
+                contGame.listen("lobby");
+                close();
+            }
         } catch (IOException e) {
             //handleQuit();
             System.out.println("Connection is closed! Cannot execute send message!");
@@ -208,6 +216,7 @@ public class GameModel{ // game model no longer implments runnable since it only
         String info = null;
 
         try {
+            
             
             buffer = new byte[in.available()];
             
@@ -281,8 +290,8 @@ public class GameModel{ // game model no longer implments runnable since it only
         } // Catch the error excepion then close the connection
         catch (IOException e) {
             System.out.println("Connection is closed! Cannot execute read client message");
-            e.printStackTrace();
-            close();
+            //e.printStackTrace();
+            //close();
         }
     }// End readClientMsg.    
 
@@ -638,8 +647,9 @@ public class GameModel{ // game model no longer implments runnable since it only
 
     public void handleQuit() {
         JOptionPane.showMessageDialog(null, "They quit!");
-        handleWin();
-        //close();
+        contGame.listen("lobby");
+        //handleWin();
+        close();
         /*
         try {
             sc.close();

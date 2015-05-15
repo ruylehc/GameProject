@@ -67,10 +67,10 @@ public class GameCont extends Controller {
         
         switch (value) {
             case "quit":
-                cmodel.switchController("lobby");
-                cmodel.sendUserInfo("endGame_");
+                //cmodel.switchController("lobby");
+                //cmodel.sendUserInfo("endGame_");                
+                gmodel.sendMsg("quit");
                 view.setVisible(false);
-                //gmodel.close();
                 
                 break;
             case "close":
