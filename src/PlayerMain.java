@@ -8,20 +8,9 @@
  * 			Question notes from talking with Dr Hauser.
  */
 
-import ClientModel.AI;
-import ClientModel.ClientModel;
-import ClientModel.GameModel;
-import ClientModel.SocketClient;
-import Controller.GameCont;
-import Controller.LoginCont;
-import Controller.MatchCont;
-import Controller.RegisterCont;
-import Controller.StartUpCont;
-import GUIView.GameBoard;
-import GUIView.Login;
-import GUIView.MatchMaking;
-import GUIView.Register;
-import GUIView.StartUp;
+import ClientModel.*;
+import Controller.*;
+import GUIView.*;
 import java.io.IOException;
 import java.net.*;
 
@@ -29,22 +18,23 @@ public class PlayerMain {
 
 	public static void main(String[] args) throws UnknownHostException{
 		ClientModel model = new ClientModel();
-                GameModel gmodel = new GameModel(); // this was added since we took away our consturtors that required an ip and port
+                GameModel gmodel = new GameModel();
                 //this allows us to create game model and game controller at beginning without needing the port and ip
                 //when we move to a game it calls createServer/createSocket 
-                    //model.setIp(args[0]);
+                    model.setIp(args[0]);
+                    
                 AI ai = new AI();
                 ai.setGModel(gmodel);
                 gmodel.setAI(ai);
                 
-		//GUI
+		//GUI - Display View
 		StartUp viewSU = new StartUp();
 		Login viewLog = new Login();
 		Register viewReg = new Register();
 		MatchMaking viewMatch = new MatchMaking();
                 GameBoard viewGame = new GameBoard();
 
-		//Cont
+		//Controller
 		StartUpCont contSU = new StartUpCont();
 		contSU.setID("StartCtrl");
 		LoginCont contLog = new LoginCont();	//constructor for loginCont
@@ -78,21 +68,16 @@ public class PlayerMain {
                 contGame.setModel(model);
                 contGame.setGModel(gmodel);
                 contGame.setView(viewGame);
-                
-                
-                
 
+                //Model
 		model.addController(contSU);
 		model.addController(contLog);
 		model.addController(contReg);
 		model.addController(contMatch);
                 model.addController(contGame);
-                gmodel.setController(contGame); // uses set rather than add since gmodel only has 1 controller
-              
+                gmodel.setController(contGame); 
                 model.addSubModel(gmodel);
                 gmodel.setController(contGame);
-
-		//model.setSock(sock);
 
 	}
 }

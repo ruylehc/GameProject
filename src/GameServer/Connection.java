@@ -54,7 +54,7 @@ public class Connection extends Thread {
      */
     public void sendServerMsg(String msg) {
         //DEBUG
-        System.out.println("This is the Connection-ServerModel from server: " + msg);
+        //System.out.println("This is the Connection-ServerModel from server: " + msg);
 
         byte[] bufferOut = msg.getBytes();
         //Send the message to the Client
@@ -67,23 +67,7 @@ public class Connection extends Thread {
             close();
         }
     } // end sendServerMsg.
-
-    /**
-     * Comment: this method is duplicate the previous readClient method
-     *
-     *
-     *
-     *
-     * @param playerInvite / public void sendUserInvite(String playerInvite) {
-     * String[] split = playerInvite.split("_");	//Delimiter the string String
-     * type = split[0]; String SendTo = split[1]; String ip = "";
-     *
-     * if (type.equals("invite")) { if (ss.checkOnlineUser(SendTo)) // checks if
-     * the player is online { ip = ss.getOnlineUser().get(SendTo); } } for
-     * (Connection c : ss.list) // check to ensure it is not giving us a delay
-     * (global variable) { if (c.getIP().equals(ip)) {
-     * sendServerMsg(playerInvite); } } }
-     */
+    
     /**
      * Thread Two: + Reads a message from the Client + Send server message back.
      * to the Client
@@ -119,14 +103,14 @@ public class Connection extends Thread {
                         //String Validation of the user name and password.
                         String loginStatus = model.login(userName, passWord);
                         //DEBUG
-                        System.out.println("This is the connection status from login: " + loginStatus);
+                        //System.out.println("This is the connection status from login: " + loginStatus);
                         if (loginStatus.equals("loginSuccess_" + userName)) {	//Set the user name into connection.
                             this.userName = userName;
                             active = true;
                         }
                         //DEBUG
-                        System.out.println("login " + userName + ", " + passWord);
-                        System.out.println("From connection, server side: " + loginStatus);
+                        //System.out.println("login " + userName + ", " + passWord);
+                        //System.out.println("From connection, server side: " + loginStatus);
                         sendServerMsg(loginStatus);
 
                         break;
@@ -141,7 +125,6 @@ public class Connection extends Thread {
                             userName = split[1].toLowerCase();
                             passWord = split[2];
                             rePassword = split[3];
-
                         }
 
                         //String Validation of the user name and password.
@@ -151,7 +134,7 @@ public class Connection extends Thread {
                             active = true;
                         }
                         //DEBUG
-                        System.out.println("register :" + userName + ", " + passWord);
+                        //System.out.println("register :" + userName + ", " + passWord);
                         sendServerMsg(registerStatus);
 
                         break;
@@ -165,13 +148,11 @@ public class Connection extends Thread {
                         {
                             ss.sendInvitation(userToBeInvited, msg);
                         }
-
                         break;
                     case "mInvite":
                         //Send server invitation messge to all players.
                         msg = "invite_" + this.userName; //This String contains identity of "invite", and the inviter user name. 
                         ss.sendInvitation("all_" + this.userName, msg);
-
                         break;
                     //Send the chat message to all current connected user. 
                     case "chat":
@@ -179,12 +160,11 @@ public class Connection extends Thread {
                         chatMsg = split[1];
                         msg = "chat_" + this.getUserName() + ": " + chatMsg;
                         //DEBUG
-                        System.out.println("This is the chat msg in run - connection: " + msg);
+                        //System.out.println("This is the chat msg in run - connection: " + msg);
                         ss.broadcast(msg);
 
                         break;
                     case "accept":
-                        //inGame = true;
                         userName = split[2];
                         if (ss.checkOnlineUser(userName) == false) {
                             sendServerMsg("lateAccept" + "_" + userName);
@@ -192,8 +172,8 @@ public class Connection extends Thread {
 
                             info += "_" + this.IP;
                             //DEBUG
-                            System.out.println(this.IP);
-                            System.out.println("this is the connection info for accept " + info);
+                            //System.out.println(this.IP);
+                            //System.out.println("this is the connection info for accept " + info);
                             ss.sendInvitation(userName, info); //we can use sendInvitation for generic messages to specific users
                             sendServerMsg("acceptSuccessful_"); //send a successful accept condition to user to start board
                             inGame = true;
@@ -209,7 +189,7 @@ public class Connection extends Thread {
                         ss.broadcast(ss.getOnlineUserList());
                         break;                        
                 }
-                if (active = true) //DEBUG later
+                if (active = true) 
                         //Display the user online list everytime                
                         {
                             ss.broadcast(ss.getOnlineUserList());
@@ -218,7 +198,7 @@ public class Connection extends Thread {
         } // Catch the error excepion then close the connection
         catch (IOException e) {
             System.out.println("Connection is closed!");
-            e.printStackTrace();
+            //e.printStackTrace();
             close();
         }
     }// End readClientMsg.

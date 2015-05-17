@@ -15,7 +15,7 @@ import Controller.RegisterCont;
 public class Register extends javax.swing.JFrame {
 
 	
-	/**
+    /**
      * Creates new form Register
      */
     public Register() {
@@ -178,10 +178,8 @@ public class Register extends javax.swing.JFrame {
      * @param pass the string passed to it, for this application it will be password
      * @return the hash code of the string
      */
-    public int hash(String pass){
-        
-        return pass.hashCode();
-        
+    public int hash(String pass){        
+        return pass.hashCode();        
     }
     
     /**

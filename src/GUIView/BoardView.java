@@ -1,3 +1,12 @@
+/**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
+ * Project Part: GUI Diplay - JPanel to draw the board 
+ * Program Title: Tic-tac-toe Game 
+ * Course: CSCE 320 - Software Engineering
+ * Date: February 23, 2015
+ * Language and Compiler: Java written in eclipse and Netbeans
+ * Sources: CSCE 320 references - Trivial Java Example
+*/
+
 package GUIView;
 
 import java.awt.Color;
@@ -25,7 +34,7 @@ public class BoardView extends JPanel {
      */
     public BoardView() {
         //DEBUG
-        System.out.println("Board JPanel is actived");
+        //System.out.println("Board JPanel is actived");
         
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
@@ -40,7 +49,7 @@ public class BoardView extends JPanel {
      */
     public void paintComponent(Graphics g) {
         //DEBUG
-        System.out.println("Board JPanel - paint is actived");
+        //System.out.println("Board JPanel - paint is actived");
         super.paintComponent(g);
 
         g.drawImage(img, 0, 0, this);
@@ -51,7 +60,7 @@ public class BoardView extends JPanel {
      */
     public void reDrawBoard() {
         //DEBUG
-        System.out.println("Board JPanel - reDrawboard is actived");
+        //System.out.println("Board JPanel - reDrawboard is actived");
         if (controller != null) {
             Graphics g = img.getGraphics();
             controller.draw(g, WIDTH, HEIGHT);
@@ -66,14 +75,7 @@ public class BoardView extends JPanel {
      */
     public void setController(GameCont controller) {
         //DEBUG
-        System.out.println("Board JPanel - set Controller is actived");
+        //System.out.println("Board JPanel - set Controller is actived");
         this.controller = controller;
-    }
-
-    public void setGrid(int w, int h) {
-        //DEBUG
-        System.out.println("Board JPanel  - set Grid is actived");
-        this.WIDTH = w;
-        this.HEIGHT = h;
     }
 }

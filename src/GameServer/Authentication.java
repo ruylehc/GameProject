@@ -1,4 +1,5 @@
 package GameServer;
+
 /**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang.    
  * Project Part: Authentication Model - Server Side.
  * Program Title: Tic-tac-toe Game. 
@@ -27,7 +28,7 @@ public class Authentication {
      */
     public void loadData() {
         //DEBUG
-        System.out.println("loaded user info");
+        //System.out.println("loaded user info");
         //Load the user information
         readTextFile();
         readStatsFile();
@@ -45,7 +46,7 @@ public class Authentication {
     public String registerUser(String userName, String userPass, String rePass) {
 
         //DEBUG
-        System.out.println("reg from model of sever: " + userName + ", " + userPass);
+        //System.out.println("reg from model of sever: " + userName + ", " + userPass);
 
         //Valid the user name and return the error messages.
         if (userName.equals("") || userPass.equals("") || rePass.equals("")) {
@@ -66,11 +67,6 @@ public class Authentication {
             String stat ="" + 0 + "_" + 0 + "_" + 0.0;  
             map.put(userName, userPass); //Put new valid user into map.
             stats.put(userName,stat );
-            /*
-             * Comment: this is might not user anymore while connection class do the thing.
-             String ipaddr = "";
-             onlineUser.put(userName,"");
-             */
             return "registerSuccess" + "_" + userName;
         }
     }// end registerUser.
@@ -95,27 +91,24 @@ public class Authentication {
         }
 
         if (map.containsKey(userN) && userP.equals(map.get(userN))) {
-            System.out.println("log from model of sever: " + userN + ", " + userP);
+            //System.out.println("log from model of sever: " + userN + ", " + userP);
             if (ss.checkOnlineUser(userN) == true) {
                 status = "User already login!";
             } else {
                 status = "loginSuccess" + "_" + userN;
             }
-
-            /*
-             * Comment: this is might not user anymore while connection class do the thing.
-             String ipaddr = "";
-             onlineUser.put(userN,ipaddr);
-             */
         } else if (map.containsKey(userN) && !userP.equals(map.get(userN))) {
             status = "Incorect UserName or Password!";
         } else {
             status = "Account does not exist!";
         }
-
         return status;
     }// end login	
     
+    /**
+     * Register the player as anonymous 
+     * @return 
+     */
     public String registerGuest(){
         int number =  guests.size();
         number = number +1;
@@ -136,24 +129,14 @@ public class Authentication {
         //public void writeTextFile (String userTextfile, ArrayList<String> info) throws FileNotFoundException{  // for updated hashmap
         PrintWriter writer = null;
         String userpass = new String(userTextfile + "_" + passwordTextfile);
-        /*String pass = info.get(0);
-         String wins = "info.get(1);
-         String lose = "info.get(2);
-         String draw = "info.get(3);
-         String ratio = "info.get(4);
-         String userpass = new String(userTextfile + "_" + pass + "_" + wins + "_" + lose + "_" + ratio);
-
-         this code will be implemented when we convert our hashmap to a hashmap<String, Arraylist <String> >
-         */
         try {
 
             writer = new PrintWriter(new BufferedWriter(new FileWriter("SuperSecretLoginInfo.txt", true)));
-            System.out.println("From write file: " + userpass);
+            //System.out.println("From write file: " + userpass);
             writer.println(userpass);
             writer.flush();
 
         } catch (IOException ex) {
-            //Logger.getLogger(TextFileWriter.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         } finally {
             if (writer != null) {
@@ -168,7 +151,6 @@ public class Authentication {
      * info. it then stores it in a hashmap of existing users.
      */
     public void readTextFile() {
-		//BufferedReader reader = new BufferedReader("SuperSecretLoginInfo.txt");
         // Create the scanner (open the file for reading)
         Scanner scan = null;
         Scanner lineScan = null;  // used to parse one line
@@ -185,12 +167,10 @@ public class Authentication {
         
         while (scan.hasNext()) {
             line = scan.nextLine();
-            //String[] data = finder.split("_");
             lineScan = new Scanner(line);
             lineScan.useDelimiter("\\s*\\_\\s*");  // delimiters are "_"
             user = lineScan.next();
-            pass = lineScan.next();
-            
+            pass = lineScan.next();       
            
             map.put(user, pass);
         }
@@ -206,24 +186,15 @@ public class Authentication {
         //public void writeTextFile (String userTextfile, ArrayList<String> info) throws FileNotFoundException{  // for updated hashmap
         PrintWriter writer = null;
         String userpass = new String(userText + "_" + statsText);
-        /*String pass = info.get(0);
-         String wins = "info.get(1);
-         String lose = "info.get(2);
-         String draw = "info.get(3);
-         String ratio = "info.get(4);
-         String userpass = new String(userTextfile + "_" + pass + "_" + wins + "_" + lose + "_" + ratio);
-
-         this code will be implemented when we convert our hashmap to a hashmap<String, Arraylist <String> >
-         */
         try {
 
             writer = new PrintWriter(new BufferedWriter(new FileWriter("StatsFile.txt", true)));
-            System.out.println("From write file: " + userpass);
+            //System.out.println("From write file: " + userpass);
             writer.println(userpass);
             writer.flush();
 
         } catch (IOException ex) {
-            //Logger.getLogger(TextFileWriter.class.getName()).log(Level.SEVERE, null, ex);
+            
             ex.printStackTrace();
         } finally {
             if (writer != null) {
@@ -233,7 +204,6 @@ public class Authentication {
     }// end writeTextFile.
     
     public void readStatsFile() {
-		//BufferedReader reader = new BufferedReader("SuperSecretLoginInfo.txt");
         // Create the scanner (open the file for reading)
         Scanner scan = null;
         Scanner lineScan = null;  // used to parse one line
@@ -255,8 +225,7 @@ public class Authentication {
 
         while (scan.hasNext()) {
             line = scan.nextLine(); 
-         
-            //String[] data = finder.split("_");
+
             lineScan = new Scanner(line);
             lineScan.useDelimiter("\\s*\\_\\s*");  // delimiters are "_"
             user = lineScan.next();
@@ -270,6 +239,10 @@ public class Authentication {
         }
     }//end readTextFile.
     
+    /**
+     * Set the server in to the connection.
+     * @param ss 
+     */
     public void setServer(Server ss){
         this.ss = ss;
     }

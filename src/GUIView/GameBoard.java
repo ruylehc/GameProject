@@ -14,10 +14,14 @@ import java.io.IOException;
  * and open the template in the editor.
  */
 
-/**
- *
- * @author PLUCSCE
- */
+/**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
+ * Project Part: GUI Diplay - Game View
+ * Program Title: Tic-tac-toe Game 
+ * Course: CSCE 320 - Software Engineering
+ * Date: February 23, 2015
+ * Language and Compiler: Java written in eclipse and Netbeans
+ * Sources: CSCE 320 references - Trivial Java Example
+*/
 public class GameBoard extends javax.swing.JFrame {
 
     /**
@@ -43,8 +47,7 @@ public class GameBoard extends javax.swing.JFrame {
         boardView = new BoardView();
         jMenuBar1 = new javax.swing.JMenuBar();
         menu = new javax.swing.JMenu();
-        start = new javax.swing.JMenuItem();
-        pause = new javax.swing.JMenuItem();        
+        start = new javax.swing.JMenuItem();       
         quit = new javax.swing.JMenuItem();
         logOut = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -105,14 +108,6 @@ public class GameBoard extends javax.swing.JFrame {
             }
         });
         menu.add(start);
-
-        pause.setText("Pause Game");
-        pause.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pauseActionPerformed(evt);
-            }
-        });
-        menu.add(pause);
         
         quit.setText("Quit");
         quit.addActionListener(new java.awt.event.ActionListener() {
@@ -196,39 +191,72 @@ public class GameBoard extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }
+    
+    /**
+     * Listen to the quit button.
+     * @param evt 
+     */
     private void quitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitActionPerformed
         controller.listen("quit");
     }//GEN-LAST:event_quitActionPerformed
 
+    /**
+     * listen to the log out button
+     * @param evt 
+     */
     private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
         controller.listen("logOut");
     }//GEN-LAST:event_logOutActionPerformed
 
+    /**
+     * Listen to the close window 
+     * @param evt 
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         controller.listen("close");
     }//GEN-LAST:event_formWindowClosing
 
+    /**
+     * Listen to the change size button - size of 30
+     * @param evt 
+     */
     private void board30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board30ActionPerformed
         controller.updateUserInfo("30");
         controller.listen("size");
     }//GEN-LAST:event_board30ActionPerformed
 
+    /**
+     * Listen to the change size button - size of 40
+     * @param evt 
+     */
     private void board40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board40ActionPerformed
         controller.updateUserInfo("40");
         controller.listen("size");
     }//GEN-LAST:event_board40ActionPerformed
 
+    /**
+     * Listen to the change size button - size of 50
+     * @param evt 
+     */
     private void board50ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_board50ActionPerformed
         controller.updateUserInfo("50");
         controller.listen("size");
     }//GEN-LAST:event_board50ActionPerformed
 
+    /**
+     * Listen to the chat text field
+     * @param evt 
+     */
     private void msgTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_msgTFActionPerformed
         controller.updateUserInfo(msgTF.getText());
         controller.listen("chat");
         msgTF.setText("");
     }//GEN-LAST:event_msgTFActionPerformed
     
+    /**
+     * Listen to the mouse click on the Board View Jpanel
+     * @param evt 
+     */
     private void boardViewMouseClicked(java.awt.event.MouseEvent evt) {                                      
         // TODO add your handling code here:
         int x, y ;
@@ -241,13 +269,14 @@ public class GameBoard extends javax.swing.JFrame {
             controller.listen("doubleClick");
     }      
     
+    /**
+     * Listen to the start button
+     * @param evt 
+     */
     private void startActionPerformed(java.awt.event.ActionEvent evt) { 
         controller.listen("start");
     }  
     
-    private void pauseActionPerformed(java.awt.event.ActionEvent evt) {                                      
-        // TODO add your handling code here:
-    }   
     /**
      * @param args the command line arguments
      */
@@ -312,14 +341,25 @@ public class GameBoard extends javax.swing.JFrame {
         boardView.setController(controller);
     }  
     
+    /**
+     * Set the name of the player to the JFrame
+     * @param usr 
+     */
     public void setViewTitle(String usr){
         setTitle("Game Room of: " + usr);
     }
     
+    /**
+     * Update the player turn
+     * @param player 
+     */
     public void setJLable(String player){
         jLabel3.setText("  Turn : " + player);
     }
     
+    /**
+     * Re draw the grid and player move on the JPanel Board View
+     */
     public void reDrawBoard() {
         boardView.reDrawBoard();
     }  

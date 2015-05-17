@@ -143,7 +143,7 @@ public class Server implements Runnable {
                 if(split1[0].equals("accept"))
                     c.inGame = true;
                 //DEBUG
-                System.out.println("This is the server in sendIvitation: "+ c.inGame);
+                //System.out.println("This is the server in sendIvitation: "+ c.inGame);
             }
             String[] split = userName.split("_");
             if (split[0].equals("all")) {

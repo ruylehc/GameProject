@@ -236,8 +236,6 @@ public class MatchMaking extends javax.swing.JFrame {
         }
         else{// nothing is selected so dont send empty info
             JOptionPane.showMessageDialog(null, "Please select some one to invite");
-            
-            
         }
             
     }                             
@@ -253,7 +251,10 @@ public class MatchMaking extends javax.swing.JFrame {
         controller.listen("mInvite");
     }     
     
-    
+    /**
+     * Listen to the accept button
+     * @param evt 
+     */
     private void acceptInviteActionPerformed(java.awt.event.ActionEvent evt) {                                             
         String accept = "";
         if(inviteList.getSelectedValue() != null){
@@ -263,24 +264,19 @@ public class MatchMaking extends javax.swing.JFrame {
         // runs trhough the list of invites and deletes the one we selected
         
         inviter.removeElement(inviteList.getSelectedValue().toString());
-        /*
-            int length = temp.size();
-            for (int i = 0; i < length; i++) {
-                if (temp.get(i).equals(inviteList.getSelectedValue().toString())) {
-                    temp.remove(temp.get(i));
-                }
-            }*/
         } else
-            JOptionPane.showMessageDialog(null, "Please select a game invite to accept");
-        
-        
+            JOptionPane.showMessageDialog(null, "Please select a game invite to accept");       
     }                                            
 
+    /**
+     * Listen to the decline button.
+     * @param evt 
+     */
     private void declineInviteActionPerformed(java.awt.event.ActionEvent evt) {
         // runs trhough the list of invites and deletes the one we selected
 
         String user = "";
-        //controller.updateUserInfo(null);
+
         controller.listen("decline");
         int length = temp.size();
         for (int i = 0; i < length; i++) {
@@ -327,7 +323,6 @@ public class MatchMaking extends javax.swing.JFrame {
      * implement and the list will need to be re-populated every time a user plays a game or logs out
      * @param users list of just the users in format "User1_user2_..."
      */
-    
     public void setInviterList(String users) {
         //DEBUG
         System.out.println("This is the Match view: " + users);
@@ -342,10 +337,13 @@ public class MatchMaking extends javax.swing.JFrame {
         for(String element: temp)
             inviter.addElement(element);  
         
-        inviteList.setModel(inviter);
-           
+        inviteList.setModel(inviter);           
     }
 
+    /**
+     * Set the player name into the JFarme Title
+     * @param title 
+     */
     public void setViewTitle(String title){
         setTitle("Lobby of: "+ title);
     }

@@ -92,11 +92,6 @@ public class StartUp extends javax.swing.JFrame {
 
         AIChoices.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         AIChoices.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Easy", "Normal", "Hard" }));
-        AIChoices.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AIChoicesActionPerformed(evt);
-            }
-        });
 
         playButton.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         playButton.setText("Play AI Game");
@@ -214,17 +209,7 @@ public class StartUp extends javax.swing.JFrame {
      */
     private void oldUserButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
     	controller.listen("existUsr");
-    }                                             
-
-    /**
-     * ActionPerformed according to the AIChoices.
-     * @param evt
-     */
-    private void AIChoicesActionPerformed(java.awt.event.ActionEvent evt) {  
-       // controller.updateUserInfo(AIChoices.getSelectedItem().toString());
-    	//controller.listen("AI");
-        
-    }                                         
+    }                                                                                 
 
     /**
      * ActionPerformed according to the Window Closing.
