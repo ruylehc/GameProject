@@ -94,7 +94,7 @@ public class LoginCont extends Controller {
     //@Override
     public void setVisible(boolean value) {
         //DEBUG
-        System.out.println("set view to false is actived");
+        //System.out.println("set view to false is actived");
         view.setVisible(value);
     } //end setVisible.
 
@@ -106,6 +106,6 @@ public class LoginCont extends Controller {
     public void setID(String ID) {
         this.ID = ID;
         //DEBUG
-        System.out.println("This is the id of the login controller: " + ID);
+       // System.out.println("This is the id of the login controller: " + ID);
     } //end setID.
 }

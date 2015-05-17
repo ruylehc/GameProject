@@ -310,6 +310,10 @@ public class ClientModel {
         this.gmodel = model;
     }// end addSubModel.
 
+    /**
+     * method used to pass the selected difficulty to the Game model
+     * @param info 
+     */
     public void setDifficutly(String info) {
         System.out.println("this is the Client model displaying difficulty: " + info );//debugging
         gmodel.setDifficulty(info);

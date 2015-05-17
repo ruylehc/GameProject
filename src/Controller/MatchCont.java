@@ -94,7 +94,7 @@ public class MatchCont extends Controller {
      */
     public void updateModelMsg(String msg) {
         //DEBUG
-        System.out.println("This is the display on view: " + msg);
+       // System.out.println("This is the display on view: " + msg);
         view.chatBoxTA.append(msg);
     } // end updateModelMsg.
 
@@ -139,7 +139,7 @@ public class MatchCont extends Controller {
         
         String justUsers = users.substring(5); // this is to eliminate "List_"
         //DEBUG
-        System.out.println("This is from the mat controller: "+justUsers);
+        //System.out.println("This is from the mat controller: "+justUsers);
         
         view.setList(justUsers); // passes it to view since its fields are private
         

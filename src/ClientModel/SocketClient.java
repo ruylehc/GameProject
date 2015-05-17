@@ -85,9 +85,7 @@ public class SocketClient implements Runnable{
 		byte[] bufferin = input.getBytes();
 		//Send the message to the Server
 		try {
-			//DEBUG
-			System.out.println("This is from socketClient-Write: "+ input);
-
+			
 			out.write(bufferin);	
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -108,8 +106,7 @@ public class SocketClient implements Runnable{
                 String status = new String(buffer, 0, len);
                 model.updateServerMsg(status);
             } else {
-                //DEBUG
-                System.out.println("Lost server connection");
+                
                 active = false;
             }
         } catch (IOException e) {
