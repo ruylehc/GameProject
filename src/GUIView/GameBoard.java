@@ -53,6 +53,7 @@ public class GameBoard extends javax.swing.JFrame {
         board50 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setBackground(new java.awt.Color(204,255,153));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -76,6 +77,7 @@ public class GameBoard extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Monotype Corsiva", 1, 24)); // NOI18N
+        jLabel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(255, 0, 0), new java.awt.Color(0, 153, 153), new java.awt.Color(255, 0, 0)));
 
         boardView.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -315,7 +317,7 @@ public class GameBoard extends javax.swing.JFrame {
     }
     
     public void setJLable(String player){
-        jLabel3.setText("       Turn : " + player);
+        jLabel3.setText("  Turn : " + player);
     }
     
     public void reDrawBoard() {

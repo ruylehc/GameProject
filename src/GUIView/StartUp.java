@@ -1,5 +1,6 @@
 package GUIView;
 import Controller.StartUpCont;
+import javax.swing.JOptionPane;
 
 
 /**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
@@ -198,10 +199,13 @@ public class StartUp extends javax.swing.JFrame {
      * ActionPerformed according to the playButton.
      * @param evt
      */
-    private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
-    	controller.updateUserInfo(AIChoices.getSelectedItem().toString());
-        
-        controller.listen("play");
+    private void playButtonActionPerformed(java.awt.event.ActionEvent evt) { 
+        if (!AIChoices.getSelectedItem().toString().equals("Hard")) {
+            controller.updateUserInfo(AIChoices.getSelectedItem().toString());
+            controller.listen("play");
+        } else {
+            JOptionPane.showMessageDialog(null,"Hard level is not implemented");
+        }
     }                                          
 
     /**

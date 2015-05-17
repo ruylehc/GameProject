@@ -67,29 +67,37 @@ public class GameCont extends Controller {
         
         switch (value) {
             case "quit":
-                //cmodel.switchController("lobby");
-                //cmodel.sendUserInfo("endGame_");                
-                gmodel.sendMsg("quit");
+                
+                if(!gmodel.aiGame)
+                    gmodel.sendMsg("quit");
+                
+                else{
+                    cmodel.switchController("startUp");
+                    gmodel.reset();
+                }
                 view.setVisible(false);
                 
                 break;
             case "close":
-                cmodel.sendUserInfo("close");
-                //gmodel.sendMsg("close");
-                
+                if(!gmodel.aiGame)
+                    cmodel.sendUserInfo("close");
                 break;
             case "logOut":
-                cmodel.switchController("startUp");
-                cmodel.sendUserInfo("close");
-                //gmodel.sendMsg("close");
-                view.setVisible(false);
+                if (!gmodel.aiGame) {
+                    cmodel.switchController("startUp");
+                    cmodel.sendUserInfo("close");
+                    view.setVisible(false);
+                }
                 break;
             case "size":
-                gmodel.changeSize(Integer.parseInt(info));
+                if (!gmodel.aiGame)
+                    gmodel.changeSize(Integer.parseInt(info));
                 break;
             case "chat":
-                gmodel.sendMsg("chat_"+gmodel.getUserID()+": "+info);
-                view.chatTA.append(gmodel.getUserID()+": "+info + "\n");
+                if (!gmodel.aiGame) {
+                    gmodel.sendMsg("chat_" + gmodel.getUserID() + ": " + info);
+                    view.chatTA.append(gmodel.getUserID() + ": " + info + "\n");
+                }
                 break;
             case "singleClick":
                 row = Integer.parseInt(split[0]); 
@@ -109,6 +117,12 @@ public class GameCont extends Controller {
                 cmodel.sendUserInfo("endGame_");
                 view.chatTA.setText("");
                 view.setVisible(false);
+                break;
+                
+            case "startUp":
+                cmodel.switchController("startUp");
+                view.setVisible(false);
+                break;
         }
     }
 

@@ -34,7 +34,7 @@ public class GameModel{ // game model no longer implments runnable since it only
      /////////////////// AI variables ///////////////////
     public AI ai;
     int aiMarker;
-    boolean aiGame = false; 
+    public boolean aiGame = false; 
     
     
     ////////////////////Player///////////////////////////
@@ -173,6 +173,7 @@ public class GameModel{ // game model no longer implments runnable since it only
             in.close();
             terminate = true;
             start = false;
+            turn = false;
             if(PlayerNum==1)
                 ss.close();
             else
@@ -442,7 +443,7 @@ public class GameModel{ // game model no longer implments runnable since it only
      * 
      */
     public void updateMoveCounter() {
-        //if (p1turn = true) {
+
             if (counter % 2 == 0) {
                 p1turncounter = true;
                 p2turncounter = false;
@@ -452,21 +453,6 @@ public class GameModel{ // game model no longer implments runnable since it only
                 p2turncounter = true;
                 counter++;
             }
-            
-            ////////////////////Will be delete next time-Please comfirm it///////////////////////
-         /*else if (p2turn = true) {
-
-            if (counter % 2 == 0) {
-                p2turncounter = true;
-                p1turncounter = false;
-                counter++;
-            } else {
-                p2turncounter = false;
-                p1turncounter = true;
-                counter++;
-            }
-
-        }*/
     }
 
     //Decide which player gets to go first
@@ -505,53 +491,54 @@ public class GameModel{ // game model no longer implments runnable since it only
         int[][] temp = board;
         row = (int) (row / this.cellH);
         col = (int) (col / this.cellW);
-        if (start == true) {            
+        if (start == true) {
             if (turn == true) {
-                if (validMove(row, col) == true) {
-                    // this is the AI condition that will be valid if aiGame = true
-                    if(aiGame== true){
-                       
-                       ai.aiMove(board);
-                       this.markBoard(P1, row, col); // will always be player 1
-                       this.drawBoard(); // this method calls all functions needed for AI to make a move
-                       // turn = false;   dont change turn, simply make AI move     
-                    }
-                    else{
-                    this.markBoard(PlayerNum, row, col);
-                    this.drawBoard();
-                    }
-
+                if (validMove(row, col) == true) {                   
+                        this.markBoard(PlayerNum, row, col);
+                        
+                    this.drawBoard();             
+                    
                     if (count == 1) {
                         this.eraseBoard(row, col);
                         board = temp;
                     } else {
                         if (this.checkWin(board, PlayerNum) == true) {
-                           if(!aiGame){
-                            this.sendMsg("win_" + this.PlayerNum + "_" + row + "_" + col + "_" + turn);
-                           } // skipps this step if you are playing an AI
+                            if (!aiGame) {
+                                this.sendMsg("win_" + this.PlayerNum + "_" + row + "_" + col + "_" + turn);
+                            } // skipps this step if you are playing an AI
                             this.handleWin();
-                        } else {
-                            if(!aiGame){
-                            this.sendMsg("move_" + this.PlayerNum + "_" + row + "_" + col + "_" + turn);                      
+                        } else { //not win case
+                            if (!aiGame) {
+                                this.sendMsg("move_" + this.PlayerNum + "_" + row + "_" + col + "_" + turn);
+                            } else {
+                                turn = false;
+                                this.setTurn();
+                                ai.aiMove(board);
+                                if(checkWin(board, P2)){ // this AI is always player 2
+                                    handleAIWin();
+                                }
+                                
+                                this.drawBoard(); // this method calls all functions needed for AI to make a move
+                                turn = true;
+                                this.setTurn();
                             }
-                            else{
-                            ai.aiMove(board);
-                            //this.markBoard(P1, row, col); // will always be player 1
-                            this.drawBoard(); // this method calls all functions needed for AI to make a move
+                            //Execute this if not AI Game Mode.
+                            if (!aiGame) {                                
+                                turn = false;
+                                this.setTurn();
                             }
-                            turn = false;
-                            this.setTurn();
                         }
                     }
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "It is not your turn!\nPlease wait!");
             }
-        }else{
-            if(this.PlayerNum == 2)
+        } else {
+            if (this.PlayerNum == 2) {
                 JOptionPane.showMessageDialog(null, "Game was not start!\nPlease wait!");
-            else
+            } else {
                 JOptionPane.showMessageDialog(null, "Game was not start!\nPlease start the game!");
+            }
         }
     }
 
@@ -651,20 +638,19 @@ public class GameModel{ // game model no longer implments runnable since it only
         return false;
     }
 
-    /**
+    
+     /**
      * ////////////////////Add description please///////////////////////
      */
-    public void pause() {
-
+    public void handleAIWin() {
+        //cmodel.sendUserInfo("stats_" + cmodel.userName + "_win");
+        // need code to exit us from the game and display the lobby view/ is below code enough?
+        JOptionPane.showMessageDialog(null,"You have lost to the AI; continue practicing! You need it");
+        
+            contGame.listen("startUp");
+            reset();
+        
     }
-
-    /**
-     * ////////////////////Add description please///////////////////////
-     */
-    public void gameStartClock() {
-
-    }
-
     /**
      * ////////////////////Add description please///////////////////////
      */
@@ -672,8 +658,15 @@ public class GameModel{ // game model no longer implments runnable since it only
         //cmodel.sendUserInfo("stats_" + cmodel.userName + "_win");
         // need code to exit us from the game and display the lobby view/ is below code enough?
         JOptionPane.showMessageDialog(null,"Congrats! You are victorious!");
+        if(aiGame == true){
+            contGame.listen("startUp");
+            reset();
+        }
+        else{
         contGame.listen("lobby");
+        turn = false;
         close();
+        } // end else
     }
 
     /**
@@ -749,6 +742,7 @@ public class GameModel{ // game model no longer implments runnable since it only
         turn = true;  // sets the first turn to the human
         aiGame = true;  // tells the gamemodel it is a AI game so it doesnt use socket
         start = true;
+        PlayerNum = P1;
         fillBoard();
         drawBoard();
            
@@ -761,5 +755,14 @@ public class GameModel{ // game model no longer implments runnable since it only
      */
     public void setAI(AI ai) {
        this.ai = ai;
+    }
+
+    public void reset() {
+       turn = false;
+       aiGame = false; 
+       PlayerNum = -1; 
+       start = false; 
+       fillBoard();
+       drawBoard();       
     }
 }
