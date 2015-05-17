@@ -1,7 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
+ * Project Part: Game Controller
+ * Program Title: Tic-tac-toe Game
+ * Course: CSCE 320 - Software Engineering
+ * Date: Match 16, 2015
+ * Language and Compiler: Java written in eclipse and Netbeans
  */
 
 package Controller;
@@ -58,7 +60,10 @@ public class GameCont extends Controller {
     } // end setModel.
     
     
-    
+    /**
+     * Listen to the actionPerformed
+     * @param value 
+     */
     @Override
     public void listen(String value) {
         
@@ -115,6 +120,7 @@ public class GameCont extends Controller {
             case "lobby":
                 cmodel.switchController("lobby");
                 cmodel.sendUserInfo("endGame_");
+                cmodel.sendUserInfo("stats_" + cmodel.userName + "_win");
                 view.chatTA.setText("");
                 view.setVisible(false);
                 break;
@@ -136,6 +142,10 @@ public class GameCont extends Controller {
         this.info = info;
     }
 
+    /**
+     * Set the Game view visible
+     * @param value 
+     */
     @Override
     public void switchView(String value) {
         if (value.equals("gameBoard")) {
@@ -165,18 +175,35 @@ public class GameCont extends Controller {
        
     } //end setID.
     
+    /**
+     * Set the user name into the game view title
+     * @param user 
+     */
     public void setTitle(String user){
         view.setViewTitle(user);
     }
     
+    /**
+     * Display the payer turn
+     * @param player 
+     */
     public void updatePlayerTurn(String player){
         view.setJLable(player);
     }
     
+    /**
+     * Draw the game board
+     * @param g graphic
+     * @param w width   
+     * @param h height
+     */
     public void draw(Graphics g, int w, int h){
         gmodel.draw(g, w, h);
     }
     
+    /**
+     * Update the board 
+     */
     public void updateBoard(){
         view.reDrawBoard();
     }

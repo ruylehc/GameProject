@@ -1,7 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
+ * Project Part: AI Model for offline player
+ * Program Title: Tic-tac-toe Game 
+ * Course: CSCE 320 - Software Engineering
+ * Date: February 23, 2015
+ * Language and Compiler: Java written in eclipse and Netbeans
+ * Sources: CSCE 320 references - Trivial Java Example
  */
 
 package ClientModel;
@@ -10,14 +13,9 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- *
- * @author PLUCSCE
- */
+
 public class AI {
     private GameModel gmodel;
-    //private ClientModel model; will check back
-    //public int[][] boardArray;
     
     // attempt to put it here so we can use default constructor
     boolean turnHolder;
@@ -345,53 +343,7 @@ public class AI {
             direction = "single";
 
         
-        /*
-        if(difficulty == 1 ){
-            for (int i = 0; i < size; i++){
-                for (int j = 0; j < size; j++){ //iterate through board
-                    if (theboard[i][j] == 1){ // if we detect opposing player token
-                        if (theboard[i][j-1] == 0 && j > 0 ){ //if the column before token on the same row is empty and in bounds, place a move
-                            makeMove(i, j-1,theboard);
-                        break;
-                        }
-                        else if (theboard[i][j+1]  == 0 && j < size-1){ //same row, token after 
-                            makeMove(j, j+1,theboard);
-                        break;
-                        }
-                        else if (theboard[i-1][j] == 0 && i > 0){ //same column, row before
-                            makeMove(i-1, j,theboard);
-                        break;
-                        }
-                        else if (theboard[i+1][j] == 0 && i < size-1){ //same column, row after
-                            makeMove(i+1, j,theboard);
-                        break;
-                        }
-                        else if (theboard[i-1][j-1] == 0 && j > 0 && i >0){
-                            makeMove(i-1,j-1,theboard);
-                        break;
-                        }
-                        else if (theboard[i+1][j+1] == 0 && j < size-1 && i < size-1){
-                            makeMove(i+1, j+1,theboard);
-                        break;
-                        }
-                        else if (theboard[i-1][j+1] == 0 && j < size-1 && i > 0){
-                            makeMove(i-1,j+1,theboard);
-                        break;
-                        }
-                        else if (theboard[i+1][j-1] == 0 && i < size-1 && j > 0){
-                            makeMove(i+1, j-1,theboard);
-                        break;
-                        }
-                  break;
-                    }
-                 
-                } 
-                
-            }
-        }
-        
-        
-        else*/ if( difficulty >1){
+        if( difficulty >1){
          // we know the direction of the threat, now we check adjacent blocks
         switch(direction){
             case "col":
@@ -457,14 +409,7 @@ public class AI {
                 break;
                  
             case "single": 
-                /*
-                if(startx+1 < size && theboard[startx+1][starty] == empty) // moves to the right of piece
-                    makeMove(startx+1, starty, theboard);
-                else if(startx-1 >=0 && theboard[startx-1][starty] == empty) // moves to the left of the piece
-                    makeMove(startx-1, starty, theboard);
-                else if (starty+1 < size && theboard[startx][starty+1] == empty) // moves below piece
-                    makeMove(startx, starty+1, theboard);
-                */
+                
                 makerandomMove(theboard);
                    break;   
         }
@@ -570,8 +515,6 @@ public class AI {
         
         populateArray(board);
         
-        
-           
         if(checkWin(board,1)==true){
             // AI has lost, exit smoothly
         }

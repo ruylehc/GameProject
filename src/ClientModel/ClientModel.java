@@ -58,8 +58,8 @@ public class ClientModel {
     public void runTCP(){
         try {
 
-            //sock = new SocketClient(IP,52546); //this line is used for starting from cmd line
-            sock = new SocketClient(); // this line is used for non cmd line starting
+            sock = new SocketClient(IP,52546); //this line is used for starting from cmd line
+            //sock = new SocketClient(); // this line is used for non cmd line starting
 
             sock.setModel(this);
             sock.createListener();
@@ -316,9 +316,7 @@ public class ClientModel {
      */
     public void setDifficutly(String info) {
         System.out.println("this is the Client model displaying difficulty: " + info );//debugging
-        gmodel.setDifficulty(info);
-        
-        
+        gmodel.setDifficulty(info);        
     }
 
 }

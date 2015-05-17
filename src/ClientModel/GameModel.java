@@ -1,3 +1,11 @@
+/**Group Names: Tyler Glass, Michael House, Holly Ruyle, Phu Hoang    
+ * Project Part: Game Model
+ * Program Title: Tic-tac-toe Game 
+ * Course: CSCE 320 - Software Engineering
+ * Date: February 23, 2015
+ * Language and Compiler: Java written in eclipse and Netbeans
+ * Sources: CSCE 320 references - Trivial Java Example
+ */
 
 package ClientModel;
 
@@ -14,9 +22,8 @@ import java.util.logging.Logger;
 import java.awt.*;
 import javax.swing.JOptionPane;
 
-public class GameModel{ // game model no longer implments runnable since it only has one connections
+public class GameModel{ 
 
-    //
     //////////////////Board//////////////////////////////
     public int[][] board;
     private int rows;
@@ -86,7 +93,6 @@ public class GameModel{ // game model no longer implments runnable since it only
             @Override
             public void run() {
                 try {
-                    //SocketClient gameSock = new SocketClient(IP, intPort); changing from a socketclient to a normal Socket
                     sock = new Socket(IP, intPort);
                     in = sock.getInputStream();
                     out = sock.getOutputStream();
@@ -95,7 +101,6 @@ public class GameModel{ // game model no longer implments runnable since it only
                     while (terminate == false) {
                         readClientMsg();
                     }
-                    //close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -191,7 +196,7 @@ public class GameModel{ // game model no longer implments runnable since it only
      */
     public synchronized void sendMsg(String msg) {
         //DEBUG
-        System.out.println("This is the GameModel send - write to Output Stream: "+ this.getUserID()+"-" + msg);
+        //System.out.println("This is the GameModel send - write to Output Stream: "+ this.getUserID()+"-" + msg);
 
         byte[] bufferOut = msg.getBytes();
         //Send the message to the Client
@@ -204,7 +209,7 @@ public class GameModel{ // game model no longer implments runnable since it only
                 close();
             }
         } catch (IOException e) {
-            System.out.println("Connection is closed! Cannot execute send message!");
+            //System.out.println("Connection is closed! Cannot execute send message!");
             e.printStackTrace();
         }
     } // end sendServerMsg.
@@ -225,7 +230,7 @@ public class GameModel{ // game model no longer implments runnable since it only
             int playerNum, row, col;
             if (len > 0) {
                 info = new String(buffer, 0, len);
-                System.out.println("Received: "+ info);
+                //System.out.println("Received: "+ info);
                 String[] split = info.split("_");	//String delimiter. 
                 String type = split[0];
 
@@ -309,7 +314,7 @@ public class GameModel{ // game model no longer implments runnable since it only
             fillBoard();
             drawBoard();
             this.sendMsg("size_"+ newSize);
-            System.out.println("size_"+ newSize);
+            //System.out.println("size_"+ newSize);
         }else if(PlayerNum == 1 && start)
             JOptionPane.showMessageDialog(null,"Game is running!");
         else if(this.PlayerNum == 2)
@@ -322,7 +327,7 @@ public class GameModel{ // game model no longer implments runnable since it only
      */
     public void fillBoard() {
         //DEBUG
-        System.out.println("Board JPanel is actived");
+        //System.out.println("Board JPanel is actived");
         rows = cols = SIZE;
         board = new int[rows][cols];
         for (int i = 0; i < SIZE; i++) {
@@ -398,7 +403,7 @@ public class GameModel{ // game model no longer implments runnable since it only
      */
     public void draw(Graphics g, int w, int h) {
         //DEBUG
-        System.out.println("model - raw - activie");
+       //System.out.println("model - raw - activie");
         cellW = (double) w / cols;
         cellH = (double) h / rows;
         int cellWi = (int) Math.round(cellW);
@@ -434,7 +439,7 @@ public class GameModel{ // game model no longer implments runnable since it only
      */
     public void drawBoard(){
         //DEBUG
-        System.out.println("draw board is actived");
+        //System.out.println("draw board is actived");
         contGame.updateBoard();
     }
     
@@ -478,8 +483,8 @@ public class GameModel{ // game model no longer implments runnable since it only
             } else {
                 turn = false;
             }
-        } //while
-        System.out.println(turn);
+        } //end while
+        //System.out.println(turn);
     }
     
     /**
@@ -659,8 +664,6 @@ public class GameModel{ // game model no longer implments runnable since it only
      * handles when the player whens against an AI or another player
      */
     public void handleWin() {
-        //cmodel.sendUserInfo("stats_" + cmodel.userName + "_win");
-        // need code to exit us from the game and display the lobby view/ is below code enough?
         JOptionPane.showMessageDialog(null,"Congrats! You are victorious!");
         if(aiGame == true){
             contGame.listen("startUp");
@@ -749,8 +752,6 @@ public class GameModel{ // game model no longer implments runnable since it only
         PlayerNum = P1;
         fillBoard();
         drawBoard();
-           
-   
     }   
 
     /**
@@ -761,7 +762,9 @@ public class GameModel{ // game model no longer implments runnable since it only
        this.ai = ai;
     }
 
-    // resets all variables that are changed when user is in a game back to non game status
+    /**
+     * resets all variables that are changed when user is in a game back to non game status
+     */
     public void reset() {
        turn = false;
        aiGame = false; 

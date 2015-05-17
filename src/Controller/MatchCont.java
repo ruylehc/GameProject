@@ -69,6 +69,7 @@ public class MatchCont extends Controller {
             model.sendUserInfo(usrInfo);
         }
         
+        //Listen to the accept button
         if(value.equals("accept")) {
             model.runGameServer();
             String username = model.userName;
@@ -76,10 +77,6 @@ public class MatchCont extends Controller {
             String newInfo = split[0] + "_" + username + "_" + split[1] + "_" + model.port;
             System.out.println("This is the accept send in Match cont" + newInfo);
             model.sendUserInfo(newInfo);
-        }
-        
-        if(value.equals("decline")){
-            
         }
         
       //Listen to close signal then update the user information to model.
@@ -135,16 +132,12 @@ public class MatchCont extends Controller {
      * @param users the status string of format "List_user1_user2".
      */
     public void setAvailableList(String users) {
-        
-        
+                
         String justUsers = users.substring(5); // this is to eliminate "List_"
         //DEBUG
         //System.out.println("This is from the mat controller: "+justUsers);
         
         view.setList(justUsers); // passes it to view since its fields are private
-        
-        
-
     } //end setAvailableList.
 
     /**
