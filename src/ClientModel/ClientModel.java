@@ -315,8 +315,17 @@ public class ClientModel {
      * @param info 
      */
     public void setDifficutly(String info) {
-        System.out.println("this is the Client model displaying difficulty: " + info );//debugging
+        //System.out.println("this is the Client model displaying difficulty: " + info );//debugging
         gmodel.setDifficulty(info);        
+    }
+    
+    /**
+     * Set the AI game mode
+     * @param mode mode to be set
+     */
+    public void setGameMode(boolean mode){
+        gmodel.aiGame = mode;
+        gmodel.startAIGame();
     }
 
 }

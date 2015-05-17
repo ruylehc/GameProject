@@ -70,7 +70,7 @@ public class AI {
      */
     public void checkRow(int[][] theboard) {
         //DEBUG
-        System.out.println("check row activate");
+        //System.out.println("check row activate");
 
         int size = theboard.length;
 
@@ -125,7 +125,7 @@ public class AI {
      */
     public void checkCol(int[][] theboard) {
         //DEBUG
-        System.out.println("check col activate");
+        //System.out.println("check col activate");
         
         int size = theboard.length;
 
@@ -147,13 +147,13 @@ public class AI {
                     // threat level 1 - 2 in a row with a block on the right
                     //if (r - 1 >= 0 && theboard[r - 1][c] == empty) // if we are not blocking the left block, add as a threat
                     //{
-                    System.out.println("the cells checked" + theboard[r - 1][c]);
+                    //System.out.println("the cells checked" + theboard[r - 1][c]);
                     threats.add("1" + "_" + r + "_" + c + "_" + (r + 1) + "_" + c + "_" + (r + 2) + "_" + c + "_");
                     //}
                 }
                 if (theboard[r][c] == opp && theboard[r + 1][c] == opp && theboard[r + 2][c] == opp && theboard[r + 3][c] == empty && theboard[r - 1][c] == empty && r - 1 >= 0) {
                     //threat level 7 - open space 3 in a col
-                    System.out.println("the cells checked" + theboard[r - 1][c]);
+                    //System.out.println("the cells checked" + theboard[r - 1][c]);
                     threats.add("7" + "_" + r + "_" + c + "_" + (r + 2) + "_" + c + "_" + (-1) + "_" + (-1) + "_");
                 }
                 if (theboard[r][c] == opp && theboard[r + 1][c] == opp && theboard[r + 2][c] == opp && theboard[r + 3][c] == AI && theboard[r - 1][c] == empty && r - 1 >= 0) {
@@ -187,7 +187,7 @@ public class AI {
      */
     public void checkDiag(int[][] theboard) {
         //DEBUG
-        System.out.println("check Diag activate");
+        //System.out.println("check Diag activate");
         
         int size = theboard.length;
 
@@ -198,7 +198,7 @@ public class AI {
                     //we still search from right to left but going down and left 
 
                     if (theboard[r][c] == opp) {
-                        System.out.println("this si the check row single position check");
+                        //System.out.println("this si the check row single position check");
                         threats.add("0" + "_" + r + "_" + c + "_" + 0 + "_" + 0 + "_" + (-1) + "_" + (-1) + "_"); // this is the 0 threat case and should queue the AI to make an offensive move
                     }
 
@@ -305,7 +305,7 @@ public class AI {
             
             String level = threats.get(i);
             //debugging 
-            System.out.println("the first element in Threats list: " + threats.get(i));
+            //System.out.println("the first element in Threats list: " + threats.get(i));
             
             String[] tempS = level.split("_");
             temp = Integer.parseInt(tempS[0]);
@@ -316,7 +316,7 @@ public class AI {
         }
         
         
-        System.out.println("the highet threat String: " + highestThreat);
+        //System.out.println("the highet threat String: " + highestThreat);
         split = highestThreat.split("_");
         // now have the highest level threat in the string set start and end points
         startx = Integer.parseInt(split[1]);
@@ -501,8 +501,8 @@ public class AI {
     private void makeMove(int row, int col, int[][] boardArray) {
         if( boardArray[row][col]!=1 && boardArray[row][col]!=2 )
             boardArray[row][col] = 2; 
-        else 
-            System.out.println("tried to place maker over an opponents marker" + row + " " + col);
+        else; 
+            //System.out.println("tried to place maker over an opponents marker" + row + " " + col);
         // for debugging purposes
    
     }
@@ -602,7 +602,7 @@ public class AI {
                 difficulty = 1;
                 break;                
         }  
-        System.out.println("The difficulty from the AI class" + difficulty);
+        //System.out.println("The difficulty from the AI class" + difficulty);
     }
     
     /**

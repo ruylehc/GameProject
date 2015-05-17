@@ -9,13 +9,14 @@
 package Controller;
 
 import ClientModel.ClientModel;
-import java.awt.Graphics;
 import ClientModel.GameModel;
 import GUIView.GameBoard;
-import java.io.IOException;
 import java.awt.*;
+import java.awt.Graphics;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -86,6 +87,8 @@ public class GameCont extends Controller {
             case "close":
                 if(!gmodel.aiGame)
                     cmodel.sendUserInfo("close");
+                else
+                    JOptionPane.showMessageDialog(null,"Game option is not avaible for offline!");
                 break;
             case "logOut":
                 if (!gmodel.aiGame) {
@@ -93,16 +96,22 @@ public class GameCont extends Controller {
                     cmodel.sendUserInfo("close");
                     view.setVisible(false);
                 }
+                else
+                    JOptionPane.showMessageDialog(null,"Game option is not avaible for offline!");
                 break;
             case "size":
                 if (!gmodel.aiGame)
                     gmodel.changeSize(Integer.parseInt(info));
+                else
+                    JOptionPane.showMessageDialog(null,"Game option is not avaible for offline!");
                 break;
             case "chat":
                 if (!gmodel.aiGame) {
                     gmodel.sendMsg("chat_" + gmodel.getUserID() + ": " + info);
                     view.chatTA.append(gmodel.getUserID() + ": " + info + "\n");
                 }
+                else
+                    JOptionPane.showMessageDialog(null,"Game option is not avaible for offline!");
                 break;
             case "singleClick":
                 row = Integer.parseInt(split[0]); 
@@ -115,6 +124,8 @@ public class GameCont extends Controller {
                 gmodel.executeClick(row, col, 2);
                 break;
             case "start":
+                if(gmodel.aiGame)
+                    JOptionPane.showMessageDialog(null,"This will restart the Game!");
                 gmodel.setStart(true);
                 break;
             case "lobby":
