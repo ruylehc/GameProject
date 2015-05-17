@@ -455,9 +455,12 @@ public class GameModel{ // game model no longer implments runnable since it only
             }
     }
 
-    //Decide which player gets to go first
-    //Not sure if we need the parameters of string user1 and user2, 
-    //p1turn and p2turn are global variables so I was thinking of just updating those 
+     
+    
+    /**
+     * Decides which player gets to go first
+     * 
+     */
     public void flipCoin() {
         int max = 10;
         int min = 1;
@@ -514,11 +517,12 @@ public class GameModel{ // game model no longer implments runnable since it only
                                 turn = false;
                                 this.setTurn();
                                 ai.aiMove(board);
+                                this.drawBoard(); // this method calls all functions needed for AI to make a move
+                                
                                 if(checkWin(board, P2)){ // this AI is always player 2
                                     handleAIWin();
                                 }
                                 
-                                this.drawBoard(); // this method calls all functions needed for AI to make a move
                                 turn = true;
                                 this.setTurn();
                             }
@@ -547,7 +551,6 @@ public class GameModel{ // game model no longer implments runnable since it only
     /**
      * based on the size of the board it calculated how many turns it would take to fill the board
      * it waits till the last move to check since a player could win in the last move
-     
      */
     public boolean checkTie() {
         if (counter >= ((SIZE) * (SIZE) +2)) {
@@ -640,7 +643,8 @@ public class GameModel{ // game model no longer implments runnable since it only
 
     
      /**
-     * ////////////////////Add description please///////////////////////
+     * This method handles the case when the AI wins, Since we have no offense we assume it will be rare
+     * but just in case it is here
      */
     public void handleAIWin() {
         //cmodel.sendUserInfo("stats_" + cmodel.userName + "_win");
@@ -652,7 +656,7 @@ public class GameModel{ // game model no longer implments runnable since it only
         
     }
     /**
-     * ////////////////////Add description please///////////////////////
+     * handles when the player whens against an AI or another player
      */
     public void handleWin() {
         //cmodel.sendUserInfo("stats_" + cmodel.userName + "_win");
@@ -670,7 +674,7 @@ public class GameModel{ // game model no longer implments runnable since it only
     }
 
     /**
-     * ////////////////////Add description please///////////////////////
+     * if the other player quit it pops up a message and kicks you back to the lobby
      */
     public void handleQuit() {
         JOptionPane.showMessageDialog(null, "They quit!");
@@ -679,7 +683,7 @@ public class GameModel{ // game model no longer implments runnable since it only
     }
 
     /**
-     * ////////////////////Add description please///////////////////////
+     * if in the rare case there is a Tie is displays Tie and returns both users to the lobby
      */
     public void handleTie() {
         JOptionPane.showMessageDialog(null, "Tie!");
@@ -718,7 +722,7 @@ public class GameModel{ // game model no longer implments runnable since it only
     }
     
     /**
-     * 
+     * sets the client model to game model so that can communicate
      * @param cmodel 
      */
     public void setSubModel(ClientModel cmodel){
@@ -726,7 +730,7 @@ public class GameModel{ // game model no longer implments runnable since it only
     }
 
     /**
-     * ////////////////////Add description please///////////////////////
+     * method passes the difficulty to the AI 
      * @param info 
      */
     public void setDifficulty(String info) {
@@ -735,7 +739,7 @@ public class GameModel{ // game model no longer implments runnable since it only
     }
     
     /**
-     * ////////////////////Add description please///////////////////////
+     * this is a special case start game so it doesn't do socket communication
      */
     public void startAIGame(){
         aiMarker = P2;
@@ -750,13 +754,14 @@ public class GameModel{ // game model no longer implments runnable since it only
     }   
 
     /**
-     * ////////////////////Add description please///////////////////////
+     * Connects the AI to the model
      * @param ai 
      */
     public void setAI(AI ai) {
        this.ai = ai;
     }
 
+    // resets all variables that are changed when user is in a game back to non game status
     public void reset() {
        turn = false;
        aiGame = false; 

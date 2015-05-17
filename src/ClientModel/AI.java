@@ -44,24 +44,13 @@ public class AI {
     String Lvl8 = "4 connected pieces in open space";
     
     ArrayList <String> threats = new ArrayList <String>();
+    ArrayList<String> availableArray = new ArrayList<>();
     int AI = 2; // AI will always be the second player making his tokens value = 2
     int opp = 1; // the player will always be first player so we can hard code it
     static final int empty = 0;
     int playerToken = 1; // ai is always second player
-    
-    public void AI(){
-       // this.boardArray = gmodel.board;
-        //this.difficulty = gm.difficulty;
-        //run();
-    }
-    
-    /**
-     * methods sets the difficulty rating
-     * 1 = easy, 2 = medium, 3 = impossible
-     * @param value 
-     */
-   
-    
+      
+
     /**
      * method checks the board for a cases of 5 in a row
      * @param theboard
@@ -81,8 +70,6 @@ public class AI {
      * @param theboard the 2d array to be scanned
      * @return true if the board contains 5 in a row
      */
-     
-    
     public void checkRow(int[][] theboard) {
         //DEBUG
         System.out.println("check row activate");
@@ -93,7 +80,7 @@ public class AI {
             for (int c = 0; c < size - 4; c++) {
 
                 if(theboard[r][c]== opp){
-                    System.out.println("this si the check row single position check");
+                    
                     threats.add("0" + "_" + r + "_" + c + "_" + 0 + "_" + 0 + "_" + (-1) + "_" + (-1) + "_"); // this is the 0 threat case and should queue the AI to make an offensive move
                 }
                 
@@ -148,15 +135,14 @@ public class AI {
             for (int r = 0; r < size - 4; r++) {
 
                 if (theboard[r][c] == opp) {
-                    System.out.println("this si the check row single position check");
+                    
                     threats.add("0" + "_" + r + "_" + c + "_" + 0 + "_" + 0 + "_" + (-1) + "_" + (-1) + "_"); // this is the 0 threat case and should queue the AI to make an offensive move
                 }
 
-                //System.out.println("this si after the first threat catch");
-                //System.out.println("the cells checked: before if" + theboard[r + 1][c] + " " + theboard[r + 2][c]);
+                
                 if (theboard[r][c] == opp && theboard[r + 1][c] == opp && theboard[r + 2][c] == empty && theboard[r - 1][c] == empty && r - 1 >= 0) // threat level 1  - 2 in a col, open space 
                 {
-                    System.out.println("the cells checked" + theboard[r + 1][c] + " " + theboard[r + 2][c]);
+                    
                     threats.add("1" + "_" + r + "_" + c + "_" + (r + 1) + "_" + c + "_" + (-1) + "_" + (-1) + "_");
                 }
                 if (theboard[r][c] == opp && theboard[r + 1][c] == opp && theboard[r + 2][c] == AI && theboard[r - 1][c] == empty && r - 1 >= 0) {
@@ -164,7 +150,7 @@ public class AI {
                     //if (r - 1 >= 0 && theboard[r - 1][c] == empty) // if we are not blocking the left block, add as a threat
                     //{
                     System.out.println("the cells checked" + theboard[r - 1][c]);
-                    //threats.add("1" + "_" + r + "_" + c + "_" + (r + 1) + "_" + c + "_" + (r + 2) + "_" + c + "_");
+                    threats.add("1" + "_" + r + "_" + c + "_" + (r + 1) + "_" + c + "_" + (r + 2) + "_" + c + "_");
                     //}
                 }
                 if (theboard[r][c] == opp && theboard[r + 1][c] == opp && theboard[r + 2][c] == opp && theboard[r + 3][c] == empty && theboard[r - 1][c] == empty && r - 1 >= 0) {
@@ -297,7 +283,10 @@ public class AI {
         
         
     
-    
+    /**
+     * based on the list of threats it handles the most severe
+     * @param theboard the 2d array so it can play a marker when it finds the best position to move
+     */
     public void threatDetect(int[][] theboard){
         
         int size = theboard.length;
@@ -484,13 +473,7 @@ public class AI {
         threats.clear();
 }    
     
-    
-    /**
-     * checks the Rows of the board to see if there is 5 in a row
-     *
-     * @param theboard the 2d array to be scanned
-     * @return true if the board contains 5 in a row
-     */
+
 
     /**
      * checks the Rows of the board to see if there is 5 in a row
@@ -564,11 +547,18 @@ public class AI {
         return false;
     }
 
+    /**
+     * places an AI token on the board in the given value
+     * @param row row of move   
+     * @param col col of move
+     * @param boardArray the 2d array that is the game board
+     */
     private void makeMove(int row, int col, int[][] boardArray) {
         if( boardArray[row][col]!=1 && boardArray[row][col]!=2 )
             boardArray[row][col] = 2; 
         else 
             System.out.println("tried to place maker over an opponents marker" + row + " " + col);
+        // for debugging purposes
    
     }
 
@@ -598,13 +588,19 @@ public class AI {
     }
    
    
-    
+    /**
+     * this method is the easy AI and makes a random move from available spots
+     * @param board the game board
+     */
     public void executeEasy(int[][] board){     
          makerandomMove(board);
     }
     
-    ArrayList<String> availableArray = new ArrayList<>();
-
+    
+    /**
+     * fills the array with all open spots on the board
+     * @param original the empty board
+     */
     public void populateArray(int[][] original) {
         for (int i = 0; i < original.length; i++) {
             for (int j = 0; j < original.length; j++) {
@@ -615,7 +611,11 @@ public class AI {
             }
         }
     }
-
+    /**
+     * removes an entry from the board that happens when a player makes a move
+     * @param r the row
+     * @param c  the col
+     */
     public void removeAvailable(int r, int c) {
         String searchEntry = new String("" + r + "_" + c + "_");
         for (int k = 0; k < availableArray.size(); k++) {
@@ -624,7 +624,10 @@ public class AI {
             }
         }
     }
-
+    /**
+     * makes a random move by picking a random open spot and makes an AI move there
+     * @param board 
+     */
     public void makerandomMove(int[][]board) {
         Random randomNumber = new Random();
         int randomIndex = randomNumber.nextInt(availableArray.size() - 1);
@@ -636,6 +639,10 @@ public class AI {
         this.removeAvailable(newRow, newColumn);
     }
     
+    /**
+     * method sets the difficultly of the AI, currently there is only easy and normal
+     * @param level 
+     */
     public void setDifficulty(String level){
         switch(level){
             

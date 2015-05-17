@@ -150,8 +150,7 @@ public class GameCont extends Controller {
      */
     //@Override
     public void setVisible(boolean value) {
-        //DEBUG - do we still need to debug this?
-        System.out.println("set view to false is actived");
+        
         view.setVisible(value);
     } //end setVisible.
     
@@ -163,8 +162,7 @@ public class GameCont extends Controller {
      */
     public void setID(String ID) {
         this.ID = ID;
-        //DEBUG
-        System.out.println("This is the id of the game controller: " + ID);
+       
     } //end setID.
     
     public void setTitle(String user){
@@ -188,8 +186,7 @@ public class GameCont extends Controller {
      * @param msg - chat message.
      */
     public void updateModelMsg(String msg) {
-        //DEBUG
-        System.out.println("This is the display on view: " + msg);
+        
         view.chatTA.append(msg+"\n");
     } // end updateModelMsg.
     
